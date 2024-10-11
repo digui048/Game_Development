@@ -19,13 +19,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitignore">
+      <Filter>Configuration FIles</Filter>
+    </None>
     <None Include="vcpkg.json">
       <Filter>Configuration FIles</Filter>
     </None>
     <None Include="vcpkg-configuration.json">
-      <Filter>Configuration FIles</Filter>
-    </None>
-    <None Include=".gitignore">
       <Filter>Configuration FIles</Filter>
     </None>
   </ItemGroup>
