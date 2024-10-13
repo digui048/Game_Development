@@ -30,6 +30,7 @@ public:
 	float speed = 5.0f;
 	SDL_Texture* texture = NULL;
 	int texW, texH;
+	bool isGrounded = false;
 
 	//Audio fx
 	int pickCoinFxId;
