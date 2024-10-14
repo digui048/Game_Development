@@ -2,7 +2,7 @@
 #include "SDL2/SDL_rect.h"
 #define MAXIMUM_FRAMES 30
 
-class Animation 
+class Animation
 {
 private:
 	int last_frame = 0;
@@ -12,18 +12,19 @@ private:
 
 
 public:
-	
+
 	//Constructor
-	Animation() {}
+	Animation();
 
 	//Destructor
-	~Animation() {}
+	~Animation();
+
 	//Adds a new frame to the animation
 	void PushBack(const SDL_Rect& rect);
 
 	//Updates the animation and gets the current frame
 	SDL_Rect& GetCurrentFrame(float dt);
-	
+
 	//Returns the current frame number
 	int GetCurrentFrame();
 
