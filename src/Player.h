@@ -2,8 +2,18 @@
 
 #include "Entity.h"
 #include "SDL2/SDL.h"
+#include "Sprite.h"
 
 struct SDL_Texture;
+
+enum class PlayerAnim {
+	IDLE_LEFT, IDLE_RIGHT,
+	WALKING_LEFT, WALKING_RIGHT,
+	JUMPING_LEFT, JUMPING_RIGHT,
+	LEVITATING_LEFT, LEVITATING_RIGHT,
+	FALLING_LEFT, FALLING_RIGHT,
+	NUM_ANIMATIONS
+};
 
 class Player : public Entity
 {
@@ -14,6 +24,8 @@ public:
 	virtual ~Player();
 
 	bool Awake();
+
+	bool Initialise();
 
 	bool Start();
 

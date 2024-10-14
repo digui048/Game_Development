@@ -24,10 +24,76 @@ bool Player::Awake() {
 	return true;
 }
 
+bool Player::Initialise() {
+
+	int i;
+	const int n = PLAYER_FRAME_SIZE;
+
+	ResourceManager& data = ResourceManager::Instance();
+	if (data.LoadTexture(Resource::IMG_PLAYER, "images/Sloth.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
+
+	render = new Sprite(data.GetTexture(Resource::IMG_PLAYER));
+	if (render == nullptr)
+	{
+		LOG("Failed to allocate memory for player sprite");
+		return AppStatus::ERROR;
+	}
+
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->SetNumberAnimations((int)PlayerAnim::NUM_ANIMATIONS);
+
+	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_RIGHT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::IDLE_RIGHT, { 0, 0, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_LEFT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::IDLE_LEFT, { 0, 0, -n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::WALKING_RIGHT, ANIM_DELAY);
+	for (i = 0; i < 2; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::WALKING_RIGHT, { (float)i * n, 0, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::WALKING_LEFT, ANIM_DELAY);
+	for (i = 0; i < 2; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::WALKING_LEFT, { (float)i * n, 0, -n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::FALLING_RIGHT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT, { 0, n, n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT, { 0, n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::FALLING_LEFT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { 0, n, -n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { 0, n, -n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_RIGHT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_RIGHT, { 0, n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_LEFT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_LEFT, { 0, n, -n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_RIGHT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_RIGHT, { 0, n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_LEFT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT, { 0, n, -n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING, ANIM_LADDER_DELAY);
+	for (i = 0; i < 2; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::CLIMBING, { (float)i * n, 3 * n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_PRE_TOP, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_PRE_TOP, { 0, 3 * n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_TOP, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_TOP, { n, 3 * n, n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::PUNCHING_RIGHT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::PUNCHING_RIGHT, { 0, 2 * n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::PUNCHING_LEFT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::PUNCHING_LEFT, { 0, 2 * n, -n, n });
+
+	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
+}
+
 bool Player::Start() {
 
 	//L03: TODO 2: Initialize Player parameters
 	texture = Engine::GetInstance().textures.get()->Load("Assets/Textures/player1.png");
+
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	Engine::GetInstance().textures.get()->GetSize(texture, texW, texH);

@@ -84,6 +84,9 @@
     <ClCompile Include="src\Animation.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sprite.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Audio.h">
@@ -141,6 +144,9 @@
       <Filter>Source Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="src\Animation.h">
+      <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sprite.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
