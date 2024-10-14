@@ -47,6 +47,22 @@ struct MapLayer
     }
 };
 
+struct MapObject {
+
+
+
+};
+
+struct MapObjectLayer
+{
+    // L07: TODO 1: Add the info to the MapLayer Struct
+    int id;
+    std::string name;
+    std::vector<int> objects;
+    Properties properties;
+
+};
+
 // L06: TODO 2: Create a struct to hold information for a TileSet
 // Ignore Terrain Types and Tile Types for now, but we want the image!
 
