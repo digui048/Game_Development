@@ -29,17 +29,25 @@ bool Player::Initialise() {
 	int i;
 	const int n = PLAYER_FRAME_SIZE;
 
-	ResourceManager& data = ResourceManager::Instance();
+	/*ResourceManager& data = ResourceManager::Instance();
 	if (data.LoadTexture(Resource::IMG_PLAYER, "images/Sloth.png") != AppStatus::OK)
 	{
 		return AppStatus::ERROR;
-	}
+	}*/
 
-	render = new Sprite(data.GetTexture(Resource::IMG_PLAYER));
+}
+
+bool Player::Start() {
+
+	//L03: TODO 2: Initialize Player parameters
+	texture = Engine::GetInstance().textures.get()->Load("Assets/Textures/player1.png");
+
+	render = new Sprite(texture);
+	
 	if (render == nullptr)
 	{
 		LOG("Failed to allocate memory for player sprite");
-		return AppStatus::ERROR;
+		return false;
 	}
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
@@ -87,14 +95,7 @@ bool Player::Initialise() {
 	sprite->AddKeyFrame((int)PlayerAnim::PUNCHING_LEFT, { 0, 2 * n, -n, n });
 
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
-}
-
-bool Player::Start() {
-
-	//L03: TODO 2: Initialize Player parameters
-	texture = Engine::GetInstance().textures.get()->Load("Assets/Textures/player1.png");
-
-
+	
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	Engine::GetInstance().textures.get()->GetSize(texture, texW, texH);
 	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX(), (int)position.getY(), texW / 2, bodyType::DYNAMIC);

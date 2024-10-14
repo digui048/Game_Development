@@ -2,6 +2,7 @@
 #include "SDL2/SDL_rect.h"
 #include "Textures.h"
 #include <vector>
+#include "Render.h"
 
 enum class AnimMode { AUTOMATIC, MANUAL };
 
@@ -14,7 +15,7 @@ struct Animation
 class Sprite : public Render
 {
 public:
-    Sprite(const Textures* texture);
+    Sprite(const SDL_Texture* texture);
     ~Sprite();
 
     void SetNumberAnimations(int num);
