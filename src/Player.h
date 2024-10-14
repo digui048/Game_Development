@@ -2,7 +2,6 @@
 
 #include "Entity.h"
 #include "SDL2/SDL.h"
-#include "Sprite.h"
 
 struct SDL_Texture;
 
