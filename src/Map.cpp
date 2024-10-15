@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "Log.h"
 #include "Physics.h"
+#include <unordered_set>
 
 #include <math.h>
 
@@ -120,10 +121,10 @@ bool Map::Load(std::string path, std::string fileName)
     pugi::xml_document mapFileXML;
     pugi::xml_parse_result result = mapFileXML.load_file(mapPathName.c_str());
 
-    if(result == NULL)
-	{
-		LOG("Could not load map xml file %s. pugi error: %s", mapPathName.c_str(), result.description());
-		ret = false;
+    if (result == NULL)
+    {
+        LOG("Could not load map xml file %s. pugi error: %s", mapPathName.c_str(), result.description());
+        ret = false;
     }
     else {
 
@@ -135,12 +136,12 @@ bool Map::Load(std::string path, std::string fileName)
         mapData.tileHeight = mapFileXML.child("map").attribute("tileheight").as_int();
 
         // L06: TODO 4: Implement the LoadTileSet function to load the tileset properties
-       
+
         //Iterate the Tileset
-        for(pugi::xml_node tilesetNode = mapFileXML.child("map").child("tileset"); tilesetNode!=NULL; tilesetNode = tilesetNode.next_sibling("tileset"))
-		{
+        for (pugi::xml_node tilesetNode = mapFileXML.child("map").child("tileset"); tilesetNode != NULL; tilesetNode = tilesetNode.next_sibling("tileset"))
+        {
             //Load Tileset attributes
-			TileSet* tileSet = new TileSet();
+            TileSet* tileSet = new TileSet();
             tileSet->firstGid = tilesetNode.attribute("firstgid").as_int();
             tileSet->name = tilesetNode.attribute("name").as_string();
             tileSet->tileWidth = tilesetNode.attribute("tilewidth").as_int();
@@ -150,12 +151,12 @@ bool Map::Load(std::string path, std::string fileName)
             tileSet->tileCount = tilesetNode.attribute("tilecount").as_int();
             tileSet->columns = tilesetNode.attribute("columns").as_int();
 
-			//Load the tileset image
-			std::string imgName = tilesetNode.child("image").attribute("source").as_string();
-            tileSet->texture = Engine::GetInstance().textures->Load((mapPath+imgName).c_str());
+            //Load the tileset image
+            std::string imgName = tilesetNode.child("image").attribute("source").as_string();
+            tileSet->texture = Engine::GetInstance().textures->Load((mapPath + imgName).c_str());
 
-			mapData.tilesets.push_back(tileSet);
-		}
+            mapData.tilesets.push_back(tileSet);
+        }
 
         // L07: TODO 3: Iterate all layers in the TMX and load each of them
         for (pugi::xml_node layerNode = mapFileXML.child("map").child("layer"); layerNode != NULL; layerNode = layerNode.next_sibling("layer")) {
@@ -180,78 +181,118 @@ bool Map::Load(std::string path, std::string fileName)
             mapData.layers.push_back(mapLayer);
         }
 
+        for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
+
+            // L07: TODO 4: Implement the load of a single layer 
+            //Load the attributes and saved in a new MapLayer
+            MapObjectGroup* mapObjectGroup = new MapObjectGroup();
+            mapObjectGroup->id = objectGroupNode.attribute("id").as_int();
+            mapObjectGroup->name = objectGroupNode.attribute("name").as_string();
+
+            //L09: TODO 6 Call Load Layer Properties
+            LoadProperties(objectGroupNode, mapObjectGroup->properties);
+
+            //Iterate over all the tiles and assign the values in the data array
+            for (pugi::xml_node tileNode = objectGroupNode.child("object"); tileNode != NULL; tileNode = tileNode.next_sibling("object")) {
+                Object* object = new Object();
+                object->id = tileNode.attribute("id").as_int();
+                object->_x = tileNode.attribute("x").as_int();
+                object->_y = tileNode.attribute("y").as_int();
+                object->width = tileNode.attribute("width").as_int();
+                object->height = tileNode.attribute("height").as_int();
+                mapObjectGroup->objects.push_back(*object);
+            }
+
+            //add the layer to the map
+            mapData.object_groups.push_back(mapObjectGroup);
+        }
+
         // L08 TODO 3: Create colliders
         // L08 TODO 7: Assign collider type
         // Later you can create a function here to load and create the colliders from the map
 
-        for (const auto& mapLayer : mapData.layers) {
-            //Check if the property Draw exist get the value, if it's true draw the lawyer
-            if (mapLayer->properties.GetProperty("Collisions") != NULL && mapLayer->properties.GetProperty("Collisions")->value == true) {
-                for (int i = 0; i < mapData.width; i++) {
-                    for (int j = 0; j < mapData.height; j++) {
+        // L08 TODO 3: Create colliders
+        // L08 TODO 7: Assign collider type
 
-                        // L07 TODO 9: Complete the draw function
-
-                        //Get the gid from tile
-                        int gid = mapLayer->Get(i, j);
-                        //Check if the gid is different from 0 - some tiles are empty
-                        if (gid == 49) {
-                            //Get the screen coordinates from the tile coordinates
-                            Vector2D mapCoord = MapToWorld(i, j);
-                            PhysBody* collider = Engine::GetInstance().physics.get()->CreateRectangle(mapCoord.getX() + 16,mapCoord.getY()+16, 32, 32, STATIC);
-                            collider->ctype = ColliderType::PLATFORM;
-                        }
-                    }
+        for (const auto& mapObjectGroup : mapData.object_groups) {
+            if (mapObjectGroup->properties.GetProperty("Collisions") != NULL && mapObjectGroup->properties.GetProperty("Collisions")->value == true) {
+                for (const auto& mapObject : mapObjectGroup->objects) {
+                    LOG("pos.x = %d, pos.y = %d, width = %d, height = %d", mapObject._x, mapObject._y, mapObject.width, mapObject.height);
+                    PhysBody* collider = Engine::GetInstance().physics.get()->CreateRectangle(mapObject._x + 32, mapObject._y + 32, mapObject.width, mapObject.height, STATIC);
+                    collider->ctype = ColliderType::PLATFORM;
                 }
             }
         }
+        PhysBody* collider = Engine::GetInstance().physics.get()->CreateRectangle(32, 32, 64, 64, STATIC);
+        collider->ctype = ColliderType::PLATFORM;
+            //for (const auto& mapLayer : mapData.layers) {
+            //    //Check if the property Draw exist get the value, if it's true draw the lawyer
+            //    if (mapLayer->properties.GetProperty("Collisions") != NULL && mapLayer->properties.GetProperty("Collisions")->value == true) {
+            //        for (int i = 0; i < mapData.width; i++) {
+            //            for (int j = 0; j < mapData.height; j++) {
 
-        /*PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(224 + 128, 544 + 32, 256, 64, STATIC);
-        c1->ctype = ColliderType::PLATFORM;
+            //                // L07 TODO 9: Complete the draw function
 
-        PhysBody* c2 = Engine::GetInstance().physics.get()->CreateRectangle(352 + 64, 384 + 32, 128, 64, STATIC);
-        c2->ctype = ColliderType::PLATFORM;
+            //                //Get the gid from tile
+            //                int gid = mapLayer->Get(i, j);
+            //                //Check if the gid is different from 0 - some tiles are empty
+            //                if (gid == 49) {
+            //                    //Get the screen coordinates from the tile coordinates
+            //                    Vector2D mapCoord = MapToWorld(i, j);
+            //                    PhysBody* collider = Engine::GetInstance().physics.get()->CreateRectangle(mapCoord.getX() + 16, mapCoord.getY() + 16, 32, 32, STATIC);
+            //                    collider->ctype = ColliderType::PLATFORM;
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
 
-        PhysBody* c3 = Engine::GetInstance().physics.get()->CreateRectangle(256, 704 + 32, 576, 64, STATIC);
-        c3->ctype = ColliderType::PLATFORM;*/
+            /*PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(224 + 128, 544 + 32, 256, 64, STATIC);
+            c1->ctype = ColliderType::PLATFORM;
+
+            PhysBody* c2 = Engine::GetInstance().physics.get()->CreateRectangle(352 + 64, 384 + 32, 128, 64, STATIC);
+            c2->ctype = ColliderType::PLATFORM;
+
+            PhysBody* c3 = Engine::GetInstance().physics.get()->CreateRectangle(256, 704 + 32, 576, 64, STATIC);
+            c3->ctype = ColliderType::PLATFORM;*/
 
 
-        
-        ret = true;
 
-        // L06: TODO 5: LOG all the data loaded iterate all tilesetsand LOG everything
-        if (ret == true)
-        {
-            LOG("Successfully parsed map XML file :%s", fileName.c_str());
-            LOG("width : %d height : %d", mapData.width, mapData.height);
-            LOG("tile_width : %d tile_height : %d", mapData.tileWidth, mapData.tileHeight);
+            ret = true;
 
-            LOG("Tilesets----");
+            // L06: TODO 5: LOG all the data loaded iterate all tilesetsand LOG everything
+            if (ret == true)
+            {
+                LOG("Successfully parsed map XML file :%s", fileName.c_str());
+                LOG("width : %d height : %d", mapData.width, mapData.height);
+                LOG("tile_width : %d tile_height : %d", mapData.tileWidth, mapData.tileHeight);
 
-            //iterate the tilesets
-            for (const auto& tileset : mapData.tilesets) {
-                LOG("name : %s firstgid : %d", tileset->name.c_str(), tileset->firstGid);
-                LOG("tile width : %d tile height : %d", tileset->tileWidth, tileset->tileHeight);
-                LOG("spacing : %d margin : %d", tileset->spacing, tileset->margin);
+                LOG("Tilesets----");
+
+                //iterate the tilesets
+                for (const auto& tileset : mapData.tilesets) {
+                    LOG("name : %s firstgid : %d", tileset->name.c_str(), tileset->firstGid);
+                    LOG("tile width : %d tile height : %d", tileset->tileWidth, tileset->tileHeight);
+                    LOG("spacing : %d margin : %d", tileset->spacing, tileset->margin);
+                }
+
+                LOG("Layers----");
+
+                for (const auto& layer : mapData.layers) {
+                    LOG("id : %d name : %s", layer->id, layer->name.c_str());
+                    LOG("Layer width : %d Layer height : %d", layer->width, layer->height);
+                }
             }
-            			
-            LOG("Layers----");
+            else {
+                LOG("Error while parsing map file: %s", mapPathName.c_str());
+            }
 
-            for (const auto& layer : mapData.layers) {
-                LOG("id : %d name : %s", layer->id, layer->name.c_str());
-				LOG("Layer width : %d Layer height : %d", layer->width, layer->height);
-            }   
-        }
-        else {
-            LOG("Error while parsing map file: %s", mapPathName.c_str());
+            if (mapFileXML) mapFileXML.reset();
+
         }
 
-        if (mapFileXML) mapFileXML.reset();
-
-    }
-
-    mapLoaded = ret;
-    return ret;
+        mapLoaded = ret;
+        return ret;
 }
 
 // L07: TODO 8: Create a method that translates x,y coordinates from map positions to world positions

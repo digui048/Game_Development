@@ -47,18 +47,22 @@ struct MapLayer
     }
 };
 
-struct MapObject {
+struct Object {
 
-
+    int id;
+    int _x;
+    int _y;
+    int width; 
+    int height;
 
 };
 
-struct MapObjectLayer
+struct MapObjectGroup
 {
     // L07: TODO 1: Add the info to the MapLayer Struct
     int id;
     std::string name;
-    std::vector<int> objects;
+    std::vector<Object> objects;
     Properties properties;
 
 };
@@ -104,6 +108,8 @@ struct MapData
 
     // L07: TODO 2: Add the info to the MapLayer Struct
     std::list<MapLayer*> layers;
+
+    std::list<MapObjectGroup*> object_groups;
 };
 
 class Map : public Module
