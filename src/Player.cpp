@@ -66,6 +66,15 @@ bool Player::Update(float dt)
 	if (isJumping == true)
 	{
 		velocity = pbody->body->GetLinearVelocity();
+
+		//prueba movimiento salto
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			velocity.x = -0.2 * dt;
+		}
+
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			velocity.x = 0.2 * dt;
+		}
 	}
 
 	pbody->body->SetLinearVelocity(velocity);

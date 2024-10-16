@@ -3,7 +3,7 @@
     "box2d",
     "pugixml",
     "sdl2",
-    "sdl2-mixer",
-    "sdl2-image"
+    "sdl2-image",
+    "sdl2-mixer"
   ]
 }
