@@ -219,7 +219,7 @@ bool Map::Load(std::string path, std::string fileName)
             if (mapObjectGroup->properties.GetProperty("Collisions") != NULL && mapObjectGroup->properties.GetProperty("Collisions")->value == true) {
                 for (const auto& mapObject : mapObjectGroup->objects) {
                     LOG("pos.x = %d, pos.y = %d, width = %d, height = %d", mapObject._x, mapObject._y, mapObject.width, mapObject.height);
-                    PhysBody* collider = Engine::GetInstance().physics.get()->CreateRectangle(mapObject._x + 32, mapObject._y + 32, mapObject.width, mapObject.height, STATIC);
+                    PhysBody* collider = Engine::GetInstance().physics.get()->CreateRectangle(mapObject._x + mapObject.width/2, mapObject._y + mapObject.height/2, mapObject.width, mapObject.height, STATIC);
                     collider->ctype = ColliderType::PLATFORM;
                 }
             }
