@@ -90,12 +90,32 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	{
 	case ColliderType::PLATFORM:
 		LOG("Collision PLATFORM");
+		//reset the jump flag when touching the ground
+		isJumping = false;
 		break;
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
+		break;
+	default:
+		break;
+	}
+}
+
+void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
+{
+	switch (physB->ctype)
+	{
+	case ColliderType::PLATFORM:
+		LOG("End Collision PLATFORM");
+		break;
+	case ColliderType::ITEM:
+		LOG("End Collision ITEM");
+		break;
+	case ColliderType::UNKNOWN:
+		LOG("End Collision UNKNOWN");
 		break;
 	default:
 		break;

@@ -2,6 +2,7 @@
 
 #include "Entity.h"
 #include "SDL2/SDL.h"
+#include "Box2D/Box2D.h"
 
 struct SDL_Texture;
 
@@ -25,6 +26,8 @@ public:
 	bool Awake();
 
 	bool Initialise();
+
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
 	bool Start();
 
