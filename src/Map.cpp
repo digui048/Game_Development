@@ -214,38 +214,39 @@ bool Map::Load(std::string path, std::string fileName)
         // L08 TODO 3: Create colliders
         // L08 TODO 7: Assign collider type
 
-        for (const auto& mapObjectGroup : mapData.object_groups) {
+        //Collisions using object layer
+        /*for (const auto& mapObjectGroup : mapData.object_groups) {
             if (mapObjectGroup->properties.GetProperty("Collisions") != NULL && mapObjectGroup->properties.GetProperty("Collisions")->value == true) {
                 for (const auto& mapObject : mapObjectGroup->objects) {
                     LOG("pos.x = %d, pos.y = %d, width = %d, height = %d", mapObject._x, mapObject._y, mapObject.width, mapObject.height);
-                    PhysBody* collider = Engine::GetInstance().physics.get()->CreateRectangle(mapObject._x + 32, mapObject._y + 32, mapObject.width, mapObject.height, STATIC);
+                    PhysBody* collider = Engine::GetInstance().physics.get()->CreateRectangle(mapObject._x + 16, mapObject._y + 16, mapObject.width, mapObject.height, STATIC);
                     collider->ctype = ColliderType::PLATFORM;
                 }
             }
-        }
-        PhysBody* collider = Engine::GetInstance().physics.get()->CreateRectangle(32, 32, 64, 64, STATIC);
-        collider->ctype = ColliderType::PLATFORM;
-            //for (const auto& mapLayer : mapData.layers) {
-            //    //Check if the property Draw exist get the value, if it's true draw the lawyer
-            //    if (mapLayer->properties.GetProperty("Collisions") != NULL && mapLayer->properties.GetProperty("Collisions")->value == true) {
-            //        for (int i = 0; i < mapData.width; i++) {
-            //            for (int j = 0; j < mapData.height; j++) {
+        }*/
 
-            //                // L07 TODO 9: Complete the draw function
+        //Collisions with square layer
+            for (const auto& mapLayer : mapData.layers) {
+                //Check if the property Draw exist get the value, if it's true draw the lawyer
+                if (mapLayer->properties.GetProperty("Collisions") != NULL && mapLayer->properties.GetProperty("Collisions")->value == true) {
+                    for (int i = 0; i < mapData.width; i++) {
+                        for (int j = 0; j < mapData.height; j++) {
 
-            //                //Get the gid from tile
-            //                int gid = mapLayer->Get(i, j);
-            //                //Check if the gid is different from 0 - some tiles are empty
-            //                if (gid == 49) {
-            //                    //Get the screen coordinates from the tile coordinates
-            //                    Vector2D mapCoord = MapToWorld(i, j);
-            //                    PhysBody* collider = Engine::GetInstance().physics.get()->CreateRectangle(mapCoord.getX() + 16, mapCoord.getY() + 16, 32, 32, STATIC);
-            //                    collider->ctype = ColliderType::PLATFORM;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+                            // L07 TODO 9: Complete the draw function
+
+                            //Get the gid from tile
+                            int gid = mapLayer->Get(i, j);
+                            //Check if the gid is different from 0 - some tiles are empty
+                            if (gid == 49) {
+                                //Get the screen coordinates from the tile coordinates
+                                Vector2D mapCoord = MapToWorld(i, j);
+                                PhysBody* collider = Engine::GetInstance().physics.get()->CreateRectangle(mapCoord.getX() + 16, mapCoord.getY() + 16, 32, 32, STATIC);
+                                collider->ctype = ColliderType::PLATFORM;
+                            }
+                        }
+                    }
+                }
+            }
 
             /*PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(224 + 128, 544 + 32, 256, 64, STATIC);
             c1->ctype = ColliderType::PLATFORM;
