@@ -55,6 +55,19 @@ bool Player::Update(float dt)
 		velocity.x = 0.2 * dt;
 	}
 
+	//Jump
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false) {
+		// Apply an initial upward force
+		pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
+		isJumping = true;
+	}
+
+	// If the player is jumpling, we don't want to apply gravity, we use the current velocity prduced by the jump
+	if (isJumping == true)
+	{
+		velocity = pbody->body->GetLinearVelocity();
+	}
+
 	pbody->body->SetLinearVelocity(velocity);
 	b2Transform pbodyPos = pbody->body->GetTransform();
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
