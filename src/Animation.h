@@ -44,34 +44,18 @@ public:
 		if (pingpongDirection == -1) actualFrame = totalFrames - static_cast<int>(currentFrame);
 		return frames[actualFrame];
 	}
-	void LoadAnimations(const char* name, const char* entityName)
+	void LoadAnimations(pugi::xml_node animationNode)
 	{
-		pugi::xml_document file;
-		pugi::xml_parse_result parseresult = file.load_file("config.xml");
-		pugi::xml_node animation_name = file.child("config").child(entityName).child("animations").child(name);
-		for (pugi::xml_node animation = animation_name.child("frame"); animation; animation = animation.next_sibling("frame"))
+		speed = animationNode.attribute("speed").as_float();
+		loop = animationNode.attribute("loop").as_bool();
+		
+		for (pugi::xml_node animation = animationNode.child("frame"); animation; animation = animation.next_sibling("frame"))
 		{
 			PushBack({ animation.attribute("x").as_int(),
 			animation.attribute("y").as_int(),
 			animation.attribute("w").as_int(),
 			animation.attribute("h").as_int() });
 		}
-		speed = animation_name.attribute("speed").as_float();
-		loop = animation_name.attribute("loop").as_bool();
-	}
-	void LoadAnimations(const char* name)
-	{
-		pugi::xml_document file;
-		pugi::xml_parse_result parseresult = file.load_file("config.xml");
-		pugi::xml_node animation_name = file.child("config").child(name);
-		for (pugi::xml_node animation = animation_name.child("frame"); animation; animation = animation.next_sibling("frame"))
-		{
-			PushBack({ animation.attribute("x").as_int(),
-			animation.attribute("y").as_int(),
-			animation.attribute("w").as_int(),
-			animation.attribute("h").as_int() });
-		}
-		speed = animation_name.attribute("speed").as_float();
-		loop = animation_name.attribute("loop").as_bool();
+		
 	}
 };
