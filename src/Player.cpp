@@ -39,7 +39,8 @@ bool Player::Start() {
 	idle.LoadAnimations(parameters.child("animations").child("idle"));
 	currentAnimation = &idle;
 	//Run
-	run.LoadAnimations(parameters.child("animations").child("run"));
+	run_right.LoadAnimations(parameters.child("animations").child("run_right"));
+	run_left.LoadAnimations(parameters.child("animations").child("run_left"));
 
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
@@ -66,13 +67,13 @@ bool Player::Update(float dt)
 	//Move left
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		velocity.x = -0.2 * dt;
-		currentAnimation = &run;
+		currentAnimation = &run_left;
 	}
 
 	//Move right
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		velocity.x = 0.2 * dt;
-		currentAnimation = &run;
+		currentAnimation = &run_right;
 	}
 
 	//Jump
