@@ -44,12 +44,12 @@ public:
 		return true;
 	}
 
-	bool StartLookingLeft()
+	void StartLookingLeft()
 	{
 		look = View::LEFT;
 	}
 
-	bool StartLookingRight()
+	void StartLookingRight()
 	{
 		look = View::RIGHT;
 	}

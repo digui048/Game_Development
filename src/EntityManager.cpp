@@ -70,7 +70,7 @@ Entity* EntityManager::CreateEntity(EntityType type, View look)
 	switch (type)
 	{
 	case EntityType::PLAYER:
-		entity = new Player();
+		entity = new Player(State::IDLE);
 		break;
 	case EntityType::ITEM:
 		entity = new Item();

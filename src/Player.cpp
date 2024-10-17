@@ -8,9 +8,10 @@
 #include "Log.h"
 #include "Physics.h"
 
-Player::Player() : Entity(EntityType::PLAYER, View::RIGHT)
+Player::Player(State state) : Entity(EntityType::PLAYER, View::RIGHT)
 {
 	name = "Player";
+	this->state = state;
 }
 
 Player::~Player() {
@@ -67,64 +68,215 @@ bool Player::Start() {
 	return true;
 }
 
-bool Player::Update(float dt)
+void Player::StartRunning()
 {
-	// L08 TODO 5: Add physics to the player - updated player position using physics
-	b2Vec2 velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
-
-	//Run left
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		velocity.x = -0.2 * dt;
+	if (look == View::LEFT)
+	{
 		currentAnimation = &run_left;
 	}
-
-	//Run right
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		velocity.x = 0.2 * dt;
+	else if(look == View::RIGHT)
+	{
 		currentAnimation = &run_right;
 	}
 
-	//Jump left
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false && look == View::LEFT) {
-		// Apply an initial upward force
-		pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
-		isJumping = true;
+	state = State::RUN;
+}
+
+void Player::StartJumping()
+{
+	state = State::JUMP;
+
+	if (look == View::LEFT)
+	{
 		currentAnimation = &jump_left;
 	}
-
-	//Jump right
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false && look == View::RIGHT) {
-		// Apply an initial upward force
-		pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
-		isJumping = true;
+	else if (look == View::RIGHT)
+	{
 		currentAnimation = &jump_right;
 	}
 
+}
 
-	// If the player is jumpling, we don't want to apply gravity, we use the current velocity prduced by the jump
-	if (isJumping == true)
+void Player::StartFalling()
+{
+	state = State::FALL;
+
+	if (look == View::LEFT)
+	{
+		currentAnimation = &fall_left;
+	}
+	else if (look == View::RIGHT)
+	{
+		currentAnimation = &fall_right;
+	}
+}
+
+void Player::InitialState()
+{
+	state = State::IDLE;
+
+	if (look == View::LEFT)
+	{
+		currentAnimation = &idle_left;
+	}
+	else if (look == View::RIGHT)
+	{
+		currentAnimation = &idle_right;
+	}
+}
+
+void Player::MoveX(b2Vec2 velocity, float dt)
+{
+	//We can only go up and down while climbing
+	if (isJumping)	return;
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT 
+		&& !Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		velocity.x = -0.2 * dt;
+		if (state == State::IDLE) StartRunning();
+		else
+		{
+			if (look == View::RIGHT) StartRunning();
+		}
+
+		/*box = GetHitbox();
+		if (map->TestCollisionWallLeft(box))
+		{
+			pos.x = prev_x;
+			if (state == State::WALKING) Stop();
+		}*/
+	}
+	else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		velocity.x = 0.2 * dt;
+		if (state == State::IDLE) StartRunning();
+		else
+		{
+			if (look == View::LEFT) StartRunning();
+		}
+
+		/*box = GetHitbox();
+		if (map->TestCollisionWallRight(box))
+		{
+			pos.x = prev_x;
+			if (state == State::WALKING) Stop();
+		}*/
+	}
+	else
+	{
+		if (state == State::RUN) InitialState();
+	}
+}
+
+void Player::MoveY(b2Vec2 velocity, float dt)
+{
+	if (state == State::JUMP)
+	{
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false) {
+			// Apply an initial upward force
+			pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
+			isJumping = true;
+		}
+	}
+
+	else //idle, walking, falling
 	{
 		velocity = pbody->body->GetLinearVelocity();
 		velocity.y = pbody->body->GetLinearVelocity().y;
+		
+		if (isGrounded)
+		{
+			if (state == State::FALL) InitialState();
 
-		//prueba movimiento salto
-		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-			velocity.x = -0.2 * dt;
+			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false)
+			{
+				StartJumping();
+			}
 		}
-
-		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-			velocity.x = 0.2 * dt;
+		else
+		{
+			if (state != State::FALL) StartFalling();
 		}
 	}
-	
+}
 
+bool Player::Update(float dt)
+{
+	b2Vec2 velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
+
+	// Handle horizontal movement
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		velocity.x = -0.2 *dt; // Move left
+		look = View::LEFT;
+		StartRunning();
+	}
+	else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		velocity.x = 0.2f *dt; // Move right
+		look = View::RIGHT;
+		StartRunning();
+	}
+	else {
+		InitialState(); // Go idle if no keys are pressed
+	}
+
+	// Jumping logic
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !isJumping) {
+		pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
+		isJumping = true;
+		StartJumping();
+	}
+
+	// Check if the player is falling
+	if (isJumping) {
+		velocity.y = pbody->body->GetLinearVelocity().y;
+		// If vertical velocity is down, switch to falling state
+		if (velocity.y < 0) {
+			// Still jumping
+			LOG("Saltando");
+			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+				velocity.x = -0.2 * dt; // Move left
+				look = View::LEFT;
+				StartJumping();
+			}
+			else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+				velocity.x = 0.2f * dt; // Move right
+				look = View::RIGHT;
+				StartRunning();
+			}
+			else {
+				StartJumping();
+			}
+		}
+		else if (velocity.y > 0) {
+			// Falling
+			LOG("Cayendo");
+			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+				velocity.x = -0.2 * dt; // Move left
+				look = View::LEFT;
+				StartFalling();
+			}
+			else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+				velocity.x = 0.2f * dt; // Move right
+				look = View::RIGHT;
+				StartFalling();
+			}
+			else {
+				StartFalling();
+			}
+		}
+	}
+
+	// Set new velocity
 	pbody->body->SetLinearVelocity(velocity);
 	b2Transform pbodyPos = pbody->body->GetTransform();
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
 
+	// Render the current animation
 	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
 	currentAnimation->Update();
+
 	return true;
 }
 

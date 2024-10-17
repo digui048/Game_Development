@@ -16,11 +16,15 @@ enum class PlayerAnim {
 	NUM_ANIMATIONS
 };
 
+enum class State {
+	IDLE, RUN, JUMP, FALL
+};
+
 class Player : public Entity
 {
 public:
 
-	Player();
+	Player(State state);
 	
 	virtual ~Player();
 
@@ -38,17 +42,15 @@ public:
 
 	void InitialState();
 
-	void RunningLeft();
+	void StartRunning();
 
-	void RunningRight();
+	void StartJumping();
 
-	void JumpingRight();
+	void StartFalling();
 
-	void JumpingLeft();
+	void MoveX(b2Vec2 velocity, float dt);
 
-	void FallingRight();
-
-	void FallingLeft();
+	void MoveY(b2Vec2 velocity, float dt);
 
 	bool Update(float dt);
 
@@ -74,8 +76,11 @@ public:
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 
-	float jumpForce = 2.5f; // The force to apply when jumping
+	float jumpForce = 5.0f; // The force to apply when jumping
 	bool isJumping = false; // Flag to check if the player is currently jumping
+	bool isFalling = false;
+
+	State state;
 
 	pugi::xml_node parameters;
 	Animation* currentAnimation = nullptr;
