@@ -30,7 +30,20 @@
             <frame x="240" y="0" w="48" h="40"/>
             <frame x="288" y="0" w="48" h="40"/>
             <frame x="336" y="0" w="48" h="40"/>
-          </idle>
+		  </idle>
+		  <run loop ="true" speed ="0.18">
+			<frame x="0" y="0" w="48" h="40" />
+			<frame x="0" y="0" w="48" h="40" />
+			<frame x="0" y="0" w="48" h="40" />
+			<frame x="0" y="0" w="48" h="40" />
+			<frame x="0" y="0" w="48" h="40" />
+			<frame x="0" y="0" w="48" h="40" />
+			<frame x="0" y="0" w="48" h="40" />
+			<frame x="0" y="0" w="48" h="40" />
+			<frame x="0" y="0" w="48" h="40" />
+			<frame x="0" y="0" w="48" h="40" />
+		  </run>
+          
         </animations>
       </player>
     </entities>
