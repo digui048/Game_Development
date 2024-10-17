@@ -10,13 +10,19 @@ enum class EntityType
 	UNKNOWN
 };
 
+enum class View {
+	
+	LEFT,
+	RIGHT
+};
+
 class PhysBody;
 
 class Entity
 {
 public:
 
-	Entity(EntityType type) : type(type), active(true) {}
+	Entity(EntityType type, View look) : type(type), active(true), look(look) {}
 
 	virtual bool Awake()
 	{
@@ -36,6 +42,16 @@ public:
 	virtual bool CleanUp()
 	{
 		return true;
+	}
+
+	bool StartLookingLeft()
+	{
+		look = View::LEFT;
+	}
+
+	bool StartLookingRight()
+	{
+		look = View::RIGHT;
 	}
 
 	void Enable()
@@ -69,6 +85,7 @@ public:
 	std::string name;
 	EntityType type;
 	bool active = true;
+	View look;
 
 	// Possible properties, it depends on how generic we
 	// want our Entity class, maybe it's not renderable...

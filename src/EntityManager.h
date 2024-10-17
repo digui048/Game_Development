@@ -26,7 +26,7 @@ public:
 	bool CleanUp();
 
 	// Additional methods
-	Entity* CreateEntity(EntityType type);
+	Entity* CreateEntity(EntityType type, View look);
 
 	void DestroyEntity(Entity* entity);
 

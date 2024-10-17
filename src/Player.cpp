@@ -8,7 +8,7 @@
 #include "Log.h"
 #include "Physics.h"
 
-Player::Player() : Entity(EntityType::PLAYER)
+Player::Player() : Entity(EntityType::PLAYER, View::RIGHT)
 {
 	name = "Player";
 }
@@ -43,7 +43,12 @@ bool Player::Start() {
 	//Run
 	run_right.LoadAnimations(parameters.child("animations").child("run_right"));
 	run_left.LoadAnimations(parameters.child("animations").child("run_left"));
-
+	//Jump
+	jump_right.LoadAnimations(parameters.child("animations").child("jump_right"));
+	jump_left.LoadAnimations(parameters.child("animations").child("jump_left"));
+	//Fall
+	fall_right.LoadAnimations(parameters.child("animations").child("fall_right"));
+	fall_left.LoadAnimations(parameters.child("animations").child("fall_left"));
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	/*Engine::GetInstance().textures.get()->GetSize(texture, texW, texH);*/

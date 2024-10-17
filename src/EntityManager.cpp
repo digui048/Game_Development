@@ -62,10 +62,11 @@ bool EntityManager::CleanUp()
 	return ret;
 }
 
-Entity* EntityManager::CreateEntity(EntityType type)
+Entity* EntityManager::CreateEntity(EntityType type, View look)
 {
-	Entity* entity = nullptr; 
-
+	Entity* entity = nullptr;
+	
+	entity->look = look;
 	//L04: TODO 3a: Instantiate entity according to the type and add the new entity to the list of Entities
 	switch (type)
 	{

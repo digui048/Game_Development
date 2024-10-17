@@ -43,6 +43,9 @@ public:
 	// L08 TODO 6: Define OnCollision function for the player. 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
+private:
+
+
 public:
 
 	//Declare player parameters
@@ -68,4 +71,6 @@ public:
 	Animation run_right;
 	Animation jump_left;
 	Animation jump_right;
+	Animation fall_left;
+	Animation fall_right;
 };
