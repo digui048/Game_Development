@@ -66,4 +66,6 @@ public:
 	Animation idle_right;
 	Animation run_left;
 	Animation run_right;
+	Animation jump_left;
+	Animation jump_right;
 };
