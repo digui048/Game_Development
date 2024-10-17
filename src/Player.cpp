@@ -35,9 +35,11 @@ bool Player::Start() {
 	
 	//Load animations
 	
-	//Idle
-	idle.LoadAnimations(parameters.child("animations").child("idle"));
-	currentAnimation = &idle;
+	//Idle right
+	idle_right.LoadAnimations(parameters.child("animations").child("idle_right"));
+	currentAnimation = &idle_right;
+	//Idle left
+	idle_left.LoadAnimations(parameters.child("animations").child("idle_left"));
 	//Run
 	run_right.LoadAnimations(parameters.child("animations").child("run_right"));
 	run_left.LoadAnimations(parameters.child("animations").child("run_left"));
