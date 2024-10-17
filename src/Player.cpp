@@ -32,9 +32,15 @@ bool Player::Start() {
 	position.setY(parameters.attribute("y").as_int());
 	texW = parameters.attribute("w").as_int();
 	texH = parameters.attribute("h").as_int();
+	
 	//Load animations
+	
+	//Idle
 	idle.LoadAnimations(parameters.child("animations").child("idle"));
 	currentAnimation = &idle;
+	//Run
+	run.LoadAnimations(parameters.child("animations").child("run"));
+
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	/*Engine::GetInstance().textures.get()->GetSize(texture, texW, texH);*/
@@ -60,11 +66,13 @@ bool Player::Update(float dt)
 	//Move left
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		velocity.x = -0.2 * dt;
+		currentAnimation = &run;
 	}
 
 	//Move right
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		velocity.x = 0.2 * dt;
+		currentAnimation = &run;
 	}
 
 	//Jump
