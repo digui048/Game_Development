@@ -36,6 +36,20 @@ public:
 
 	bool Start();
 
+	void InitialState();
+
+	void RunningLeft();
+
+	void RunningRight();
+
+	void JumpingRight();
+
+	void JumpingLeft();
+
+	void FallingRight();
+
+	void FallingLeft();
+
 	bool Update(float dt);
 
 	bool CleanUp();
