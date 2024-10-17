@@ -43,15 +43,12 @@ bool Player::Start() {
 	//Run
 	run_right.LoadAnimations(parameters.child("animations").child("run_right"));
 	run_left.LoadAnimations(parameters.child("animations").child("run_left"));
-<<<<<<< HEAD
-=======
 	//Jump
 	jump_right.LoadAnimations(parameters.child("animations").child("run_right"));
 	jump_left.LoadAnimations(parameters.child("animations").child("run_left"));
 	//Fall
 	fall_right.LoadAnimations(parameters.child("animations").child("fall_right"));
 	fall_left.LoadAnimations(parameters.child("animations").child("fall_left"));
->>>>>>> f2de63a7f8aa8d755baf3432ad131e1bfb0442ec
 
 
 	// L08 TODO 5: Add physics to the player - initialize physics body

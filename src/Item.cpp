@@ -8,7 +8,7 @@
 #include "Log.h"
 #include "Physics.h"
 
-Item::Item() : Entity(EntityType::ITEM)
+Item::Item() : Entity(EntityType::ITEM, View::RIGHT)
 {
 	name = "item";
 }
