@@ -206,22 +206,26 @@ bool Player::Update(float dt)
 	b2Vec2 velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
 
 	// Handle horizontal movement
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !(velocity.y > 0)) {
 		velocity.x = -0.2 *dt; // Move left
 		look = View::LEFT;
 		StartRunning();
 	}
-	else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+	else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !(velocity.y > 0)) {
 		velocity.x = 0.2f *dt; // Move right
 		look = View::RIGHT;
 		StartRunning();
+	}
+	else if (velocity.y > 0)
+	{
+		StartFalling();
 	}
 	else {
 		InitialState(); // Go idle if no keys are pressed
 	}
 
 	// Jumping logic
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !isJumping) {
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !isJumping && velocity.y == 0) {
 		pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
 		isJumping = true;
 		StartJumping();
@@ -233,7 +237,6 @@ bool Player::Update(float dt)
 		
 		if (velocity.y < 0) {
 			// Still jumping
-			LOG("Saltando");
 			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 				velocity.x = -0.2 * dt; // Move left
 				look = View::LEFT;
@@ -252,7 +255,6 @@ bool Player::Update(float dt)
 		// If vertical velocity is down, switch to falling state
 		else if (velocity.y > 0) {
 			// Falling
-			LOG("Cayendo");
 			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 				velocity.x = -0.2 * dt; // Move left
 				look = View::LEFT;
@@ -298,6 +300,11 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		//reset the jump flag when touching the ground
 		isJumping = false;
 		break;
+	case ColliderType::WALL:
+		LOG("Collision WALL");
+		//reset the jump flag when touching the ground
+		isJumping = false;
+		break;
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");
 		break;
@@ -314,6 +321,9 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	switch (physB->ctype)
 	{
 	case ColliderType::PLATFORM:
+		LOG("End Collision PLATFORM");
+		break;
+	case ColliderType::WALL:
 		LOG("End Collision PLATFORM");
 		break;
 	case ColliderType::ITEM:
