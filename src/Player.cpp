@@ -230,7 +230,7 @@ bool Player::Update(float dt)
 	// Check if the player is falling
 	if (isJumping) {
 		velocity.y = pbody->body->GetLinearVelocity().y;
-		// If vertical velocity is down, switch to falling state
+		
 		if (velocity.y < 0) {
 			// Still jumping
 			LOG("Saltando");
@@ -242,12 +242,14 @@ bool Player::Update(float dt)
 			else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 				velocity.x = 0.2f * dt; // Move right
 				look = View::RIGHT;
-				StartRunning();
+				StartJumping();
 			}
 			else {
 				StartJumping();
 			}
 		}
+
+		// If vertical velocity is down, switch to falling state
 		else if (velocity.y > 0) {
 			// Falling
 			LOG("Cayendo");
