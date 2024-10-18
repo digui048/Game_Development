@@ -85,7 +85,7 @@
 			<frame x="0" y="280" w="48" h="40" />
 			<frame x="48" y="280" w="48" h="40" />
 			<frame x="96" y="280" w="48" h="40" />
-			<frame x="144" y="240" w="48" h="40" />
+			<frame x="144" y="280" w="48" h="40" />
 		  </fall_right>
         </animations>
       </player>
