@@ -45,8 +45,8 @@ bool Player::Start() {
 	run_right.LoadAnimations(parameters.child("animations").child("run_right"));
 	run_left.LoadAnimations(parameters.child("animations").child("run_left"));
 	//Jump
-	jump_right.LoadAnimations(parameters.child("animations").child("run_right"));
-	jump_left.LoadAnimations(parameters.child("animations").child("run_left"));
+	jump_right.LoadAnimations(parameters.child("animations").child("jump_right"));
+	jump_left.LoadAnimations(parameters.child("animations").child("jump_left"));
 	//Fall
 	fall_right.LoadAnimations(parameters.child("animations").child("fall_right"));
 	fall_left.LoadAnimations(parameters.child("animations").child("fall_left"));

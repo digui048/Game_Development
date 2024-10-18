@@ -65,12 +65,12 @@
 		  	<frame x="384" y="120" w="48" h="40" />
 		  	<frame x="432" y="120" w="48" h="40" />
 		  </run_right>
-		  <jump_left loop ="true" speed ="0.18">
+		  <jump_left loop ="false" speed ="0.18">
 			<frame x="0" y="160" w="48" h="40" />
 			<frame x="48" y="160" w="48" h="40" />
 			<frame x="96" y="160" w="48" h="40" />
 		  </jump_left>
-		  <jump_right loop ="true" speed ="0.18">
+		  <jump_right loop ="false" speed ="0.18">
 			<frame x="0" y="200" w="48" h="40" />
 			<frame x="48" y="200" w="48" h="40" />
 			<frame x="96" y="200" w="48" h="40" />
