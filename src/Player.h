@@ -48,10 +48,6 @@ public:
 
 	void StartFalling();
 
-	void MoveX(b2Vec2 velocity, float dt);
-
-	void MoveY(b2Vec2 velocity, float dt);
-
 	bool Update(float dt);
 
 	bool CleanUp();
