@@ -291,6 +291,12 @@ bool Map::Load(std::string path, std::string fileName)
                     LOG("id : %d name : %s", layer->id, layer->name.c_str());
                     LOG("Layer width : %d Layer height : %d", layer->width, layer->height);
                 }
+
+                LOG("ObjectGroups----");
+
+                for (const auto& objectgroup : mapData.object_groups) {
+                    LOG("id : %d name : %s", objectgroup->id, objectgroup->name.c_str());
+                }
             }
             else {
                 LOG("Error while parsing map file: %s", mapPathName.c_str());
