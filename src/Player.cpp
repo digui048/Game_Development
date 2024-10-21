@@ -226,7 +226,6 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::WALL:
 		LOG("Collision WALL");
 		//reset the jump flag when touching the ground
-		isJumping = false;
 		break;
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");
@@ -237,6 +236,10 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	default:
 		break;
 	}
+}
+void Player::CheckIdle()
+{
+	
 }
 
 void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)

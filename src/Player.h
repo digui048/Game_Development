@@ -36,6 +36,8 @@ public:
 
 	bool Initialise();
 
+	void CheckIdle();
+
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
 	bool Start();
@@ -65,7 +67,7 @@ public:
 	SDL_Texture* texture = NULL;
 	int texW, texH;
 	bool isGrounded = false;
-
+	bool isWalled = false;
 	//Audio fx
 	int pickCoinFxId;
 
