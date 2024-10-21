@@ -42,6 +42,8 @@ public:
 
 	void TestWall(PhysBody* physA, PhysBody* physB);
 
+	void TestPlatform(PhysBody* physA, PhysBody* physB);
+
 	bool Start();
 
 	void InitialState();
@@ -68,7 +70,8 @@ public:
 	float speed = 5.0f;
 	SDL_Texture* texture = NULL;
 	int texW, texH;
-	bool isGrounded = false;
+	bool isGrounded_up = false;
+	bool isGrounded_down = false;
 	bool isWalled_left = false;
 	bool isWalled_right = false;
 	//Audio fx
@@ -77,7 +80,7 @@ public:
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 
-	float jumpForce = 3.5f; // The force to apply when jumping
+	float jumpForce = 4.5f; // The force to apply when jumping
 	bool isJumping = false; // Flag to check if the player is currently jumping
 	bool isFalling = false;
 

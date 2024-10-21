@@ -131,7 +131,7 @@ bool Player::Update(float dt)
 	// Handle horizontal movement
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !(velocity.y > 0)) {
 		if (!isWalled_left) {
-			velocity.x = -0.2 * dt; // Move left
+			velocity.x = -0.2f * dt; // Move left
 			look = View::LEFT;
 			StartRunning();
 		}
@@ -233,7 +233,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::PLATFORM:
 		LOG("Collision PLATFORM");
 		//reset the jump flag when touching the ground
-		isJumping = false;
+		TestPlatform(physA, physB);
 		break;
 	case ColliderType::WALL:
 		LOG("Collision WALL");
@@ -261,6 +261,8 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	{
 	case ColliderType::PLATFORM:
 		LOG("End Collision PLATFORM");
+		isGrounded_up = false;
+		isGrounded_down = false;
 		break;
 	case ColliderType::WALL:
 		LOG("End Collision WALL");
@@ -293,5 +295,24 @@ void Player::TestWall(PhysBody* physA, PhysBody* physB)
 	}
 	else {
 		isWalled_left = true;
+	}
+}
+
+void Player::TestPlatform(PhysBody* physA, PhysBody* physB)
+{
+	b2Transform transform_A = physA->body->GetTransform();
+	b2Vec2 position_A = transform_A.p;
+
+	b2Transform transform_B = physB->body->GetTransform();
+	b2Vec2 position_B = transform_B.p;
+
+	if (position_A.y < position_B.y)
+	{
+		isGrounded_up = true;
+		isJumping = false;
+	}
+	else {
+		isGrounded_down = true;
+		isJumping = true;
 	}
 }
