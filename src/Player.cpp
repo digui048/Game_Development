@@ -130,14 +130,26 @@ bool Player::Update(float dt)
 
 	// Handle horizontal movement
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !(velocity.y > 0)) {
-		velocity.x = -0.2 *dt; // Move left
-		look = View::LEFT;
-		StartRunning();
+		if (!isWalled_left) {
+			velocity.x = -0.2 * dt; // Move left
+			look = View::LEFT;
+			StartRunning();
+		}
+		else {
+			InitialState();
+		}
 	}
 	else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !(velocity.y > 0)) {
-		velocity.x = 0.2f *dt; // Move right
-		look = View::RIGHT;
-		StartRunning();
+		if (!isWalled_right)
+		{
+			velocity.x = 0.2f * dt; // Move right
+			look = View::RIGHT;
+			StartRunning();
+		}
+		else {
+			InitialState();
+		}
+		
 	}
 	else if (velocity.y > 0)
 	{
@@ -225,6 +237,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::WALL:
 		LOG("Collision WALL");
+		TestWall(physB, physA);
 		//reset the jump flag when touching the ground
 		break;
 	case ColliderType::ITEM:
@@ -250,7 +263,9 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		LOG("End Collision PLATFORM");
 		break;
 	case ColliderType::WALL:
-		LOG("End Collision PLATFORM");
+		LOG("End Collision WALL");
+		isWalled_left = false;
+		isWalled_right = false;
 		break;
 	case ColliderType::ITEM:
 		LOG("End Collision ITEM");
@@ -261,5 +276,22 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		break;
 	default:
 		break;
+	}
+}
+
+void Player::TestWall(PhysBody* physA, PhysBody* physB)
+{
+	b2Transform transform_A = physA->body->GetTransform();
+	b2Vec2 position_A = transform_A.p;
+
+	b2Transform transform_B = physB->body->GetTransform();
+	b2Vec2 position_B = transform_B.p;
+
+	if (position_A.x > position_B.x)
+	{
+		isWalled_right = true;
+	}
+	else {
+		isWalled_left = true;
 	}
 }

@@ -40,6 +40,8 @@ public:
 
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
+	void TestWall(PhysBody* physA, PhysBody* physB);
+
 	bool Start();
 
 	void InitialState();
@@ -67,7 +69,8 @@ public:
 	SDL_Texture* texture = NULL;
 	int texW, texH;
 	bool isGrounded = false;
-	bool isWalled = false;
+	bool isWalled_left = false;
+	bool isWalled_right = false;
 	//Audio fx
 	int pickCoinFxId;
 
