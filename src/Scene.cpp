@@ -59,7 +59,7 @@ bool Scene::Update(float dt)
 {
 
 	//L03 TODO 3: Make the camera movement independent of framerate
-	float camSpeed = 1;
+	//float camSpeed = 1;
 
 	//if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	//	Engine::GetInstance().render.get()->camera.y += ceil(camSpeed * dt);
@@ -73,8 +73,48 @@ bool Scene::Update(float dt)
 	//if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	//	Engine::GetInstance().render.get()->camera.x -= ceil(camSpeed * dt);
 
-	Engine::GetInstance().render.get()->camera.x = -(player->position.getX()/6 + (Engine::GetInstance().render.get()->camera.w / 32));
-	Engine::GetInstance().render.get()->camera.y = -(player->position.getY()/6 + (Engine::GetInstance().render.get()->camera.y / 32));
+	//Engine::GetInstance().render.get()->camera.x = -(player->position.getX()/6 + (Engine::GetInstance().render.get()->camera.w / 32));
+	//Engine::GetInstance().render.get()->camera.y = -(player->position.getY()/6 + (Engine::GetInstance().render.get()->camera.y / 32));
+
+	//return true;
+
+	// para hacer que la camara se mueva SMOOOOOOOTH ;)
+	float smoothValue = 0.03f;
+	
+	int screenWidth = Engine::GetInstance().render.get()->camera.w;		//tamaño screen
+	int screenHeight = Engine::GetInstance().render.get()->camera.h;
+	
+	float playerPosX = player->position.getX();		//posicion player
+	float playerPosY = player->position.getY();
+
+	float cameraPosX = Engine::GetInstance().render.get()->camera.x;	//posicion camara
+	float cameraPosY = Engine::GetInstance().render.get()->camera.y;
+
+	// a partir de donde sigue la camara
+	float cameraBoundary = screenWidth * 0.5f;
+	
+	// donde poner la camara para ir ajustandola
+	float targetCameraPosX = cameraPosX;
+	float targetCameraPosY = cameraPosY;
+
+	
+	if (playerPosX > cameraPosX + cameraBoundary)
+	{		
+		targetCameraPosX = -(playerPosX - cameraBoundary);
+		LOG("right limit");
+	}
+	else if (playerPosX < cameraPosX - cameraBoundary)
+	{
+		targetCameraPosX = -(playerPosX + cameraBoundary);
+		LOG("left limit");
+	}
+
+	// retraso para movimiento SMOOOOOOOTH ;)
+	cameraPosX = cameraPosX + smoothValue * (targetCameraPosX - cameraPosX);
+	cameraPosY = cameraPosY + smoothValue * (targetCameraPosY - cameraPosY);
+		
+	Engine::GetInstance().render.get()->camera.x = (int)cameraPosX;
+	Engine::GetInstance().render.get()->camera.y = (int)cameraPosY;
 
 	return true;
 }
