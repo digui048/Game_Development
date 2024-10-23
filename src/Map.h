@@ -52,8 +52,8 @@ struct Object {
     int id;
     int _x;
     int _y;
-    int width; 
-    int height;
+    int width = 0; 
+    int height = 0;
 
 };
 

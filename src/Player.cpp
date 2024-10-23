@@ -21,7 +21,7 @@ Player::~Player() {
 bool Player::Awake() {
 
 	//L03: TODO 2: Initialize Player parameters
-	position = Vector2D(32, 256);
+	position = Vector2D(0, 0);
 	return true;
 }
 
@@ -49,11 +49,15 @@ bool Player::Start() {
 	//Fall
 	fall_right.LoadAnimations(parameters.child("animations").child("fall_right"));
 	fall_left.LoadAnimations(parameters.child("animations").child("fall_left"));
+	//Die
+	die_right.LoadAnimations(parameters.child("animations").child("die_right"));
+	die_left.LoadAnimations(parameters.child("animations").child("die_left"));
+
 
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	/*Engine::GetInstance().textures.get()->GetSize(texture, texW, texH);*/
-	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX(), (int)position.getY(), texW / 2, bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX(), (int)position.getY(), texW/3, bodyType::DYNAMIC);
 
 	// L08 TODO 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
@@ -110,6 +114,20 @@ void Player::StartFalling()
 	}
 }
 
+void Player::StartDying()
+{
+	state = State::DIE;
+	
+	if (look == View::LEFT)
+	{
+		currentAnimation = &die_left;
+	}
+	else if (look == View::RIGHT)
+	{
+		currentAnimation = &die_right;
+	}
+}
+
 void Player::InitialState()
 {
 	state = State::IDLE;
@@ -128,89 +146,94 @@ bool Player::Update(float dt)
 {
 	b2Vec2 velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
 
-	// Handle horizontal movement
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !(velocity.y > 0)) {
-		if (!isWalled_left) {
-			velocity.x = -0.2f * dt; // Move left
-			look = View::LEFT;
-			StartRunning();
+	if (!isDead) {
+		// Handle horizontal movement
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !(velocity.y > 0)) {
+			if (!isWalled_left) {
+				velocity.x = -0.2f * dt; // Move left
+				look = View::LEFT;
+				StartRunning();
+			}
+			else {
+				InitialState();
+			}
 		}
-		else {
-			InitialState();
+		else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !(velocity.y > 0)) {
+			if (!isWalled_right)
+			{
+				velocity.x = 0.2f * dt; // Move right
+				look = View::RIGHT;
+				StartRunning();
+			}
+			else {
+				InitialState();
+			}
+
 		}
-	}
-	else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !(velocity.y > 0)) {
-		if (!isWalled_right)
+		else if (velocity.y > 0)
 		{
-			velocity.x = 0.2f * dt; // Move right
-			look = View::RIGHT;
-			StartRunning();
+			StartFalling();
 		}
 		else {
-			InitialState();
-		}
-		
-	}
-	else if (velocity.y > 0)
-	{
-		StartFalling();
-	}
-	else {
-		InitialState(); // Go idle if no keys are pressed
-	}
-
-	// Jumping logic
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !isJumping && velocity.y == 0) {
-		pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
-		isJumping = true;
-		StartJumping();
-	}
-
-	// Check if the player is falling
-	if (isJumping) {
-		velocity.y = pbody->body->GetLinearVelocity().y;
-		
-		if (velocity.y < 0) {
-			// Still jumping
-			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-				velocity.x = -0.2 * dt; // Move left
-				look = View::LEFT;
-				StartJumping();
-			}
-			else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-				velocity.x = 0.2f * dt; // Move right
-				look = View::RIGHT;
-				StartJumping();
-			}
-			else {
-				StartJumping();
-			}
+			InitialState(); // Go idle if no keys are pressed
 		}
 
-		// If vertical velocity is down, switch to falling state
-		else if (velocity.y > 0) {
-			// Falling
-			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-				velocity.x = -0.2 * dt; // Move left
-				look = View::LEFT;
-				StartFalling();
+		// Jumping logic
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !isJumping && velocity.y == 0) {
+			pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
+			isJumping = true;
+			StartJumping();
+		}
+
+		// Check if the player is falling
+		if (isJumping) {
+			velocity.y = pbody->body->GetLinearVelocity().y;
+
+			if (velocity.y < 0) {
+				// Still jumping
+				if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+					velocity.x = -0.2 * dt; // Move left
+					look = View::LEFT;
+					StartJumping();
+				}
+				else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+					velocity.x = 0.2f * dt; // Move right
+					look = View::RIGHT;
+					StartJumping();
+				}
+				else {
+					StartJumping();
+				}
 			}
-			else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-				velocity.x = 0.2f * dt; // Move right
-				look = View::RIGHT;
-				StartFalling();
-			}
-			else {
-				StartFalling();
+
+			// If vertical velocity is down, switch to falling state
+			else if (velocity.y > 0) {
+				// Falling
+				if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+					velocity.x = -0.2 * dt; // Move left
+					look = View::LEFT;
+					StartFalling();
+				}
+				else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+					velocity.x = 0.2f * dt; // Move right
+					look = View::RIGHT;
+					StartFalling();
+				}
+				else {
+					StartFalling();
+				}
 			}
 		}
+	}
+	if(isDead) {
+		StartDying();
 	}
 
 	// Set new velocity
 	pbody->body->SetLinearVelocity(velocity);
 	b2Transform pbodyPos = pbody->body->GetTransform();
-	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
-	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
+	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texW/2);
+	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH/2);
 
 	// Render the current animation
 	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
@@ -232,13 +255,15 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	{
 	case ColliderType::PLATFORM:
 		LOG("Collision PLATFORM");
-		//reset the jump flag when touching the ground
 		TestPlatform(physA, physB);
 		break;
 	case ColliderType::WALL:
 		LOG("Collision WALL");
 		TestWall(physB, physA);
-		//reset the jump flag when touching the ground
+		break;
+	case ColliderType::SPIKE:
+		LOG("Collision Spike");
+		isDead = true;
 		break;
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");
@@ -249,10 +274,6 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	default:
 		break;
 	}
-}
-void Player::CheckIdle()
-{
-	
 }
 
 void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
@@ -268,6 +289,10 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		LOG("End Collision WALL");
 		isWalled_left = false;
 		isWalled_right = false;
+		break;
+	case ColliderType::SPIKE:
+		LOG("Collision Spike");
+		isDead = false;
 		break;
 	case ColliderType::ITEM:
 		LOG("End Collision ITEM");

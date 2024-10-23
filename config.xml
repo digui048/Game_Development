@@ -19,7 +19,7 @@
   <scene>
     <map path="Assets/Maps/" name="MapTemplate.tmx"/>
     <entities>
-      <player x="32" y="156" w="48" h ="40" texture="Assets/Textures/player/Animations.png">
+      <player x="128" y="156" w="48" h ="40" texture="Assets/Textures/player/Animations.png">
         <animations>
 		  <idle_left loop="true" speed ="0.18">
 			<frame x="0" y="0" w="48" h="40"/>
@@ -87,6 +87,30 @@
 			<frame x="96" y="280" w="48" h="40" />
 			<frame x="144" y="280" w="48" h="40" />
 		  </fall_right>
+		  <die_left loop ="false" speed ="0.1">
+			<frame x="0" y="320" w="48" h="40" />
+			<frame x="51" y="320" w="48" h="40" />
+			<frame x="96" y="320" w="48" h="40" />
+			<frame x="144" y="320" w="49" h="40" />
+			<frame x="193" y="320" w="55" h="40" />
+			<frame x="248" y="320" w="55" h="40" />
+			<frame x="303" y="320" w="56" h="40" />
+			<frame x="359" y="320" w="70" h="40" />
+			<frame x="429" y="320" w="70" h="40" />
+			<frame x="499" y="320" w="70" h="40" />
+		  </die_left>
+		  <die_right loop ="false" speed ="0.1">
+			<frame x="0" y="360" w="48" h="40" />
+			<frame x="48" y="360" w="48" h="40" />
+			<frame x="96" y="360" w="48" h="40" />
+			<frame x="144" y="360" w="49" h="40" />
+			<frame x="193" y="360" w="55" h="40" />
+			<frame x="248" y="360" w="55" h="40" />
+			<frame x="303" y="360" w="56" h="40" />
+			<frame x="359" y="360" w="70" h="40" />
+			<frame x="429" y="360" w="70" h="40" />
+			<frame x="499" y="360" w="70" h="40" />
+		  </die_right>
         </animations>
       </player>
     </entities>

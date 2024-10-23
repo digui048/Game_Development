@@ -17,7 +17,7 @@ enum class PlayerAnim {
 };
 
 enum class State {
-	IDLE, RUN, JUMP, FALL
+	IDLE, RUN, JUMP, FALL, DIE
 };
 
 class Player : public Entity
@@ -34,8 +34,6 @@ public:
 		this->parameters = parameters;
 	}
 
-	bool Initialise();
-
 	void CheckIdle();
 
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
@@ -43,6 +41,8 @@ public:
 	void TestWall(PhysBody* physA, PhysBody* physB);
 
 	void TestPlatform(PhysBody* physA, PhysBody* physB);
+
+	void TestSpike(PhysBody* physA, PhysBody* physB);
 
 	bool Start();
 
@@ -53,6 +53,8 @@ public:
 	void StartJumping();
 
 	void StartFalling();
+
+	void StartDying();
 
 	bool Update(float dt);
 
@@ -74,13 +76,14 @@ public:
 	bool isGrounded_down = false;
 	bool isWalled_left = false;
 	bool isWalled_right = false;
+	bool isDead = false;
 	//Audio fx
 	int pickCoinFxId;
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 
-	float jumpForce = 4.5f; // The force to apply when jumping
+	float jumpForce = 2.f; // The force to apply when jumping
 	bool isJumping = false; // Flag to check if the player is currently jumping
 	bool isFalling = false;
 
@@ -96,4 +99,6 @@ public:
 	Animation jump_right;
 	Animation fall_left;
 	Animation fall_right;
+	Animation die_left;
+	Animation die_right;
 };
