@@ -97,22 +97,31 @@ bool Scene::Update(float dt)
 	float targetCameraPosX = cameraPosX;
 	float targetCameraPosY = cameraPosY;
 
-	
 	if (playerPosX > cameraPosX + cameraBoundary)
-	{		
+	{
 		targetCameraPosX = -(playerPosX - cameraBoundary);
-		LOG("right limit");
+		/*LOG("right limit");*/
 	}
 	else if (playerPosX < cameraPosX - cameraBoundary)
 	{
-		targetCameraPosX = -(playerPosX + cameraBoundary);
-		LOG("left limit");
+		targetCameraPosX = -(playerPosX - cameraBoundary);
+		//LOG("left limit");
+	}
+	if (playerPosY > cameraPosY + cameraBoundary)
+	{
+		targetCameraPosY = -(playerPosY - cameraBoundary);
+		//LOG("right limit");
+	}
+	else if (playerPosY < cameraPosY - cameraBoundary)
+	{
+		targetCameraPosY = -(playerPosY - cameraBoundary);
+		//LOG("left limit");
 	}
 
 	// retraso para movimiento SMOOOOOOOTH ;)
 	cameraPosX = cameraPosX + smoothValue * (targetCameraPosX - cameraPosX);
 	cameraPosY = cameraPosY + smoothValue * (targetCameraPosY - cameraPosY);
-		
+	
 	Engine::GetInstance().render.get()->camera.x = (int)cameraPosX;
 	Engine::GetInstance().render.get()->camera.y = (int)cameraPosY;
 

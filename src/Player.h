@@ -44,6 +44,8 @@ public:
 
 	void TestSpike(PhysBody* physA, PhysBody* physB);
 
+	void TestCornerPlatform(PhysBody* physA, PhysBody* physB);
+
 	bool Start();
 
 	void InitialState();
@@ -77,6 +79,8 @@ public:
 	bool isWalled_left = false;
 	bool isWalled_right = false;
 	bool isDead = false;
+	bool corner_right = false;
+	bool corner_left = false;
 	//Audio fx
 	int pickCoinFxId;
 

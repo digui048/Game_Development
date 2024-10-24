@@ -148,6 +148,14 @@ bool Player::Update(float dt)
 
 	if (!isDead) {
 		// Handle horizontal movement
+		if (corner_left)
+		{
+			velocity.x = -2.5f * dt;
+		}
+		else if (corner_right)
+		{
+			velocity.x = 2.5f * dt;
+		}
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !(velocity.y > 0)) {
 			if (!isWalled_left) {
 				velocity.x = -0.2f * dt; // Move left
@@ -256,6 +264,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::PLATFORM:
 		LOG("Collision PLATFORM");
 		TestPlatform(physA, physB);
+		TestCornerPlatform(physA, physB);
 		break;
 	case ColliderType::WALL:
 		LOG("Collision WALL");
@@ -284,6 +293,8 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		LOG("End Collision PLATFORM");
 		isGrounded_up = false;
 		isGrounded_down = false;
+		corner_left = false;
+		corner_right = false;
 		break;
 	case ColliderType::WALL:
 		LOG("End Collision WALL");
@@ -339,5 +350,27 @@ void Player::TestPlatform(PhysBody* physA, PhysBody* physB)
 	else {
 		isGrounded_down = true;
 		isJumping = true;
+	}
+}
+
+void Player::TestCornerPlatform(PhysBody* physA, PhysBody* physB)
+{
+	b2Transform transform_A = physA->body->GetTransform();
+	b2Vec2 position_A = transform_A.p;
+	int width_A = physA->width;
+
+	b2Transform transform_B = physB->body->GetTransform();
+	b2Vec2 position_B = transform_B.p;
+	int width_B = physB->width;
+
+	if ((position_B.x + width_B) == (position_A.x + width_A))
+	{
+		LOG("corner_right = true");
+		corner_left = true;
+	}
+	else if ((position_B.x - width_B) == (position_A.x - width_A))
+	{
+		LOG("corner_left = true");
+		corner_right = true;
 	}
 }
