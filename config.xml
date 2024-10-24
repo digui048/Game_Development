@@ -13,15 +13,15 @@
     <resolution width="1280" height="720" scale="1"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
-    <resizable value="false"/>
+    <resizable value="true"/>
     <fullscreen_window value="false"/>
   </window>
   <scene>
     <map path="Assets/Maps/" name="MapTemplate.tmx"/>
     <entities>
-      <player x="645" y="360" w="48" h ="40" texture="Assets/Textures/player/Animations.png">
+      <player x="96" y="680" w="48" h ="40" texture="Assets/Textures/player/Animations.png">
         <animations>
-		  <idle_left loop="true" speed ="0.10">
+		  <idle_left loop="true" speed ="0.18">
 			<frame x="0" y="0" w="48" h="40"/>
 			<frame x="48" y="0" w="48" h="40"/>
 			<frame x="96" y="0" w="48" h="40"/>

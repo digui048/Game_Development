@@ -44,8 +44,6 @@ public:
 
 	void TestSpike(PhysBody* physA, PhysBody* physB);
 
-	void TestCornerPlatform(PhysBody* physA, PhysBody* physB);
-
 	bool Start();
 
 	void InitialState();
@@ -78,9 +76,6 @@ public:
 	bool isGrounded_down = false;
 	bool isWalled_left = false;
 	bool isWalled_right = false;
-	bool isDead = false;
-	bool corner_right = false;
-	bool corner_left = false;
 	//Audio fx
 	int pickCoinFxId;
 
@@ -90,6 +85,8 @@ public:
 	float jumpForce = 2.f; // The force to apply when jumping
 	bool isJumping = false; // Flag to check if the player is currently jumping
 	bool isFalling = false;
+
+	bool isDead = false;
 
 	State state;
 

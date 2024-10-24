@@ -87,7 +87,7 @@ PhysBody* Physics::CreateRectangle(int x, int y, int width, int height, bodyType
 	b->ResetMassData();
 
 	b->CreateFixture(&fixture);
-
+	b->SetFixedRotation(true);
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
 	b->GetUserData().pointer = (uintptr_t) pbody;
@@ -211,6 +211,15 @@ PhysBody* Physics::CreateChain(int x, int y, int* points, int size, bodyType typ
 
 	// Return our PhysBody class
 	return pbody;
+}
+
+void Physics::DestroyPhysBody(PhysBody* pbody)
+{
+	if (pbody != nullptr && pbody->body != nullptr) {
+		
+		world->DestroyBody(pbody->body);
+		pbody->body = nullptr;
+	}
 }
 
 // 
