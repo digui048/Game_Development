@@ -87,7 +87,7 @@
 			<frame x="96" y="280" w="48" h="40" />
 			<frame x="144" y="280" w="48" h="40" />
 		  </fall_right>
-		  <die_left loop ="false" speed ="0.1">
+		  <die_left loop ="true" speed ="0.1">
 			<frame x="0" y="320" w="48" h="40" />
 			<frame x="51" y="320" w="48" h="40" />
 			<frame x="96" y="320" w="48" h="40" />
@@ -99,7 +99,7 @@
 			<frame x="429" y="320" w="70" h="40" />
 			<frame x="499" y="320" w="70" h="40" />
 		  </die_left>
-		  <die_right loop ="false" speed ="0.1">
+		  <die_right loop ="true" speed ="0.1">
 			<frame x="0" y="360" w="48" h="40" />
 			<frame x="48" y="360" w="48" h="40" />
 			<frame x="96" y="360" w="48" h="40" />

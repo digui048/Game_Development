@@ -131,7 +131,7 @@ void Player::StartDying()
 
 void Player::DelayTime()
 {
-	deathTime += 0.02;
+	deathTime += 0.031f;
 }
 
 void Player::InitialState()
@@ -252,6 +252,7 @@ bool Player::Update(float dt)
 
 			deathTime = 0.0f;
 			isDead = false;
+			numdeaths++;
 		}
 	}
 	// Set new velocity
