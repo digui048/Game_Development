@@ -14,7 +14,7 @@ Physics::Physics() : Module()
 {
 	// Initialise all the internal class variables, at least to NULL pointer
 	world = NULL;
-	debug = true;
+	debug = false;
 }
 
 // Destructor
@@ -84,6 +84,7 @@ PhysBody* Physics::CreateRectangle(int x, int y, int width, int height, bodyType
 	b2FixtureDef fixture;
 	fixture.shape = &box;
 	fixture.density = 1.0f;
+	fixture.friction = 0.0f;
 	b->ResetMassData();
 
 	b->CreateFixture(&fixture);
@@ -163,7 +164,7 @@ PhysBody* Physics::CreateRectangleSensor(int x, int y, int width, int height, bo
 	// Create our custom PhysBody class
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
-	//b->SetUserData(pbody);
+	b->GetUserData().pointer = (uintptr_t)pbody;
 	pbody->width = width;
 	pbody->height = height;
 
@@ -206,7 +207,7 @@ PhysBody* Physics::CreateChain(int x, int y, int* points, int size, bodyType typ
 	// Create our custom PhysBody class
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
-	//b->SetUserData(pbody);
+	b->GetUserData().pointer = (uintptr_t)pbody;
 	pbody->width = pbody->height = 0;
 
 	// Return our PhysBody class
@@ -215,11 +216,7 @@ PhysBody* Physics::CreateChain(int x, int y, int* points, int size, bodyType typ
 
 void Physics::DestroyPhysBody(PhysBody* pbody)
 {
-	if (pbody != nullptr && pbody->body != nullptr) {
-		
-		world->DestroyBody(pbody->body);
-		pbody->body = nullptr;
-	}
+	bodiesToDelete.push_back(pbody);
 }
 
 // 
@@ -331,6 +328,11 @@ bool Physics::PostUpdate()
 		}
 	}
 
+	// Process bodies to delete after the world step
+	for (PhysBody* physBody : bodiesToDelete) {
+		world->DestroyBody(physBody->body);
+	}
+	bodiesToDelete.clear();
 
 	return ret;
 }

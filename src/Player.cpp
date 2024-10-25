@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Log.h"
 #include "Physics.h"
+#include "EntityManager.h"
 
 Player::Player(State state) : Entity(EntityType::PLAYER, View::RIGHT)
 {
@@ -57,7 +58,7 @@ bool Player::Start() {
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	/*Engine::GetInstance().textures.get()->GetSize(texture, texW, texH);*/
-	pbody = Engine::GetInstance().physics.get()->CreateRectangle((int)position.getX(), (int)position.getY(), (int)(texW/1.75f),(int)(texH/1.25f), bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics.get()->CreateRectangle((int)position.getX() + (int)position.getX()/2, (int)position.getY(), (int)(texW/2.5f),(int)(texH/1.25f), bodyType::DYNAMIC);
 
 	// L08 TODO 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
@@ -126,6 +127,11 @@ void Player::StartDying()
 	{
 		currentAnimation = &die_right;
 	}
+}
+
+void Player::DelayTime()
+{
+	deathTime += 0.02;
 }
 
 void Player::InitialState()
@@ -227,22 +233,27 @@ bool Player::Update(float dt)
 	}
 	if (isDead && pbody->body != nullptr) {
 		StartDying();
+		DelayTime();
 		// Destroy the player's body in the physics world
-		Engine::GetInstance().physics->world->DestroyBody(pbody->body);
-		pbody->body = nullptr;
+		if (deathTime>=respawnDelay) {
 
-		position.setX(parameters.attribute("x").as_int());
-		position.setY(parameters.attribute("y").as_int());
+			Engine::GetInstance().physics->world->DestroyBody(pbody->body);
+			pbody->body = nullptr;
 
-		pbody = Engine::GetInstance().physics.get()->CreateRectangle((int)position.getX(), (int)position.getY(), (int)(texW / 1.75f), (int)(texH / 1.25f), bodyType::DYNAMIC);
+			position.setX(parameters.attribute("x").as_int());
+			position.setY(parameters.attribute("y").as_int());
 
-		// L08 TODO 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
-		pbody->listener = this;
+			pbody = Engine::GetInstance().physics.get()->CreateRectangle((int)position.getX(), (int)position.getY(), (int)(texW / 2.5f), (int)(texH / 1.25f), bodyType::DYNAMIC);
+			// L08 TODO 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
+			pbody->listener = this;
 
-		// L08 TODO 7: Assign collider type
-		pbody->ctype = ColliderType::PLAYER;
+			// L08 TODO 7: Assign collider type
+			pbody->ctype = ColliderType::PLAYER;
+
+			deathTime = 0.0f;
+			isDead = false;
+		}
 	}
-
 	// Set new velocity
 	pbody->body->SetLinearVelocity(velocity);
 	b2Transform pbodyPos = pbody->body->GetTransform();
@@ -281,6 +292,8 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");
+		Engine::GetInstance().audio.get()->PlayFx(pickCoinFxId);
+		Engine::GetInstance().physics.get()->DestroyPhysBody(physB); // Deletes the body of the item from the physics world
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
@@ -310,7 +323,6 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		break;
 	case ColliderType::ITEM:
 		LOG("End Collision ITEM");
-		Engine::GetInstance().audio.get()->PlayFx(pickCoinFxId);
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("End Collision UNKNOWN");

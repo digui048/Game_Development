@@ -34,8 +34,6 @@ public:
 		this->parameters = parameters;
 	}
 
-	void CheckIdle();
-
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
 	void TestWall(PhysBody* physA, PhysBody* physB);
@@ -55,6 +53,8 @@ public:
 	void StartFalling();
 
 	void StartDying();
+
+	void DelayTime();
 
 	bool Update(float dt);
 
@@ -82,11 +82,15 @@ public:
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 
-	float jumpForce = 2.f; // The force to apply when jumping
-	bool isJumping = false; // Flag to check if the player is currently jumping
+	float jumpForce = 1.5f; 
+	bool isJumping = false; 
 	bool isFalling = false;
 
 	bool isDead = false;
+	float respawnDelay = 3.0f;
+	float deathTime = 0.0f;
+
+	int numdeaths = 0;
 
 	State state;
 
