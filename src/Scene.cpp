@@ -35,7 +35,7 @@ bool Scene::Awake()
 	
 	//L08 Create a new item using the entity manager and set the position to (200, 672) to test
 	Item* item = (Item*) Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM, View::RIGHT);
-	item->position = Vector2D(0, 0);
+	item->position = Vector2D(20, 0);
 	return ret;
 }
 
