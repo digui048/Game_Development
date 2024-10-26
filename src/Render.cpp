@@ -77,7 +77,7 @@ bool Render::PostUpdate()
 {
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
-	SDL_RenderSetLogicalSize(renderer,camera.w,camera.h);
+	//SDL_RenderSetLogicalSize(renderer,camera.w,camera.h);
 	return true;
 }
 
