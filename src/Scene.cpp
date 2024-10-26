@@ -54,6 +54,13 @@ bool Scene::PreUpdate()
 	return true;
 }
 
+//to manage delay for the camera to respawn with the character
+void Scene::DelayTimeCamera() {
+
+	deathTimeCam += 0.031f;
+}
+
+
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
@@ -125,10 +132,20 @@ bool Scene::Update(float dt)
 	cameraPosX = cameraPosX + smoothValue * (targetCameraPosX - cameraPosX);
 	cameraPosY = cameraPosY + smoothValue * (targetCameraPosY - cameraPosY);
 	
+	
+	//delay para resetear la camara al morir
+	
 	if (player->isDead) {	//en un futuro habra que poner la camara en las posiciones de los checkpoints
 
-		cameraPosX = 0;
-		cameraPosY = 0;
+		DelayTimeCamera();
+
+		if (deathTimeCam >= respawnDelayCam) {
+
+			LOG("Reset Camera");
+			cameraPosX = 0;
+			cameraPosY = 0;
+		}
+		
 	}
 	
 	//LOG("Camera positionX: %d", Engine::GetInstance().render.get()->camera.x);

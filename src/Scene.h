@@ -32,6 +32,13 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	//to manage delay for the camera to respawn with the character
+	void DelayTimeCamera();
+
+
+	float respawnDelayCam = 3.0f;
+	float deathTimeCam = 0.0f;
+
 private:
 	SDL_Texture* img;
 
