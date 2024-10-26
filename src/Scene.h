@@ -2,8 +2,32 @@
 
 #include "Module.h"
 #include "Player.h"
+#include "Log.h"
 
 struct SDL_Texture;
+
+class Camera {
+public:
+    Vector2D position; 
+
+    Camera() : position(0, 0) {}
+
+    void Update(const Vector2D& playerPosition, float dt) {
+
+        float cameraBoundary = 650; 
+        float leftLimit = position.getX();
+        float rightLimit = position.getX() + cameraBoundary;
+		LOG("%d", playerPosition.getX());
+        if (playerPosition.getX() > rightLimit) {
+			LOG("%d, %d", playerPosition.getX(),rightLimit);
+			position.setX(position.getX() + cameraBoundary/2);
+        }
+        else if (playerPosition.getX() < leftLimit) {
+			LOG("%d, %d", playerPosition.getX(), rightLimit);
+            position.setX(position.getX() - cameraBoundary/2);
+        }
+    }
+};
 
 class Scene : public Module
 {
@@ -44,4 +68,6 @@ private:
 
 	//L03: TODO 3b: Declare a Player attribute
 	Player* player;
+
+	Camera* camera;
 };

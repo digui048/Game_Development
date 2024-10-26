@@ -271,7 +271,6 @@ bool Player::Update(float dt)
 		if (deathTime>=respawnDelay) {
 
 			Engine::GetInstance().physics->world->DestroyBody(pbody->body);
-			pbody->body = nullptr;
 
 			position.setX(parameters.attribute("x").as_int());
 			position.setY(parameters.attribute("y").as_int());
@@ -293,9 +292,11 @@ bool Player::Update(float dt)
 	// Set new velocity
 	pbody->body->SetLinearVelocity(velocity);
 	b2Transform pbodyPos = pbody->body->GetTransform();
+	Pos = pbodyPos.p;
+	
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texW/2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH/2);
-
+	
 	// Render the current animation
 	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
 	currentAnimation->Update();

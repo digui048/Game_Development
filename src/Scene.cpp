@@ -17,6 +17,7 @@ Scene::Scene() : Module()
 	name = "scene";
 	img = nullptr;
 	player = nullptr;
+	camera = new Camera();
 }
 
 // Destructor
@@ -32,7 +33,7 @@ bool Scene::Awake()
 	//L04: TODO 3b: Instantiate the player using the entity manager
 	player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER, View::RIGHT);
 	player->SetParameters(configParameters.child("entities").child("player"));
-	
+
 	//L08 Create a new item using the entity manager and set the position to (200, 672) to test
 	Item* item = (Item*) Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM, View::RIGHT);
 	item->position = Vector2D(20, 0);
@@ -68,6 +69,30 @@ bool Scene::Update(float dt)
 		player->godMode = !player->godMode;
 	}
 
+	float camSpeed = Engine::GetInstance().window.get()->scale;
+
+	if (player->position.getX() > Engine::GetInstance().window.get()->width / 2)
+	{
+		LOG("%d", player->position.getX());
+		Engine::GetInstance().render.get()->camera.x = (-player->position.getX() * camSpeed) + Engine::GetInstance().window.get()->width / 2;
+	}
+	if (player->position.getY() > Engine::GetInstance().window.get()->height / 2)
+	{
+		Engine::GetInstance().render.get()->camera.y = (-player->position.getY() * camSpeed) + Engine::GetInstance().window.get()->height / 2;
+	}
+	if (player->isDead)
+	{	//en un futuro habra que poner la camara en las posiciones de los checkpoints
+		DelayTimeCamera();
+
+		if (deathTimeCam >= respawnDelayCam) {
+
+			LOG("Reset Camera");
+			Engine::GetInstance().render.get()->camera.x = 0;
+			Engine::GetInstance().render.get()->camera.y = 0;
+		}
+
+	}
+	return true;
 	//L03 TODO 3: Make the camera movement independent of framerate
 	//float camSpeed = 1;
 
@@ -89,73 +114,63 @@ bool Scene::Update(float dt)
 	//return true;
 
 	// para hacer que la camara se mueva SMOOOOOOOTH ;)
-	float smoothValueX = 0.03f;
-	float smoothValueY = 0.04f;
-	
-	int screenWidth = Engine::GetInstance().render.get()->camera.w;		//tamaño screen
-	int screenHeight = Engine::GetInstance().render.get()->camera.h;
-	
-	float playerPosX = player->position.getX();		//posicion player
-	float playerPosY = player->position.getY();
+	//float smoothValueX = 0.03f;
+	//float smoothValueY = 0.04f;
+	//
+	//int screenWidth = Engine::GetInstance().render.get()->camera.w;		//tamaño screen
+	//int screenHeight = Engine::GetInstance().render.get()->camera.h;
+	//
+	//float playerPosX = player->position.getX();		//posicion player
+	//float playerPosY = player->position.getY();
 
-	float cameraPosX = Engine::GetInstance().render.get()->camera.x;	//posicion camara
-	float cameraPosY = Engine::GetInstance().render.get()->camera.y;
+	//float cameraPosX = Engine::GetInstance().render.get()->camera.x;	//posicion camara
+	//float cameraPosY = Engine::GetInstance().render.get()->camera.y;
 
-	// a partir de donde sigue la camara
-	float cameraBoundary = screenWidth * 0.5f;
-	
-	// donde poner la camara para ir ajustandola
-	float targetCameraPosX = cameraPosX;
-	float targetCameraPosY = cameraPosY;
+	//// a partir de donde sigue la camara
+	//float cameraBoundary = screenWidth * 0.5f;
+	//
+	//// donde poner la camara para ir ajustandola
+	//float targetCameraPosX = cameraPosX;
+	//float targetCameraPosY = cameraPosY;
 
-	if (playerPosX > cameraPosX + cameraBoundary)
-	{
-		targetCameraPosX = -(playerPosX - cameraBoundary);
-		//LOG("right limit");
-	}
-	else if (playerPosX < cameraPosX - cameraBoundary)
-	{
-		targetCameraPosX = -(playerPosX - cameraBoundary);
-		//LOG("left limit");
-	}
-	if (playerPosY > cameraPosY + cameraBoundary)
-	{
-		targetCameraPosY = -(playerPosY - cameraBoundary);
-		//LOG("right limit");
-	}
-	else if (playerPosY < cameraPosY - cameraBoundary)
-	{
-		targetCameraPosY = -(playerPosY - cameraBoundary);
-		//LOG("left limit");
-	}
+	//if (playerPosX > cameraPosX + cameraBoundary)
+	//{
+	//	targetCameraPosX = -(playerPosX - cameraBoundary);
+	//	//LOG("right limit");
+	//}
+	//else if (playerPosX < cameraPosX - cameraBoundary)
+	//{
+	//	targetCameraPosX = -(playerPosX - cameraBoundary);
+	//	//LOG("left limit");
+	//}
+	//if (playerPosY > cameraPosY + cameraBoundary)
+	//{
+	//	targetCameraPosY = -(playerPosY - cameraBoundary);
+	//	//LOG("right limit");
+	//}
+	//else if (playerPosY < cameraPosY - cameraBoundary)
+	//{
+	//	targetCameraPosY = -(playerPosY - cameraBoundary);
+	//	//LOG("left limit");
+	//}
 
-	// retraso para movimiento SMOOOOOOOTH ;)
-	cameraPosX = cameraPosX + smoothValueX * (targetCameraPosX - cameraPosX);
-	cameraPosY = cameraPosY + smoothValueY * (targetCameraPosY - cameraPosY) - 5;
-	
-	
-	//delay para resetear la camara al morir
-	
-	if (player->isDead) {	//en un futuro habra que poner la camara en las posiciones de los checkpoints
-
-		DelayTimeCamera();
-
-		if (deathTimeCam >= respawnDelayCam) {
-
-			LOG("Reset Camera");
-			cameraPosX = 0;
-			cameraPosY = 0;
-		}
-		
-	}
-	
+	//// retraso para movimiento SMOOOOOOOTH ;)
+	//cameraPosX = cameraPosX + smoothValueX * (targetCameraPosX - cameraPosX);
+	///*cameraPosY = cameraPosY + smoothValueY * (targetCameraPosY - cameraPosY) - 5;*/
+	//
+	//
+	////delay para resetear la camara al morir
+	//
+	//float posX = player->Pos.x;
+	//float posY = player->Pos.y;
+	//Vector2D pos = Vector2D(posX, posY);
+	//camera->Update(pos, dt);
+	//Engine::GetInstance().render.get()->camera.x = (int)camera->position.getX();
 	//LOG("Camera positionX: %d", Engine::GetInstance().render.get()->camera.x);
 	//LOG("Camera positionY: %d", Engine::GetInstance().render.get()->camera.y);
 	
-	Engine::GetInstance().render.get()->camera.x = (int)cameraPosX;
-	Engine::GetInstance().render.get()->camera.y = (int)cameraPosY;
-
-	return true;
+	//Engine::GetInstance().render.get()->camera.x = (int)cameraPosX;
+	//Engine::GetInstance().render.get()->camera.y = (int)cameraPosY;
 }
 
 // Called each loop iteration
@@ -175,6 +190,8 @@ bool Scene::CleanUp()
 	LOG("Freeing scene");
 
 	SDL_DestroyTexture(img);
+
+	delete camera;
 
 	return true;
 }

@@ -81,6 +81,7 @@ public:
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody = nullptr;
+	b2Vec2 Pos = b2Vec2(0, 0);
 
 	float jumpForce = 1.5f; 
 	bool isJumping = false; 
