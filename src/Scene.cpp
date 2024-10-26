@@ -100,7 +100,7 @@ bool Scene::Update(float dt)
 	if (playerPosX > cameraPosX + cameraBoundary)
 	{
 		targetCameraPosX = -(playerPosX - cameraBoundary);
-		/*LOG("right limit");*/
+		//LOG("right limit");
 	}
 	else if (playerPosX < cameraPosX - cameraBoundary)
 	{
@@ -122,6 +122,15 @@ bool Scene::Update(float dt)
 	cameraPosX = cameraPosX + smoothValue * (targetCameraPosX - cameraPosX);
 	cameraPosY = cameraPosY + smoothValue * (targetCameraPosY - cameraPosY);
 	
+	if (player->isDead) {	//en un futuro habra que poner la camara en las posiciones de los checkpoints
+
+		cameraPosX = 0;
+		cameraPosY = 0;
+	}
+	
+	//LOG("Camera positionX: %d", Engine::GetInstance().render.get()->camera.x);
+	LOG("Camera positionY: %d", Engine::GetInstance().render.get()->camera.y);
+
 	Engine::GetInstance().render.get()->camera.x = (int)cameraPosX;
 	Engine::GetInstance().render.get()->camera.y = (int)cameraPosY;
 
