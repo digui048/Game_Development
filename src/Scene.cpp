@@ -89,7 +89,8 @@ bool Scene::Update(float dt)
 	//return true;
 
 	// para hacer que la camara se mueva SMOOOOOOOTH ;)
-	float smoothValue = 0.03f;
+	float smoothValueX = 0.03f;
+	float smoothValueY = 0.04f;
 	
 	int screenWidth = Engine::GetInstance().render.get()->camera.w;		//tamaño screen
 	int screenHeight = Engine::GetInstance().render.get()->camera.h;
@@ -129,8 +130,8 @@ bool Scene::Update(float dt)
 	}
 
 	// retraso para movimiento SMOOOOOOOTH ;)
-	cameraPosX = cameraPosX + smoothValue * (targetCameraPosX - cameraPosX);
-	cameraPosY = cameraPosY + smoothValue * (targetCameraPosY - cameraPosY);
+	cameraPosX = cameraPosX + smoothValueX * (targetCameraPosX - cameraPosX);
+	cameraPosY = cameraPosY + smoothValueY * (targetCameraPosY - cameraPosY) - 5;
 	
 	
 	//delay para resetear la camara al morir
@@ -149,8 +150,8 @@ bool Scene::Update(float dt)
 	}
 	
 	//LOG("Camera positionX: %d", Engine::GetInstance().render.get()->camera.x);
-	LOG("Camera positionY: %d", Engine::GetInstance().render.get()->camera.y);
-
+	//LOG("Camera positionY: %d", Engine::GetInstance().render.get()->camera.y);
+	
 	Engine::GetInstance().render.get()->camera.x = (int)cameraPosX;
 	Engine::GetInstance().render.get()->camera.y = (int)cameraPosY;
 
