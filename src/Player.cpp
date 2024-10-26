@@ -151,44 +151,45 @@ void Player::InitialState()
 bool Player::Update(float dt)
 {
 	b2Vec2 velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
-	b2Transform pbodyPos = pbody->body->GetTransform();
 
 	if (godMode)
 	{
-		pbody->body->SetSleepingAllowed(true);
-		pbody->body->SetGravityScale(0.0f);
 		pbody->body->SetType(b2_kinematicBody);
 
+		// Horizontal movement
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
-			velocity.x = -0.2f * 16;
+			velocity.x = -0.2f * 16.0f;
 			InitialState();
 			look = View::LEFT;
 		}
 		else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
-			velocity.x = 0.2f * 16;
+			velocity.x = 0.2f * 16.0f;
 			InitialState();
 			look = View::RIGHT;
 		}
+		else {
+			velocity.x = 0.0f;  // Stop horizontal movement if no key is pressed
+		}
+
+		// Vertical movement
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
-			pbodyPos.p.y += -0.2f * 16;
+			velocity.y = -0.2f * 16.0f;  // Move up
+		}
+		else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
+			velocity.y = 0.2f * 16.0f;  // Move down
 		}
 		else {
-			velocity.y = 0.0f;
-		}
-		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
-			velocity.y = +0.2f * 16;
-		}
-		else {
-			velocity.y = 0.0f;
+			velocity.y = 0.0f;  // Stop vertical movement if no key is pressed
 		}
 		
 	}
 
 	if (!isDead && !godMode) {
+		pbody->body->SetType(b2_dynamicBody);
 		// Handle horizontal movement
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !(velocity.y > 0)) {
 			if (!isWalled_left) {
-				velocity.x = -0.2f * dt; // Move left
+				velocity.x = -0.2f * 16.0f; // Move left
 				look = View::LEFT;
 				StartRunning();
 			}
@@ -199,7 +200,7 @@ bool Player::Update(float dt)
 		else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !(velocity.y > 0)) {
 			if (!isWalled_right)
 			{
-				velocity.x = 0.2f * dt; // Move right
+				velocity.x = 0.2f * 16.0f; // Move right
 				look = View::RIGHT;
 				StartRunning();
 			}
@@ -230,12 +231,12 @@ bool Player::Update(float dt)
 			if (velocity.y < 0) {
 				// Still jumping
 				if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-					velocity.x = -0.2 * dt; // Move left
+					velocity.x = -0.2 * 16.0f; // Move left
 					look = View::LEFT;
 					StartJumping();
 				}
 				else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-					velocity.x = 0.2f * dt; // Move right
+					velocity.x = 0.2f * 16.0f; // Move right
 					look = View::RIGHT;
 					StartJumping();
 				}
@@ -248,12 +249,12 @@ bool Player::Update(float dt)
 			else if (velocity.y > 0) {
 				// Falling
 				if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-					velocity.x = -0.2 * dt; // Move left
+					velocity.x = -0.2 * 16.0f; // Move left
 					look = View::LEFT;
 					StartFalling();
 				}
 				else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-					velocity.x = 0.2f * dt; // Move right
+					velocity.x = 0.2f * 16.0f; // Move right
 					look = View::RIGHT;
 					StartFalling();
 				}
@@ -291,6 +292,7 @@ bool Player::Update(float dt)
 	}
 	// Set new velocity
 	pbody->body->SetLinearVelocity(velocity);
+	b2Transform pbodyPos = pbody->body->GetTransform();
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texW/2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH/2);
 
