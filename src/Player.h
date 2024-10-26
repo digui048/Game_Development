@@ -92,6 +92,8 @@ public:
 
 	int numdeaths = 0;
 
+	bool godMode = false;
+
 	State state;
 
 	pugi::xml_node parameters;

@@ -151,8 +151,40 @@ void Player::InitialState()
 bool Player::Update(float dt)
 {
 	b2Vec2 velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
+	b2Transform pbodyPos = pbody->body->GetTransform();
 
-	if (!isDead) {
+	if (godMode)
+	{
+		pbody->body->SetSleepingAllowed(true);
+		pbody->body->SetGravityScale(0.0f);
+		pbody->body->SetType(b2_kinematicBody);
+
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
+			velocity.x = -0.2f * 16;
+			InitialState();
+			look = View::LEFT;
+		}
+		else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
+			velocity.x = 0.2f * 16;
+			InitialState();
+			look = View::RIGHT;
+		}
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
+			pbodyPos.p.y += -0.2f * 16;
+		}
+		else {
+			velocity.y = 0.0f;
+		}
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
+			velocity.y = +0.2f * 16;
+		}
+		else {
+			velocity.y = 0.0f;
+		}
+		
+	}
+
+	if (!isDead && !godMode) {
 		// Handle horizontal movement
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !(velocity.y > 0)) {
 			if (!isWalled_left) {
@@ -231,7 +263,7 @@ bool Player::Update(float dt)
 			}
 		}
 	}
-	if (isDead && pbody->body != nullptr) {
+	if (isDead && pbody->body != nullptr && !godMode) {
 		StartDying();
 		DelayTime();
 		// Destroy the player's body in the physics world
@@ -259,7 +291,6 @@ bool Player::Update(float dt)
 	}
 	// Set new velocity
 	pbody->body->SetLinearVelocity(velocity);
-	b2Transform pbodyPos = pbody->body->GetTransform();
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texW/2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH/2);
 
