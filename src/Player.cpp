@@ -250,6 +250,8 @@ bool Player::Update(float dt)
 			// L08 TODO 7: Assign collider type
 			pbody->ctype = ColliderType::PLAYER;
 
+			look = View::RIGHT;
+
 			deathTime = 0.0f;
 			isDead = false;
 			numdeaths++;

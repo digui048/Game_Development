@@ -71,16 +71,16 @@ public:
 	//Declare player parameters
 	float speed = 5.0f;
 	SDL_Texture* texture = NULL;
-	int texW, texH;
+	int texW, texH = 0;
 	bool isGrounded_up = false;
 	bool isGrounded_down = false;
 	bool isWalled_left = false;
 	bool isWalled_right = false;
 	//Audio fx
-	int pickCoinFxId;
+	int pickCoinFxId = 0;
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
-	PhysBody* pbody;
+	PhysBody* pbody = nullptr;
 
 	float jumpForce = 1.5f; 
 	bool isJumping = false; 
