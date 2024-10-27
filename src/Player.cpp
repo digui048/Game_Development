@@ -158,12 +158,12 @@ bool Player::Update(float dt)
 
 		// Horizontal movement
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
-			velocity.x = -0.2f * 16.0f;
+			velocity.x = -0.2f * 16;
 			InitialState();
 			look = View::LEFT;
 		}
 		else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
-			velocity.x = 0.2f * 16.0f;
+			velocity.x = 0.2f * 16;
 			InitialState();
 			look = View::RIGHT;
 		}
@@ -173,10 +173,10 @@ bool Player::Update(float dt)
 
 		// Vertical movement
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
-			velocity.y = -0.2f * 16.0f;  // Move up
+			velocity.y = -0.2f * 16;  // Move up
 		}
 		else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
-			velocity.y = 0.2f * 16.0f;  // Move down
+			velocity.y = 0.2f * 16;  // Move down
 		}
 		else {
 			velocity.y = 0.0f;  // Stop vertical movement if no key is pressed
@@ -189,7 +189,7 @@ bool Player::Update(float dt)
 		// Handle horizontal movement
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !(velocity.y > 0)) {
 			if (!isWalled_left) {
-				velocity.x = -0.2f * 16.0f; // Move left
+				velocity.x = -0.2f * 16; // Move left
 				look = View::LEFT;
 				StartRunning();
 			}
@@ -200,7 +200,7 @@ bool Player::Update(float dt)
 		else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !(velocity.y > 0)) {
 			if (!isWalled_right)
 			{
-				velocity.x = 0.2f * 16.0f; // Move right
+				velocity.x = 0.2f * 16; // Move right
 				look = View::RIGHT;
 				StartRunning();
 			}
@@ -231,12 +231,12 @@ bool Player::Update(float dt)
 			if (velocity.y < 0) {
 				// Still jumping
 				if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-					velocity.x = -0.2 * 16.0f; // Move left
+					velocity.x = -0.2 * 16; // Move left
 					look = View::LEFT;
 					StartJumping();
 				}
 				else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-					velocity.x = 0.2f * 16.0f; // Move right
+					velocity.x = 0.2f * 16; // Move right
 					look = View::RIGHT;
 					StartJumping();
 				}
@@ -249,12 +249,12 @@ bool Player::Update(float dt)
 			else if (velocity.y > 0) {
 				// Falling
 				if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-					velocity.x = -0.2 * 16.0f; // Move left
+					velocity.x = -0.2 * 16; // Move left
 					look = View::LEFT;
 					StartFalling();
 				}
 				else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-					velocity.x = 0.2f * 16.0f; // Move right
+					velocity.x = 0.2f * 16; // Move right
 					look = View::RIGHT;
 					StartFalling();
 				}

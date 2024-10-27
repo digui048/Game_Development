@@ -84,7 +84,6 @@ bool Engine::Awake() {
     // also read maxFrameDuration 
     gameTitle = configFile.child("config").child("engine").child("title").child_value();
     maxFrameDuration = configFile.child("config").child("engine").child("maxFrameDuration").attribute("value").as_int();
-
     //Iterates the module list and calls Awake on each module
     bool result = true;
     for (const auto& module : moduleList) {
