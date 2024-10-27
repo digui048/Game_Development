@@ -73,7 +73,7 @@ bool Scene::Update(float dt)
 
 	if (player->position.getX() > Engine::GetInstance().window.get()->width / 2)
 	{
-		LOG("%d", player->position.getX());
+		//LOG("%d", player->position.getX());
 		Engine::GetInstance().render.get()->camera.x = (-player->position.getX() * camSpeed) + Engine::GetInstance().window.get()->width / 2;
 	}
 	if (player->position.getY() > Engine::GetInstance().window.get()->height / 2)
