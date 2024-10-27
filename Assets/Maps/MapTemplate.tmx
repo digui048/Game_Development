@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="64" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="99">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="64" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="105">
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
   <image source="tmw_desert_spacing.png" width="265" height="199"/>
   <wangsets>
@@ -299,20 +299,20 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
    <tile gid="102"/>
    <tile gid="102"/>
    <tile gid="886"/>
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="371"/>
+   <tile gid="371"/>
+   <tile/>
+   <tile gid="102"/>
+   <tile gid="102"/>
    <tile gid="102"/>
    <tile gid="102"/>
    <tile/>
@@ -363,16 +363,16 @@
    <tile gid="102"/>
    <tile gid="102"/>
    <tile gid="102"/>
-   <tile gid="102"/>
-   <tile gid="102"/>
-   <tile gid="102"/>
-   <tile gid="102"/>
-   <tile gid="102"/>
-   <tile/>
-   <tile/>
-   <tile/>
    <tile gid="105"/>
    <tile gid="108"/>
+   <tile gid="52"/>
+   <tile gid="52"/>
+   <tile gid="52"/>
+   <tile gid="52"/>
+   <tile gid="52"/>
+   <tile gid="52"/>
+   <tile gid="52"/>
+   <tile gid="52"/>
    <tile gid="52"/>
    <tile gid="52"/>
    <tile gid="52"/>
@@ -426,14 +426,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile gid="102"/>
-   <tile gid="102"/>
-   <tile gid="102"/>
    <tile gid="102"/>
    <tile gid="102"/>
    <tile gid="86"/>
@@ -443,6 +435,14 @@
    <tile gid="126"/>
    <tile gid="126"/>
    <tile gid="126"/>
+   <tile gid="126"/>
+   <tile gid="126"/>
+   <tile gid="126"/>
+   <tile gid="154"/>
+   <tile gid="154"/>
+   <tile gid="154"/>
+   <tile gid="154"/>
+   <tile gid="154"/>
    <tile gid="126"/>
    <tile gid="126"/>
    <tile gid="126"/>
@@ -490,14 +490,6 @@
    <tile gid="660"/>
    <tile gid="660"/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile gid="102"/>
-   <tile gid="102"/>
-   <tile gid="102"/>
    <tile gid="102"/>
    <tile/>
    <tile/>
@@ -511,7 +503,15 @@
    <tile gid="154"/>
    <tile gid="154"/>
    <tile gid="154"/>
+   <tile gid="174"/>
    <tile gid="154"/>
+   <tile gid="154"/>
+   <tile gid="188"/>
+   <tile gid="188"/>
+   <tile gid="188"/>
+   <tile gid="188"/>
+   <tile gid="188"/>
+   <tile gid="188"/>
    <tile gid="154"/>
    <tile gid="154"/>
    <tile gid="154"/>
@@ -558,14 +558,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
    <tile gid="118"/>
    <tile gid="118"/>
    <tile gid="118"/>
@@ -578,6 +570,14 @@
    <tile gid="154"/>
    <tile gid="154"/>
    <tile gid="154"/>
+   <tile gid="188"/>
+   <tile gid="188"/>
+   <tile gid="188"/>
+   <tile gid="188"/>
+   <tile gid="188"/>
+   <tile gid="154"/>
+   <tile gid="154"/>
+   <tile gid="159"/>
    <tile gid="154"/>
    <tile gid="68"/>
    <tile gid="68"/>
@@ -618,14 +618,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
    <tile gid="102"/>
    <tile gid="102"/>
    <tile gid="102"/>
@@ -641,7 +633,15 @@
    <tile gid="84"/>
    <tile gid="84"/>
    <tile gid="84"/>
-   <tile gid="84"/>
+   <tile gid="116"/>
+   <tile gid="116"/>
+   <tile gid="116"/>
+   <tile gid="116"/>
+   <tile gid="116"/>
+   <tile gid="116"/>
+   <tile gid="116"/>
+   <tile gid="116"/>
+   <tile gid="116"/>
    <tile gid="84"/>
    <tile gid="68"/>
    <tile gid="68"/>
@@ -1611,7 +1611,9 @@
   </properties>
   <object id="61" x="640.182" y="224" width="511.818"/>
   <object id="91" x="96" y="224" width="448"/>
-  <object id="95" x="32" y="224" width="64"/>
+  <object id="95" x="64" y="192" width="32"/>
+  <object id="99" x="32" y="160" width="32"/>
+  <object id="104" x="1280" y="128" width="768"/>
  </objectgroup>
  <objectgroup id="10" name="Spikes">
   <properties>
@@ -1626,6 +1628,9 @@
   </properties>
   <object id="92" x="544" y="224" height="32"/>
   <object id="93" x="640" y="224" height="32"/>
-  <object id="97" x="32" y="0" height="224"/>
+  <object id="97" x="32" y="0" height="160"/>
+  <object id="100" x="64" y="160" height="32"/>
+  <object id="101" x="96" y="192" height="32"/>
+  <object id="102" x="1280" y="128" height="32"/>
  </objectgroup>
 </map>
