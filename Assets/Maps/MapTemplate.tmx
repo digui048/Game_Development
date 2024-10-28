@@ -72,6 +72,9 @@
   <image source="pixel-art-game-background-underground-600nw-2389785961.png" width="600" height="338"/>
  </tileset>
  <layer id="13" name="Background" width="80" height="35">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile gid="1334"/>
    <tile gid="1334"/>

@@ -54,7 +54,7 @@ bool Player::Start() {
 	die_right.LoadAnimations(parameters.child("animations").child("die_right"));
 	die_left.LoadAnimations(parameters.child("animations").child("die_left"));
 
-
+	currentAnimation = &idle_right;
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	/*Engine::GetInstance().textures.get()->GetSize(texture, texW, texH);*/
@@ -103,6 +103,7 @@ void Player::StartJumping()
 
 void Player::StartFalling()
 {
+	//LOG("%s","FALL");
 	state = State::FALL;
 
 	if (look == View::LEFT)
@@ -136,6 +137,7 @@ void Player::DelayTime()
 
 void Player::InitialState()
 {
+	//LOG("%s", "IDLE");
 	state = State::IDLE;
 
 	if (look == View::LEFT)
@@ -187,7 +189,7 @@ bool Player::Update(float dt)
 	if (!isDead && !godMode) {
 		pbody->body->SetType(b2_dynamicBody);
 		// Handle horizontal movement
-		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !(velocity.y > 0)) {
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !(velocity.y > 0.00001)) {
 			if (!isWalled_left) {
 				velocity.x = -0.2f * 16; // Move left
 				look = View::LEFT;
@@ -197,7 +199,7 @@ bool Player::Update(float dt)
 				InitialState();
 			}
 		}
-		else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !(velocity.y > 0)) {
+		else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !(velocity.y > 0.00001)) {
 			if (!isWalled_right)
 			{
 				velocity.x = 0.2f * 16; // Move right
@@ -209,7 +211,7 @@ bool Player::Update(float dt)
 			}
 
 		}
-		else if (velocity.y > 0)
+		else if (velocity.y > 0.00001)
 		{
 			StartFalling();
 		}
@@ -217,8 +219,10 @@ bool Player::Update(float dt)
 			InitialState(); // Go idle if no keys are pressed
 		}
 
+		LOG("%f", velocity.y);
+
 		// Jumping logic
-		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !isJumping && velocity.y == 0) {
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !isJumping && !isFalling) {
 			pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
 			isJumping = true;
 			StartJumping();
@@ -270,23 +274,32 @@ bool Player::Update(float dt)
 		// Destroy the player's body in the physics world
 		if (deathTime>=respawnDelay) {
 
-			Engine::GetInstance().physics->world->DestroyBody(pbody->body);
+			//position.setX(parameters.attribute("x").as_int());
+			//position.setY(parameters.attribute("y").as_int());
 
-			position.setX(parameters.attribute("x").as_int());
-			position.setY(parameters.attribute("y").as_int());
+			//pbody = Engine::GetInstance().physics.get()->CreateRectangle((int)position.getX(), (int)position.getY(), (int)(texW / 2.5f), (int)(texH / 1.25f), bodyType::DYNAMIC);
+			//// L08 TODO 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
+			//pbody->listener = this;
 
-			pbody = Engine::GetInstance().physics.get()->CreateRectangle((int)position.getX(), (int)position.getY(), (int)(texW / 2.5f), (int)(texH / 1.25f), bodyType::DYNAMIC);
-			// L08 TODO 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
-			pbody->listener = this;
+			//// L08 TODO 7: Assign collider type
+			//pbody->ctype = ColliderType::PLAYER;
 
-			// L08 TODO 7: Assign collider type
-			pbody->ctype = ColliderType::PLAYER;
+			//look = View::RIGHT;
 
-			look = View::RIGHT;
+			Player::position.setX(3);
+			Player::position.setY(5);
 
+			pbody->body->SetTransform(b2Vec2(position.getX(), position.getY()),0);
+			Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
 			deathTime = 0.0f;
 			isDead = false;
 			numdeaths++;
+
+			Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
+			currentAnimation->Update();
+			die_right.Reset();
+			die_left.Reset();
+			return true;
 		}
 	}
 	// Set new velocity
@@ -296,7 +309,7 @@ bool Player::Update(float dt)
 	
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texW/2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH/2);
-	LOG("%d, %d", position.getX(), position.getY());
+	LOG("%f, %f", position.getX(), position.getY());
 	// Render the current animation
 	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
 	currentAnimation->Update();

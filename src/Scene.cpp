@@ -75,19 +75,19 @@ bool Scene::Update(float dt)
 		fpsTo30 = !fpsTo30;
 	}
 
-	if (!debugCamera) {
+	/*if (!debugCamera) {
 		float camSpeed = Engine::GetInstance().window.get()->scale;
 
 		if (player->position.getX() > Engine::GetInstance().window.get()->width / 2)
 		{
-			//LOG("%d", player->position.getX());
+			LOG("%f", player->position.getX());
 			Engine::GetInstance().render.get()->camera.x = (-player->position.getX() * camSpeed) + Engine::GetInstance().window.get()->width / 2;
 		}
-		if (player->position.getY() > Engine::GetInstance().window.get()->height / 2)
+		if (player->position.getY() > Engine::GetInstance().window.get()->height/4)
 		{
-			Engine::GetInstance().render.get()->camera.y = (-player->position.getY() * camSpeed) + Engine::GetInstance().window.get()->height / 2;
+			Engine::GetInstance().render.get()->camera.y = (-player->position.getY() * camSpeed) + Engine::GetInstance().window.get()->height/2;
 		}
-	}
+	}*/
 	else if (debugCamera) {
 		float camSpeed = 1;
 
@@ -117,14 +117,13 @@ bool Scene::Update(float dt)
 			LOG("Reset Camera");
 			Engine::GetInstance().render.get()->camera.x = 0;
 			Engine::GetInstance().render.get()->camera.y = 0;
+			deathTimeCam = 0.0f;
 		}
 
 	}
-
-	return true;
 	
 	//L03 TODO 3: Make the camera movement independent of framerate
-	//float camSpeed = 1;
+	float camSpeed = 1;
 
 	//if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	//	Engine::GetInstance().render.get()->camera.y += ceil(camSpeed * dt);
@@ -141,52 +140,50 @@ bool Scene::Update(float dt)
 	//Engine::GetInstance().render.get()->camera.x = -(player->position.getX()/6 + (Engine::GetInstance().render.get()->camera.w / 32));
 	//Engine::GetInstance().render.get()->camera.y = -(player->position.getY()/6 + (Engine::GetInstance().render.get()->camera.y / 32));
 
-	//return true;
+	 //para hacer que la camara se mueva SMOOOOOOOTH ;)
+	float smoothValueX = 0.03f;
+	float smoothValueY = 0.04f;
+	
+	int screenWidth = Engine::GetInstance().render.get()->camera.w;		//tamaño screen
+	int screenHeight = Engine::GetInstance().render.get()->camera.h;
+	
+	float playerPosX = player->position.getX();		//posicion player
+	float playerPosY = player->position.getY();
 
-	// para hacer que la camara se mueva SMOOOOOOOTH ;)
-	//float smoothValueX = 0.03f;
-	//float smoothValueY = 0.04f;
-	//
-	//int screenWidth = Engine::GetInstance().render.get()->camera.w;		//tamaño screen
-	//int screenHeight = Engine::GetInstance().render.get()->camera.h;
-	//
-	//float playerPosX = player->position.getX();		//posicion player
-	//float playerPosY = player->position.getY();
+	float cameraPosX = Engine::GetInstance().render.get()->camera.x;	//posicion camara
+	float cameraPosY = Engine::GetInstance().render.get()->camera.y;
 
-	//float cameraPosX = Engine::GetInstance().render.get()->camera.x;	//posicion camara
-	//float cameraPosY = Engine::GetInstance().render.get()->camera.y;
+	// a partir de donde sigue la camara
+	float cameraBoundary = screenWidth * 0.5f;
+	
+	// donde poner la camara para ir ajustandola
+	float targetCameraPosX = cameraPosX;
+	float targetCameraPosY = cameraPosY;
 
-	//// a partir de donde sigue la camara
-	//float cameraBoundary = screenWidth * 0.5f;
-	//
-	//// donde poner la camara para ir ajustandola
-	//float targetCameraPosX = cameraPosX;
-	//float targetCameraPosY = cameraPosY;
+	if (playerPosX > cameraPosX + cameraBoundary)
+	{
+		targetCameraPosX = -(playerPosX - cameraBoundary);
+		//LOG("right limit");
+	}
+	else if (playerPosX < cameraPosX - cameraBoundary)
+	{
+		targetCameraPosX = -(playerPosX - cameraBoundary);
+		//LOG("left limit");
+	}
+	if (playerPosY > cameraPosY + cameraBoundary)
+	{
+		targetCameraPosY = -(playerPosY - cameraBoundary);
+		//LOG("right limit");
+	}
+	else if (playerPosY < cameraPosY - cameraBoundary)
+	{
+		targetCameraPosY = -(playerPosY - cameraBoundary);
+		//LOG("left limit");
+	}
 
-	//if (playerPosX > cameraPosX + cameraBoundary)
-	//{
-	//	targetCameraPosX = -(playerPosX - cameraBoundary);
-	//	//LOG("right limit");
-	//}
-	//else if (playerPosX < cameraPosX - cameraBoundary)
-	//{
-	//	targetCameraPosX = -(playerPosX - cameraBoundary);
-	//	//LOG("left limit");
-	//}
-	//if (playerPosY > cameraPosY + cameraBoundary)
-	//{
-	//	targetCameraPosY = -(playerPosY - cameraBoundary);
-	//	//LOG("right limit");
-	//}
-	//else if (playerPosY < cameraPosY - cameraBoundary)
-	//{
-	//	targetCameraPosY = -(playerPosY - cameraBoundary);
-	//	//LOG("left limit");
-	//}
-
-	//// retraso para movimiento SMOOOOOOOTH ;)
-	//cameraPosX = cameraPosX + smoothValueX * (targetCameraPosX - cameraPosX);
-	///*cameraPosY = cameraPosY + smoothValueY * (targetCameraPosY - cameraPosY) - 5;*/
+	// retraso para movimiento SMOOOOOOOTH ;)
+	cameraPosX = cameraPosX + smoothValueX * (targetCameraPosX - cameraPosX);
+	cameraPosY = cameraPosY + smoothValueY * (targetCameraPosY - cameraPosY);
 	//
 	//
 	////delay para resetear la camara al morir
@@ -199,8 +196,10 @@ bool Scene::Update(float dt)
 	//LOG("Camera positionX: %d", Engine::GetInstance().render.get()->camera.x);
 	//LOG("Camera positionY: %d", Engine::GetInstance().render.get()->camera.y);
 	
-	//Engine::GetInstance().render.get()->camera.x = (int)cameraPosX;
-	//Engine::GetInstance().render.get()->camera.y = (int)cameraPosY;
+	Engine::GetInstance().render.get()->camera.x = (int)cameraPosX;
+	Engine::GetInstance().render.get()->camera.y = (int)cameraPosY;
+
+	return true;
 }
 
 // Called each loop iteration
