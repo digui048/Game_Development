@@ -115,7 +115,9 @@ bool Scene::Update(float dt)
 		Engine::GetInstance().render.get()->camera.x -= ceil(camSpeed * dt);
 	}
 	if (helpMenu) {
-		Engine::GetInstance().render.get()->DrawTexture(helpmenu, Engine::GetInstance().window.get()->width / 10, 3*Engine::GetInstance().window.get()->height / 10);
+		float camSpeed = Engine::GetInstance().window.get()->scale;
+		Engine::GetInstance().render.get()->DrawTexture(helpmenu, (player->position.getX()) - Engine::GetInstance().window.get()->width / 10,
+			(player->position.getY())- Engine::GetInstance().window.get()->height / 5);
 	}
 	if (player->isDead)
 	{	//en un futuro habra que poner la camara en las posiciones de los checkpoints
