@@ -219,7 +219,6 @@ bool Player::Update(float dt)
 			InitialState(); // Go idle if no keys are pressed
 		}
 
-		LOG("%f", velocity.y);
 
 		// Jumping logic
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !isJumping && !isFalling) {
@@ -312,7 +311,6 @@ bool Player::Update(float dt)
 
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texW / 2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
-	LOG("%f, %f", position.getX(), position.getY());
 	// Render the current animation
 	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
 	currentAnimation->Update();
