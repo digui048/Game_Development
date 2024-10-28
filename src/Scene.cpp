@@ -46,7 +46,7 @@ bool Scene::Start()
 	//L06 TODO 3: Call the function to load the map. 
 	Engine::GetInstance().map->Load(configParameters.child("map").attribute("path").as_string(), configParameters.child("map").attribute("name").as_string());
 	helpmenu = Engine::GetInstance().textures.get()->Load("Assets/Textures/helpMenu.png");
-
+	SDL_QueryTexture(helpmenu, NULL, NULL, &helpmenuWidth, &helpmenuHeight);
 	return true;
 }
 
@@ -115,9 +115,20 @@ bool Scene::Update(float dt)
 		Engine::GetInstance().render.get()->camera.x -= ceil(camSpeed * dt);
 	}
 	if (helpMenu) {
-		float camSpeed = Engine::GetInstance().window.get()->scale;
-		Engine::GetInstance().render.get()->DrawTexture(helpmenu, (player->position.getX()) - Engine::GetInstance().window.get()->width / 10,
-			(player->position.getY())- Engine::GetInstance().window.get()->height / 5);
+		//el centro de la window
+		int windowWidth = Engine::GetInstance().window.get()->width;
+		int windowHeight = Engine::GetInstance().window.get()->height;
+
+		//donde se tiene que dibujar
+		int centerX = player->position.getX();
+		int centerY = player->position.getY();
+
+		int drawX = centerX - (helpmenuWidth / 2);
+		int drawY = centerY - (helpmenuHeight / 2);
+
+		Engine::GetInstance().render.get()->DrawTexture(helpmenu, drawX, drawY);
+		/*Engine::GetInstance().render.get()->DrawTexture(helpmenu, (player->position.getX()) - Engine::GetInstance().window.get()->width / 10,
+			(player->position.getY())- Engine::GetInstance().window.get()->height / 5);*/
 	}
 	if (player->isDead)
 	{	//en un futuro habra que poner la camara en las posiciones de los checkpoints

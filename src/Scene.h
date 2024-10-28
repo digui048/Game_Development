@@ -65,6 +65,8 @@ public:
 	bool debugCamera = false;
 	bool fpsTo30 = false;
 	bool helpMenu = false;
+	int helpmenuWidth;
+	int helpmenuHeight;
 
 private:
 	SDL_Texture* img;
