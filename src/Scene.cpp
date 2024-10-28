@@ -65,16 +65,23 @@ void Scene::DelayTimeCamera() {
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 		player->godMode = !player->godMode;
 	}
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
-		debugCamera = !debugCamera;
-	}
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {
 		fpsTo30 = !fpsTo30;
 	}
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F12) == KEY_DOWN) {
+		debugCamera = !debugCamera;
+	}
 
+	if (fpsTo30) {
+		Engine::GetInstance().FPSCapto(32);
+	}
+	else if (!fpsTo30)
+	{
+		Engine::GetInstance().FPSCapto(16);
+	}
 	if (!debugCamera) {
 		float camSpeed = Engine::GetInstance().window.get()->scale;
 

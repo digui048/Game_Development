@@ -286,8 +286,8 @@ bool Player::Update(float dt)
 
 			//look = View::RIGHT;
 
-			Player::position.setX(3);
-			Player::position.setY(5);
+			Player::position.setX(4);
+			Player::position.setY(7);
 
 			pbody->body->SetTransform(b2Vec2(position.getX(), position.getY()),0);
 			Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());

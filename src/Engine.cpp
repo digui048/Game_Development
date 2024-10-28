@@ -165,6 +165,11 @@ bool Engine::CleanUp() {
     return result;
 }
 
+void Engine::FPSCapto(float value)
+{
+    maxFrameDuration = value;
+}
+
 // ---------------------------------------------
 void Engine::PrepareUpdate()
 {

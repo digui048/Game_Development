@@ -45,6 +45,8 @@ public:
 		return dt;
 	}
 
+	void FPSCapto(float value);
+
 private:
 
 	// Private constructor to prevent instantiation
