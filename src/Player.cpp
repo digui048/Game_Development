@@ -158,12 +158,12 @@ bool Player::Update(float dt)
 
 		// Horizontal movement
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
-			velocity.x = -0.2f * 16;
+			velocity.x = -0.35f * 16;
 			InitialState();
 			look = View::LEFT;
 		}
 		else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
-			velocity.x = 0.2f * 16;
+			velocity.x = 0.35f * 16;
 			InitialState();
 			look = View::RIGHT;
 		}
@@ -173,10 +173,10 @@ bool Player::Update(float dt)
 
 		// Vertical movement
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
-			velocity.y = -0.2f * 16;  // Move up
+			velocity.y = -0.35f * 16;  // Move up
 		}
 		else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
-			velocity.y = 0.2f * 16;  // Move down
+			velocity.y = 0.35f * 16;  // Move down
 		}
 		else {
 			velocity.y = 0.0f;  // Stop vertical movement if no key is pressed
