@@ -36,7 +36,7 @@ bool Scene::Awake()
 
 	//L08 Create a new item using the entity manager and set the position to (200, 672) to test
 	Item* item = (Item*) Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM, View::RIGHT);
-	item->position = Vector2D(20, 0);
+	item->position = Vector2D(900, 0);
 	return ret;
 }
 
@@ -45,6 +45,7 @@ bool Scene::Start()
 {
 	//L06 TODO 3: Call the function to load the map. 
 	Engine::GetInstance().map->Load(configParameters.child("map").attribute("path").as_string(), configParameters.child("map").attribute("name").as_string());
+	helpmenu = Engine::GetInstance().textures.get()->Load("Assets/Textures/helpMenu.png");
 
 	return true;
 }
@@ -71,10 +72,13 @@ bool Scene::Update(float dt)
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {
 		fpsTo30 = !fpsTo30;
 	}
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F12) == KEY_DOWN) {
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
 		debugCamera = !debugCamera;
 	}
-
+	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_H) == KEY_DOWN) {
+		helpMenu = !helpMenu;
+		player->menu = !player->menu;
+	}
 	if (fpsTo30) {
 		Engine::GetInstance().FPSCapto(32);
 	}
@@ -110,11 +114,9 @@ bool Scene::Update(float dt)
 		if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		Engine::GetInstance().render.get()->camera.x -= ceil(camSpeed * dt);
 	}
-
-	if (fpsTo30) {
-		
+	if (helpMenu) {
+		Engine::GetInstance().render.get()->DrawTexture(helpmenu, Engine::GetInstance().window.get()->width / 10, 3*Engine::GetInstance().window.get()->height / 10);
 	}
-
 	if (player->isDead)
 	{	//en un futuro habra que poner la camara en las posiciones de los checkpoints
 		DelayTimeCamera();
@@ -226,6 +228,7 @@ bool Scene::CleanUp()
 	LOG("Freeing scene");
 
 	SDL_DestroyTexture(img);
+	SDL_DestroyTexture(helpmenu);
 
 	delete camera;
 

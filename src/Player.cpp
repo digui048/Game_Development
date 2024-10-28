@@ -153,8 +153,11 @@ void Player::InitialState()
 bool Player::Update(float dt)
 {
 	b2Vec2 velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
-
-	if (godMode)
+	if (menu) {
+		velocity.x, velocity.y = 0;
+		return true;
+	}
+	if (godMode && !menu)
 	{
 		pbody->body->SetType(b2_kinematicBody);
 
@@ -186,7 +189,7 @@ bool Player::Update(float dt)
 		
 	}
 
-	if (!isDead && !godMode) {
+	if (!isDead && !godMode && !menu) {
 		pbody->body->SetType(b2_dynamicBody);
 		// Handle horizontal movement
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !(velocity.y > 0.00001)) {
@@ -268,7 +271,7 @@ bool Player::Update(float dt)
 			}
 		}
 	}
-	if (isDead && pbody->body != nullptr && !godMode) {
+	if (isDead && pbody->body != nullptr && !godMode && !menu) {
 		StartDying();
 		DelayTime();
 		// Destroy the player's body in the physics world

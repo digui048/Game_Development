@@ -64,10 +64,11 @@ public:
 	float deathTimeCam = 0.0f;
 	bool debugCamera = false;
 	bool fpsTo30 = false;
+	bool helpMenu = false;
 
 private:
 	SDL_Texture* img;
-
+	SDL_Texture* helpmenu;
 	//L03: TODO 3b: Declare a Player attribute
 	Player* player;
 

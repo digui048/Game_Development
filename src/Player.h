@@ -86,6 +86,8 @@ public:
 	float jumpForce = 1.5f; 
 	bool isJumping = false; 
 	bool isFalling = false;
+	
+	bool menu = false;
 
 	bool isDead = false;
 	float respawnDelay = 3.0f;
