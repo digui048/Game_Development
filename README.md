@@ -48,6 +48,18 @@ The main objective is to successfully traverse through each level, defeating ene
 - Basic animations: Run, Jump, Fall, Die (all of them left and right)
 
 
-## Members
-* Mario Martos - [@MarioPrincesita](https://github.com/MarioPrincesita)
-* Dídac Sillué - [@digui048](https://github.com/digui048)
+## About us - _RetroRevolve_
+
+> **Programmer, QA and Artist**: Mario Martos Rodríguez
+
+GitHub: [@MarioPrincesita](https://github.com/MarioPrincesita)
+
+
+> **Programmer, QA and Designer**: Dídac Sillue Cecilia
+
+GitHub: [@digui048](https://github.com/digui048)
+
+
+## Team Photo
+
+![LOGO DEF](https://github.com/MarioPrincesita/Goonies-1986_Game-Analysis/assets/159776249/7d580945-e95b-4b5e-9ee8-f38cb7b46f6f)
