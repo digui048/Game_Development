@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="80" height="35" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="437">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="80" height="35" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="443">
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
   <image source="tmw_desert_spacing.png" width="265" height="199"/>
   <wangsets>
@@ -1739,9 +1739,9 @@
    <tile/>
    <tile/>
    <tile gid="307"/>
+   <tile gid="307"/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="135"/>
    <tile/>
    <tile gid="151"/>
    <tile/>
@@ -1821,7 +1821,7 @@
    <tile gid="106"/>
    <tile gid="56"/>
    <tile gid="307"/>
-   <tile gid="307"/>
+   <tile gid="151"/>
    <tile gid="307"/>
    <tile gid="151"/>
    <tile gid="307"/>
@@ -2877,7 +2877,7 @@
   <object id="91" x="32" y="384" width="512"/>
   <object id="104" x="1281.75" y="288" width="830.25"/>
   <object id="105" x="1280" y="512" width="512"/>
-  <object id="106" x="1632" y="448" width="160"/>
+  <object id="106" x="1600" y="448" width="192"/>
   <object id="107" x="1536" y="416" width="64"/>
   <object id="108" x="1376" y="384" width="160"/>
   <object id="111" x="1120" y="608" width="32"/>
@@ -2956,7 +2956,6 @@
   <object id="372" x="2336" y="736" width="128"/>
   <object id="373" x="2240" y="704" width="64"/>
   <object id="374" x="2240" y="672" width="32"/>
-  <object id="375" x="2304" y="672" width="32"/>
   <object id="376" x="2144" y="672" width="32"/>
   <object id="377" x="2112" y="704" width="64"/>
   <object id="378" x="1984" y="768" width="64"/>
@@ -2993,6 +2992,7 @@
   <object id="430" x="1824" y="928" width="64"/>
   <object id="432" x="2432" y="960" width="96"/>
   <object id="433" x="2432" y="928" width="32"/>
+  <object id="440" x="2368" y="640" width="32"/>
  </objectgroup>
  <objectgroup id="10" name="Spikes">
   <properties>
@@ -3035,8 +3035,7 @@
   <object id="289" x="2304" y="768" width="32"/>
   <object id="291" x="2112" y="672" width="32"/>
   <object id="292" x="2144" y="576" width="32"/>
-  <object id="293" x="2272" y="672" width="32"/>
-  <object id="294" x="2336" y="704" width="96"/>
+  <object id="293" x="2272" y="672" width="64"/>
   <object id="295" x="2464" y="704" width="64"/>
   <object id="296" x="2272" y="512" width="32"/>
   <object id="297" x="2336" y="352" width="32"/>
@@ -3052,6 +3051,8 @@
   <object id="427" x="1792" y="928" width="32"/>
   <object id="428" x="1888" y="928" width="32"/>
   <object id="436" x="2336" y="864" width="32"/>
+  <object id="441" x="2336" y="704" width="32"/>
+  <object id="442" x="2400" y="704" width="32"/>
  </objectgroup>
  <objectgroup id="8" name="Wall_Collision">
   <properties>
@@ -3177,5 +3178,8 @@
   <object id="424" x="1344" y="1088" height="32"/>
   <object id="434" x="2432" y="928" height="32"/>
   <object id="435" x="2464" y="896" height="32"/>
+  <object id="437" x="1600" y="416" height="32"/>
+  <object id="438" x="2368" y="640" height="64"/>
+  <object id="439" x="2400" y="640" height="64"/>
  </objectgroup>
 </map>
