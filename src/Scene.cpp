@@ -90,8 +90,7 @@ bool Scene::Update(float dt)
 		float camSpeed = Engine::GetInstance().window.get()->scale;
 
 		if (player->position.getX() > Engine::GetInstance().window.get()->width / 4)
-		{
-			LOG("%f", player->position.getX());
+		{			
 			Engine::GetInstance().render.get()->camera.x = (-player->position.getX() * camSpeed) + Engine::GetInstance().window.get()->width / 2;
 		}
 		if (player->position.getY() > Engine::GetInstance().window.get()->height/4)
