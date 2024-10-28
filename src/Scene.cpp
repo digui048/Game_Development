@@ -68,18 +68,46 @@ bool Scene::Update(float dt)
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
 		player->godMode = !player->godMode;
 	}
-
-	float camSpeed = Engine::GetInstance().window.get()->scale;
-
-	if (player->position.getX() > Engine::GetInstance().window.get()->width / 2)
-	{
-		//LOG("%d", player->position.getX());
-		Engine::GetInstance().render.get()->camera.x = (-player->position.getX() * camSpeed) + Engine::GetInstance().window.get()->width / 2;
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
+		debugCamera = !debugCamera;
 	}
-	if (player->position.getY() > Engine::GetInstance().window.get()->height / 2)
-	{
-		Engine::GetInstance().render.get()->camera.y = (-player->position.getY() * camSpeed) + Engine::GetInstance().window.get()->height / 2;
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
+		fpsTo30 = !fpsTo30;
 	}
+
+	if (!debugCamera) {
+		float camSpeed = Engine::GetInstance().window.get()->scale;
+
+		if (player->position.getX() > Engine::GetInstance().window.get()->width / 2)
+		{
+			//LOG("%d", player->position.getX());
+			Engine::GetInstance().render.get()->camera.x = (-player->position.getX() * camSpeed) + Engine::GetInstance().window.get()->width / 2;
+		}
+		if (player->position.getY() > Engine::GetInstance().window.get()->height / 2)
+		{
+			Engine::GetInstance().render.get()->camera.y = (-player->position.getY() * camSpeed) + Engine::GetInstance().window.get()->height / 2;
+		}
+	}
+	else if (debugCamera) {
+		float camSpeed = 1;
+
+		if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		Engine::GetInstance().render.get()->camera.y += ceil(camSpeed * dt);
+
+		if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		Engine::GetInstance().render.get()->camera.y -= ceil(camSpeed * dt);
+
+		if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		Engine::GetInstance().render.get()->camera.x += ceil(camSpeed * dt);
+
+		if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		Engine::GetInstance().render.get()->camera.x -= ceil(camSpeed * dt);
+	}
+
+	if (fpsTo30) {
+		
+	}
+
 	if (player->isDead)
 	{	//en un futuro habra que poner la camara en las posiciones de los checkpoints
 		DelayTimeCamera();
@@ -92,7 +120,9 @@ bool Scene::Update(float dt)
 		}
 
 	}
+
 	return true;
+	
 	//L03 TODO 3: Make the camera movement independent of framerate
 	//float camSpeed = 1;
 

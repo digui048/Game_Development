@@ -62,6 +62,8 @@ public:
 
 	float respawnDelayCam = 3.0f;
 	float deathTimeCam = 0.0f;
+	bool debugCamera = false;
+	bool fpsTo30 = false;
 
 private:
 	SDL_Texture* img;
