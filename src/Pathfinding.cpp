@@ -206,6 +206,25 @@ int Pathfinding::MovementCost(int x, int y)
 
 void Pathfinding::ComputePath(int x, int y)
 {
+	// Clear the pathTiles list
+	pathTiles.clear();
+	// Save the position received and stored in the current tile
+	Vector2D currentTile = Vector2D(x, y);
+	// Add the current tile to the pathTiles list
+	pathTiles.push_back(currentTile);
+	// Find the position of the current tile in the visited list
+	int index = Find(visited, currentTile);
+
+	// While the current tile and breadcrumbs are different it means that we have not reached the starting point
+	while ((index >= 0) && (currentTile != breadcrumbs[index]))
+	{
+		// Update the current tile with the breadcrumb
+		currentTile = breadcrumbs[index];
+		// Add the current tile to the pathTiles list
+		pathTiles.push_back(currentTile);
+		// Find the position of the current tile in the visited list
+		index = Find(visited, currentTile);
+	}
 }
 
 void Pathfinding::PropagateDijkstra()
@@ -267,9 +286,92 @@ void Pathfinding::PropagateDijkstra()
 
 void Pathfinding::PropagateAStar(ASTAR_HEURISTICS heuristic)
 {
+	// Check if we have reached the destination
+	bool foundDestination = false;
+	if (frontierAStar.size() > 0)
+	{
+		Vector2D frontierTile = frontierAStar.top().second;
+		Vector2D playerPos = Engine::GetInstance().scene.get()->GetPlayerPosition();
+		Vector2D playerPosTile = Engine::GetInstance().map.get()->WorldToMap((int)playerPos.getX(), (int)playerPos.getY());
+
+		if (frontierTile == playerPosTile)
+		{
+			foundDestination = true;
+
+			// Compute the path
+			ComputePath(frontierTile.getX(), frontierTile.getY());
+		}
+	}
+
+	// if frontier queue contains elements pop the first element and find the neighbours
+	if (!foundDestination && !frontierAStar.empty())
+	{
+		Vector2D currentTile = frontierAStar.top().second;
+		frontierAStar.pop();
+
+		// Get the neighbours of the current tile
+		std::vector<Vector2D> neighbours;
+		if (IsWalkable(currentTile.getX() + 1, currentTile.getY())) {
+			neighbours.push_back(Vector2D((int)currentTile.getX() + 1, (int)currentTile.getY()));
+		}
+		if (IsWalkable(currentTile.getX() - 1, currentTile.getY())) {
+			neighbours.push_back(Vector2D((int)currentTile.getX() - 1, (int)currentTile.getY()));
+		}
+		if (IsWalkable(currentTile.getX(), currentTile.getY() + 1)) {
+			neighbours.push_back(Vector2D((int)currentTile.getX(), (int)currentTile.getY() + 1));
+		}
+		if (IsWalkable(currentTile.getX(), currentTile.getY() - 1)) {
+			neighbours.push_back(Vector2D((int)currentTile.getX(), (int)currentTile.getY() - 1));
+		}
+
+		// Iterate the neighbours
+		for (const auto& neighbour : neighbours)
+		{
+			int cost = costSoFar[(int)currentTile.getX()][(int)currentTile.getY()] + MovementCost((int)neighbour.getX(), (int)neighbour.getY());
+			// estimated movement cost from the current tile to the destination tile
+			int heuristicCost = 0;
+
+			switch (heuristic)
+			{
+			case::MANHATTAN:
+				heuristicCost = abs(neighbour.getX() - destination.getX()) + abs(neighbour.getY() - destination.getY());
+				break;
+			case::EUCLIDEAN:
+				heuristicCost = sqrt(pow(neighbour.getX() - destination.getX(), 2) + pow(neighbour.getY() - destination.getY(), 2));
+				break;
+			case::SQUARED:
+				heuristicCost = pow(neighbour.getX() - destination.getX(), 2) + pow(neighbour.getY() - destination.getY(), 2);
+				break;
+			}
+
+			// A* Priority function
+			int priority = cost + heuristicCost;
+
+			if (std::find(visited.begin(), visited.end(), neighbour) == visited.end() || cost < costSoFar[neighbour.getX()][neighbour.getY()])
+			{
+				// Add the neighbour to the frontier and visited list
+				costSoFar[neighbour.getX()][neighbour.getY()] = cost;
+				frontierAStar.push(std::make_pair(priority, neighbour));
+				visited.push_back(neighbour);
+				breadcrumbs.push_back(currentTile);
+			}
+		}
+	}
 }
 
 int Pathfinding::Find(std::vector<Vector2D> vector, Vector2D elem)
 {
-	return 0;
+	int index = 0;
+	bool found = false;
+	
+	for (const auto& e : vector) {
+		if (e == elem) {
+			found = true;
+			break;
+		}
+		index++;
+	}
+
+	if (found) return index;
+	else return -1;
 }
