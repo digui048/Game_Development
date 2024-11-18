@@ -34,6 +34,8 @@ public:
 		this->parameters = parameters;
 	}
 
+	Vector2D GetPosition() const;
+
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
 	void TestWall(PhysBody* physA, PhysBody* physB);

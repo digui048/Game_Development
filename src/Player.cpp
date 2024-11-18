@@ -354,6 +354,13 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	}
 }
 
+Vector2D Player::GetPosition() const
+{
+	b2Vec2 bodyPos = pbody->body->GetTransform().p;
+	Vector2D pos = Vector2D(METERS_TO_PIXELS(bodyPos.x), METERS_TO_PIXELS(bodyPos.y));
+	return pos;
+}
+
 void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 {
 	switch (physB->ctype)

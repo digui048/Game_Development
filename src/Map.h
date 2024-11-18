@@ -4,6 +4,12 @@
 #include <list>
 #include <vector>
 
+enum MapOrientation
+{
+    ORTOGRAPHIC = 0,
+    ISOMETRIC
+};
+
 // L09: TODO 5: Add attributes to the property structure
 struct Properties
 {
@@ -109,6 +115,7 @@ struct MapData
     // L07: TODO 2: Add the info to the MapLayer Struct
     std::list<MapLayer*> layers;
 
+    MapOrientation orientation;
     std::list<MapObjectGroup*> object_groups;
 };
 
@@ -139,11 +146,21 @@ public:
     // L07: TODO 8: Create a method that translates x,y coordinates from map positions to world positions
     Vector2D MapToWorld(int x, int y) const;
 
+	Vector2D WorldToMap(int x, int y) const;
     // L09: TODO 2: Implement function to the Tileset based on a tile id
     TileSet* GetTilesetFromTileId(int gid) const;
 
     // L09: TODO 6: Load a group of properties 
     bool LoadProperties(pugi::xml_node& node, Properties& properties);
+
+    // Returns the layer navigation
+	MapLayer* GetNavigationLayer();
+
+    // Getters
+	int GetWidth() const;
+	int GetHeight() const;
+	int GetTileWidth() const;
+	int GetTileHeight() const;
 
 
 public: 

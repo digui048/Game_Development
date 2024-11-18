@@ -47,6 +47,10 @@ Vector2D Vector2D::operator/(float scalar) const {
     return Vector2D(x / scalar, y / scalar);
 }
 
+bool Vector2D::operator==(const Vector2D& other) const {
+    return x == other.x && y == other.y;
+}
+
 // Output stream operator
 std::ostream& operator<<(std::ostream& os, const Vector2D& vec) {
     os << "(" << vec.x << ", " << vec.y << ")";

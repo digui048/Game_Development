@@ -62,6 +62,11 @@ void Scene::DelayTimeCamera() {
 	deathTimeCam += 0.031f;
 }
 
+Vector2D Scene::GetPlayerPosition()
+{
+	return player->GetPosition();
+}
+
 
 // Called each loop iteration
 bool Scene::Update(float dt)
