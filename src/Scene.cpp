@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Log.h"
 #include "Entity.h"
+#include "Enemy.h"
 #include "EntityManager.h"
 #include "Player.h"
 #include "Map.h"
@@ -31,12 +32,20 @@ bool Scene::Awake()
 	bool ret = true;
 
 	//L04: TODO 3b: Instantiate the player using the entity manager
-	player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER, View::RIGHT);
+	player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
 	player->SetParameters(configParameters.child("entities").child("player"));
 
 	//L08 Create a new item using the entity manager and set the position to (200, 672) to test
-	Item* item = (Item*) Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM, View::RIGHT);
+	Item* item = (Item*) Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
 	item->position = Vector2D(900, 0);
+
+	// Create a enemy using the entity manager 
+	for (pugi::xml_node enemyNode = configParameters.child("entities").child("enemies").child("enemy"); enemyNode; enemyNode = enemyNode.next_sibling("enemy"))
+	{
+		Enemy* enemy = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
+		enemy->SetParameters(enemyNode);
+	}
+
 	return ret;
 }
 
@@ -66,7 +75,6 @@ Vector2D Scene::GetPlayerPosition()
 {
 	return player->GetPosition();
 }
-
 
 // Called each loop iteration
 bool Scene::Update(float dt)

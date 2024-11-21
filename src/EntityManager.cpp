@@ -63,7 +63,7 @@ bool EntityManager::CleanUp()
 	return ret;
 }
 
-Entity* EntityManager::CreateEntity(EntityType type, View look)
+Entity* EntityManager::CreateEntity(EntityType type)
 {
 	Entity* entity = nullptr;
 	

@@ -103,7 +103,7 @@ bool Enemy::CleanUp()
 	return true;
 }
 
-void Enemy::SetParamaters(pugi::xml_node parameters)
+void Enemy::SetParameters(pugi::xml_node parameters)
 {
 	this->parameters = parameters;
 }

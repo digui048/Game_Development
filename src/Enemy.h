@@ -21,7 +21,7 @@ public:
 
 	bool CleanUp();
 
-	void SetParamaters(pugi::xml_node parameters);
+	void SetParameters(pugi::xml_node parameters);
 
 	void SetPosition(Vector2D position);
 
