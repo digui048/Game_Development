@@ -24,12 +24,12 @@ public:
 	void SetParameters(pugi::xml_node parameters);
 
 	void SetPosition(Vector2D position);
+	
+	void ResetPath();
 
 	Vector2D GetPosition() const;
 
 private:
-
-	void ResetPath();
 	
 	SDL_Texture* texture;			// Texture of the enemy
 	const char* texturePath;		// Path to the texture

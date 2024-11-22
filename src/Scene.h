@@ -2,7 +2,9 @@
 
 #include "Module.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "Log.h"
+#include <vector>
 
 struct SDL_Texture;
 
@@ -69,11 +71,19 @@ public:
 	int helpmenuWidth;
 	int helpmenuHeight;
 
+	// Get tilePosDebug value
+	std::string GetTilePosDebug() {
+		return tilePosDebug;
+	}
+
 private:
+	SDL_Texture* mouseTileTex = nullptr;
 	SDL_Texture* img;
 	SDL_Texture* helpmenu;
 	//L03: TODO 3b: Declare a Player attribute
 	Player* player;
-
+	std::vector<Enemy*> enemyList;
 	Camera* camera;
+	std::string tilePosDebug = "[0,0]";
+	bool once = false;
 };

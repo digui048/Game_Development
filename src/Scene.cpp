@@ -44,6 +44,7 @@ bool Scene::Awake()
 	{
 		Enemy* enemy = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
 		enemy->SetParameters(enemyNode);
+		enemyList.push_back(enemy);
 	}
 
 	return ret;
@@ -79,6 +80,11 @@ Vector2D Scene::GetPlayerPosition()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	//Get mouse position and obtain the map coordinate
+	Vector2D mousePos = Engine::GetInstance().input.get()->GetMousePosition();
+	printf("Mouse Position: %f, %f\n", mousePos.getX(), mousePos.getY());
+	Vector2D mouseTile = Engine::GetInstance().map.get()->WorldToMap(mousePos.getX() - Engine::GetInstance().render.get()->camera.x, mousePos.getY() - Engine::GetInstance().render.get()->camera.y);
+
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 		player->godMode = !player->godMode;
 	}
@@ -154,6 +160,23 @@ bool Scene::Update(float dt)
 			deathTimeCam = 0.0f;
 		}
 
+	}
+
+	//Render a texture where the mouse is over to highlight the tile, use the texture 'mouseTileTex'
+	Vector2D highlightTile = Engine::GetInstance().map.get()->MapToWorld(mouseTile.getX(), mouseTile.getY());
+	SDL_Rect rect = { 0,0,32,32 };
+	Engine::GetInstance().render.get()->DrawTexture(mouseTileTex, highlightTile.getX(), highlightTile.getY(), &rect);
+
+	// saves the tile pos for debugging purposes
+	if (mouseTile.getX() >= 0 && mouseTile.getY() >= 0 || once) {
+		tilePosDebug = "[" + std::to_string((int)mouseTile.getX()) + "," + std::to_string((int)mouseTile.getY()) + "] ";
+		once = true;
+	}
+
+	//If mouse button is pressed modify enemy position
+	if (Engine::GetInstance().input.get()->GetMouseButtonDown(1) == KEY_DOWN) {
+		enemyList[0]->SetPosition(Vector2D(highlightTile.getX(), highlightTile.getY()));
+		enemyList[0]->ResetPath();
 	}
 	
 	//L03 TODO 3: Make the camera movement independent of framerate
