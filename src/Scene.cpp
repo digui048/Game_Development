@@ -107,13 +107,13 @@ bool Scene::Update(float dt)
 	}
 	if (!debugCamera) {
 		float camSpeed = Engine::GetInstance().window.get()->scale;
-		float smoothFactor = 0.1f; // Adjust this value to control the smoothness
+		float smoothFactor = 0.1f; // smoothness
 
-		// Calculate the target camera position
+		// target camera position
 		float targetCamX = (-player->position.getX() * camSpeed) + Engine::GetInstance().window.get()->width / 2;
 		float targetCamY = (-player->position.getY() * camSpeed) + Engine::GetInstance().window.get()->height / 2;
 
-		// Interpolate the camera position towards the target position
+		// camera position towards the target position
 		Engine::GetInstance().render.get()->camera.x += (targetCamX - Engine::GetInstance().render.get()->camera.x) * smoothFactor;
 		Engine::GetInstance().render.get()->camera.y += (targetCamY - Engine::GetInstance().render.get()->camera.y) * smoothFactor;
 	}
