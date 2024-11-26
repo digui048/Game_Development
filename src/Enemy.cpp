@@ -82,6 +82,13 @@ bool Enemy::Update(float dt)
 		Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
 		pathfinding->PropagateAStar(SQUARED);
 	}
+	
+	// Reset the path
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+		Vector2D pos = GetPosition();
+		Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
+		pathfinding->ResetPath(tilePos);
+	}
 
 	// Update the enemy position
 	// L08 TODO 4: Add a physics to an item - update the position of the object from the physics.  
