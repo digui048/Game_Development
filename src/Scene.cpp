@@ -56,6 +56,7 @@ bool Scene::Start()
 	//L06 TODO 3: Call the function to load the map. 
 	Engine::GetInstance().map->Load(configParameters.child("map").attribute("path").as_string(), configParameters.child("map").attribute("name").as_string());
 	helpmenu = Engine::GetInstance().textures.get()->Load("Assets/Textures/helpMenu.png");
+	mouseTileTex = Engine::GetInstance().textures.get()->Load("Assets/Textures/mouse_tile.png");
 	SDL_QueryTexture(helpmenu, NULL, NULL, &helpmenuWidth, &helpmenuHeight);
 	return true;
 }
@@ -82,8 +83,10 @@ bool Scene::Update(float dt)
 {
 	//Get mouse position and obtain the map coordinate
 	Vector2D mousePos = Engine::GetInstance().input.get()->GetMousePosition();
-	printf("Mouse Position: %f, %f\n", mousePos.getX(), mousePos.getY());
+	/*printf("Mouse Position: %f, %f\n", mousePos.getX(), mousePos.getY());*/
 	Vector2D mouseTile = Engine::GetInstance().map.get()->WorldToMap(mousePos.getX() - Engine::GetInstance().render.get()->camera.x, mousePos.getY() - Engine::GetInstance().render.get()->camera.y);
+	Vector2D highlightTile = Engine::GetInstance().map.get()->MapToWorld(mouseTile.getX(), mouseTile.getY());
+	SDL_Rect rect = { 0,0,32,32 };
 
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 		player->godMode = !player->godMode;
@@ -97,6 +100,9 @@ bool Scene::Update(float dt)
 	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_H) == KEY_DOWN) {
 		helpMenu = !helpMenu;
 		player->menu = !player->menu;
+	}
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F7) == KEY_DOWN) {
+		enemDebug = !enemDebug;
 	}
 	if (fpsTo30) {
 		Engine::GetInstance().FPSCapto(32);
@@ -163,20 +169,21 @@ bool Scene::Update(float dt)
 	}
 
 	//Render a texture where the mouse is over to highlight the tile, use the texture 'mouseTileTex'
-	Vector2D highlightTile = Engine::GetInstance().map.get()->MapToWorld(mouseTile.getX(), mouseTile.getY());
-	SDL_Rect rect = { 0,0,32,32 };
-	Engine::GetInstance().render.get()->DrawTexture(mouseTileTex, highlightTile.getX(), highlightTile.getY(), &rect);
+	if(enemDebug)
+	{
+		Engine::GetInstance().render.get()->DrawTexture(mouseTileTex, highlightTile.getX(), highlightTile.getY(), &rect);
+		
+		//If mouse button is pressed modify enemy position
+		if (Engine::GetInstance().input.get()->GetMouseButtonDown(1) == KEY_DOWN) {
+			enemyList[0]->SetPosition(Vector2D(highlightTile.getX(), highlightTile.getY()));
+			enemyList[0]->ResetPath();
+		}
+	}
 
 	// saves the tile pos for debugging purposes
 	if (mouseTile.getX() >= 0 && mouseTile.getY() >= 0 || once) {
 		tilePosDebug = "[" + std::to_string((int)mouseTile.getX()) + "," + std::to_string((int)mouseTile.getY()) + "] ";
 		once = true;
-	}
-
-	//If mouse button is pressed modify enemy position
-	if (Engine::GetInstance().input.get()->GetMouseButtonDown(1) == KEY_DOWN) {
-		enemyList[0]->SetPosition(Vector2D(highlightTile.getX(), highlightTile.getY()));
-		enemyList[0]->ResetPath();
 	}
 	
 	//L03 TODO 3: Make the camera movement independent of framerate
