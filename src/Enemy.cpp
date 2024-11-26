@@ -84,9 +84,10 @@ bool Enemy::Update(float dt)
 	}
 
 	// Update the enemy position
-	b2Transform transform = pbody->body->GetTransform();
-	position.setX(transform.p.x - texW / 2);
-	position.setY(transform.p.y - texH / 2);
+	// L08 TODO 4: Add a physics to an item - update the position of the object from the physics.  
+	b2Transform pbodyPos = pbody->body->GetTransform();
+	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
+	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
 
 	// Draw the enemy
 	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnim->GetCurrentFrame());
