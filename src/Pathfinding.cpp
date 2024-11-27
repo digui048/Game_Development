@@ -287,12 +287,13 @@ void Pathfinding::PropagateDijkstra()
 void Pathfinding::PropagateAStar(ASTAR_HEURISTICS heuristic)
 {
 	// Check if we have reached the destination
+	Vector2D playerPos = Engine::GetInstance().scene.get()->GetPlayerPosition();
+	Vector2D playerPosTile = Engine::GetInstance().map.get()->WorldToMap((int)playerPos.getX(), (int)playerPos.getY());
+	
 	bool foundDestination = false;
 	if (frontierAStar.size() > 0)
 	{
 		Vector2D frontierTile = frontierAStar.top().second;
-		Vector2D playerPos = Engine::GetInstance().scene.get()->GetPlayerPosition();
-		Vector2D playerPosTile = Engine::GetInstance().map.get()->WorldToMap((int)playerPos.getX(), (int)playerPos.getY());
 
 		if (frontierTile == playerPosTile)
 		{
