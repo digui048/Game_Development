@@ -83,8 +83,9 @@ bool Scene::Update(float dt)
 {
 	//Get mouse position and obtain the map coordinate
 	Vector2D mousePos = Engine::GetInstance().input.get()->GetMousePosition();
-	/*printf("Mouse Position: %f, %f\n", mousePos.getX(), mousePos.getY());*/
-	Vector2D mouseTile = Engine::GetInstance().map.get()->WorldToMap(mousePos.getX() - Engine::GetInstance().render.get()->camera.x, mousePos.getY() - Engine::GetInstance().render.get()->camera.y);
+	Vector2D mouseTile = Engine::GetInstance().map.get()->WorldToMap(mousePos.getX() - Engine::GetInstance().render.get()->camera.x / Engine::GetInstance().window.get()->GetScale(),
+																	 mousePos.getY() - Engine::GetInstance().render.get()->camera.y / Engine::GetInstance().window.get()->GetScale());
+	//Get the tile position in the map
 	Vector2D highlightTile = Engine::GetInstance().map.get()->MapToWorld(mouseTile.getX(), mouseTile.getY());
 	SDL_Rect rect = { 0,0,32,32 };
 
