@@ -90,8 +90,35 @@ bool Enemy::Update(float dt)
 		pathfinding->ResetPath(tilePos);
 	}
 
+	ResetPath();
+	while (pathfinding->pathTiles.empty())
+	{
+		pathfinding->PropagateAStar(SQUARED);
+	}
+
+	// Move towards the next tile in the path
+	if (!pathfinding->pathTiles.empty()) {
+		Vector2D nextTile = pathfinding->pathTiles.front();
+		Vector2D nextTileWorldPos = Engine::GetInstance().map.get()->MapToWorld(nextTile.getX(), nextTile.getY());
+		Vector2D direction = nextTileWorldPos - GetPosition();
+
+		if (direction.magnitude() > 1.0f) {
+			direction = direction.normalized();
+			b2Vec2 velocity = b2Vec2(direction.getX(), pbody->body->GetLinearVelocity().y);
+			pbody->body->SetLinearVelocity(velocity);
+		}
+		else {
+			// Reached the next tile, remove it from the path
+			pathfinding->pathTiles.pop_front();
+		}
+	}
+	else {
+		// Stop the enemy if there are no more tiles in the path
+		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
+	}
+
 	// Update the enemy position
-	// L08 TODO 4: Add a physics to an item - update the position of the object from the physics.  
+	// L08 TODO 4: Add a physics to an item - update the position of the object from the physics.
 	b2Transform pbodyPos = pbody->body->GetTransform();
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
@@ -137,6 +164,94 @@ void Enemy::ResetPath()
 	pathfinding->ResetPath(tilePos);
 }
 
+void Enemy::Walk()
+{
+	if (look == View::LEFT)
+	{
+		currentAnim = &walk_left;
+	}
+	else if (look == View::RIGHT)
+	{
+		currentAnim = &walk_right;
+	}
+
+	state = State::RUN;
+}
+
+void Enemy::Idle()
+{
+	if (look == View::LEFT)
+	{
+		currentAnim = &idle_left;
+	}
+	else if (look == View::RIGHT)
+	{
+		currentAnim = &idle_right;
+	}
+
+	state = State::IDLE;
+}
+
+void Enemy::Alert()
+{
+	if (look == View::LEFT)
+	{
+		currentAnim = &alert_left;
+	}
+	else if (look == View::RIGHT)
+	{
+		currentAnim = &alert_right;
+	}
+
+	state = State::IDLE;
+}
+
+bool Enemy::isAlert()
+{
+	return isAlerted;
+}
+
+void Enemy::Attack()
+{
+	if (look == View::LEFT)
+	{
+		currentAnim = &attack_left;
+	}
+	else if (look == View::RIGHT)
+	{
+		currentAnim = &attack_right;
+	}
+
+	state = State::IDLE;
+}
+
+void Enemy::Hit()
+{
+	if (look == View::LEFT)
+	{
+		currentAnim = &hit_left;
+	}
+	else if (look == View::RIGHT)
+	{
+		currentAnim = &hit_right;
+	}
+
+	state = State::IDLE;
+}
+
+void Enemy::Death()
+{
+	if (look == View::LEFT)
+	{
+		currentAnim = &death_left;
+	}
+	else if (look == View::RIGHT)
+	{
+		currentAnim = &death_right;
+	}
+
+	state = State::IDLE;
+}
 
 
 

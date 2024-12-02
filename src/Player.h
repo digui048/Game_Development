@@ -16,10 +16,6 @@ enum class PlayerAnim {
 	NUM_ANIMATIONS
 };
 
-enum class State {
-	IDLE, RUN, JUMP, FALL, DIE
-};
-
 class Player : public Entity
 {
 public:
@@ -41,8 +37,6 @@ public:
 	void TestWall(PhysBody* physA, PhysBody* physB);
 
 	void TestPlatform(PhysBody* physA, PhysBody* physB);
-
-	void TestSpike(PhysBody* physA, PhysBody* physB);
 
 	bool Start();
 
@@ -102,7 +96,7 @@ public:
 	State state;
 
 	pugi::xml_node parameters;
-	Animation* currentAnimation = nullptr;
+	Animation* currentAnimation = nullptr;		
 	Animation idle_left;
 	Animation idle_right;
 	Animation run_left;

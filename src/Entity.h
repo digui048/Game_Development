@@ -17,6 +17,10 @@ enum class View {
 	RIGHT
 };
 
+enum class State {
+	IDLE, RUN, JUMP, FALL, DIE
+};
+
 class PhysBody;
 
 class Entity
