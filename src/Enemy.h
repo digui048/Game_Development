@@ -48,7 +48,7 @@ private:
 	const char* texturePath;		// Path to the texture
 	int texW, texH;					// Texture width and height
 	pugi::xml_node parameters;		// Parameters of the enemy
-	bool isAlerted;					// Check if the enemy is alerted
+	bool isAlerted = false;			// Check if the enemy is alerted
 	Animation* currentAnim;			// Current animation
 	Animation idleAnim;				// Idle animation
 	PhysBody* pbody;				// Physics body of the enemy

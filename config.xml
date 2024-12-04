@@ -115,21 +115,76 @@
       </player>
 	  <enemies>
 	    <enemy name="badguy" x="448" y="350" w="32" h="32" texture="Assets/Textures/enemy/Skeleton_Idle.png" gravity="true">
-		  <animations>
-		    <idle loop="true" speed ="0.2">
-			  <frame x="0" y="0" w="24" h="32"/>
-			  <frame x="24" y="0" w="24" h="32"/>
-			  <frame x="48" y="0" w="24" h="32"/>
-		   	  <frame x="72" y="0" w="24" h="32"/>
-			  <frame x="96" y="0" w="24" h="32"/>
-			  <frame x="120" y="0" w="24" h="32"/>
-			  <frame x="144" y="0" w="24" h="32"/>
-			  <frame x="168" y="0" w="24" h="32"/>
-			  <frame x="192" y="0" w="24" h="32"/>
-			  <frame x="216" y="0" w="24" h="32"/>
-			  <frame x="240" y="0" w="24" h="32"/>
-			</idle>
-		  </animations>
+			<animations>
+				<idle_right loop="true" speed ="0.2">
+					<frame x="0" y="0" w="24" h="32"/>
+					<frame x="24" y="0" w="24" h="32"/>
+					<frame x="48" y="0" w="24" h="32"/>
+					<frame x="72" y="0" w="24" h="32"/>
+					<frame x="96" y="0" w="24" h="32"/>
+					<frame x="120" y="0" w="24" h="32"/>
+					<frame x="144" y="0" w="24" h="32"/>
+					<frame x="168" y="0" w="24" h="32"/>
+					<frame x="192" y="0" w="24" h="32"/>
+					<frame x="216" y="0" w="24" h="32"/>
+					<frame x="240" y="0" w="24" h="32"/>
+				</idle_right>
+				<idle_left loop ="true" speed ="0.2">
+					<frame x="0" y="32" w="24" h="32"/>
+					<frame x="24" y="32" w="24" h="32"/>
+					<frame x="48" y="32" w="24" h="32"/>
+					<frame x="72" y="32" w="24" h="32"/>
+					<frame x="96" y="32" w="24" h="32"/>
+					<frame x="120" y="32" w="24" h="32"/>
+					<frame x="144" y="32" w="24" h="32"/>
+					<frame x="168" y="32" w="24" h="32"/>
+					<frame x="192" y="32" w="24" h="32"/>
+					<frame x="216" y="32" w="24" h="32"/>
+					<frame x="240" y="32" w="24" h="32"/>
+				</idle_left>
+				<alert_right loop ="true" speed ="0.2">
+					<frame x="0" y="64" w="24" h="32"/>
+					<frame x="24" y="64" w="24" h="32"/>
+					<frame x="48" y="64" w="24" h="32"/>
+					<frame x="72" y="64" w="24" h="32"/>
+				</alert_right>
+				<alert_left loop ="true" speed ="0.2">
+					<frame x="0" y="96" w="24" h="32"/>
+					<frame x="24" y="96" w="24" h="32"/>
+					<frame x="48" y="96" w="24" h="32"/>
+					<frame x="72" y="96" w="24" h="32"/>
+				</alert_left>
+				<walk_left loop ="true" speed ="0.2">
+					<frame x="0" y="128" w="24" h="32"/>
+					<frame x="24" y="128" w="24" h="32"/>
+					<frame x="48" y="128" w="24" h="32"/>
+					<frame x="72" y="128" w="24" h="32"/>
+					<frame x="96" y="128" w="24" h="32"/>
+					<frame x="120" y="128" w="24" h="32"/>
+					<frame x="144" y="128" w="24" h="32"/>
+					<frame x="168" y="128" w="24" h="32"/>
+					<frame x="192" y="128" w="24" h="32"/>
+					<frame x="216" y="128" w="24" h="32"/>
+					<frame x="240" y="128" w="24" h="32"/>
+					<frame x="264" y="128" w="24" h="32"/>
+					<frame x="288" y="128" w="24" h="32"/>
+				</walk_left>
+				<walk_right loop ="true" speed ="0.2">
+					<frame x="0" y="160" w="24" h="32"/>
+					<frame x="24" y="160" w="24" h="32"/>
+					<frame x="48" y="160" w="24" h="32"/>
+					<frame x="72" y="160" w="24" h="32"/>
+					<frame x="96" y="160" w="24" h="32"/>
+					<frame x="120" y="160" w="24" h="32"/>
+					<frame x="144" y="160" w="24" h="32"/>
+					<frame x="168" y="160" w="24" h="32"/>
+					<frame x="192" y="160" w="24" h="32"/>
+					<frame x="216" y="160" w="24" h="32"/>
+					<frame x="240" y="160" w="24" h="32"/>
+					<frame x="264" y="160" w="24" h="32"/>
+					<frame x="288" y="160" w="24" h="32"/>
+				</walk_right>
+			</animations>
 		</enemy>
 	  </enemies>
     

@@ -35,7 +35,18 @@ bool Enemy::Start()
 
 	// Load animations
 	idleAnim.LoadAnimations(parameters.child("animations").child("idle"));
-	currentAnim = &idleAnim;
+	walk_left.LoadAnimations(parameters.child("animations").child("walk_left"));
+	walk_right.LoadAnimations(parameters.child("animations").child("walk_right"));
+	alert_left.LoadAnimations(parameters.child("animations").child("alert_left"));
+	alert_right.LoadAnimations(parameters.child("animations").child("alert_right"));
+	attack_left.LoadAnimations(parameters.child("animations").child("attack_left"));
+	attack_right.LoadAnimations(parameters.child("animations").child("attack_right"));
+	hit_left.LoadAnimations(parameters.child("animations").child("hit_left"));
+	hit_right.LoadAnimations(parameters.child("animations").child("hit_right"));
+	death_left.LoadAnimations(parameters.child("animations").child("death_left"));
+	death_right.LoadAnimations(parameters.child("animations").child("death_right"));
+
+	currentAnim = &walk_right;
 
 	// Add a physics body to the enemy - initialise the physics body
 	pbody = Engine::GetInstance().physics->CreateCircle((int)position.getX() + texW / 2, (int)position.getY() + texH / 2, texH / 2, bodyType::DYNAMIC);
@@ -82,7 +93,7 @@ bool Enemy::Update(float dt)
 		Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
 		pathfinding->PropagateAStar(SQUARED);
 	}
-	
+
 	// Reset the path
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
 		Vector2D pos = GetPosition();
@@ -96,38 +107,46 @@ bool Enemy::Update(float dt)
 		pathfinding->PropagateAStar(SQUARED);
 	}
 
-	// Get the distance between the player and the enemy
-	float dx = abs(Engine::GetInstance().scene.get()->GetPlayerPosition().getX() - GetPosition().getX());
+	//// Get the absolute distance between the player and the enemy
+	//float dx = abs(Engine::GetInstance().scene.get()->GetPlayerPosition().getX() - GetPosition().getX());
+	//// Get the real distance between the player and the enemy
+	//float dx_ = Engine::GetInstance().scene.get()->GetPlayerPosition().getX() - GetPosition().getX();
 
-	// Move towards the next tile in the path if is alerted
-	if (!pathfinding->pathTiles.empty() && isAlert()) {
-		Vector2D nextTile = pathfinding->pathTiles.front();
-		Vector2D nextTileWorldPos = Engine::GetInstance().map.get()->MapToWorld(nextTile.getX(), nextTile.getY());
-		Vector2D direction = nextTileWorldPos - GetPosition();
+	//// Move towards the next tile in the path if is alerted
+	//if (!pathfinding->pathTiles.empty() && isAlert()) {
+	//	// Get the next tile in the path
+	//	Vector2D nextTile = pathfinding->pathTiles.front();
+	//	Vector2D nextTileWorldPos = Engine::GetInstance().map.get()->MapToWorld(nextTile.getX(), nextTile.getY());
+	//	Vector2D direction = nextTileWorldPos - GetPosition();
 
-		if (direction.magnitude() > 1.0f) {
-			direction = direction.normalized();
-			b2Vec2 velocity = b2Vec2(direction.getX(), pbody->body->GetLinearVelocity().y);
-			pbody->body->SetLinearVelocity(velocity);
-		}
-		else {
-			// Reached the next tile, remove it from the path
-			pathfinding->pathTiles.pop_front();
-		}
+	//	// Move the enemy
+	//	if (direction.magnitude() > 1.0f) {
+	//		direction = direction.normalized();
+	//		b2Vec2 velocity = b2Vec2(direction.getX(), pbody->body->GetLinearVelocity().y);
+	//		pbody->body->SetLinearVelocity(velocity);
+	//		if (!isAlert()) Idle();
+	//		else Walk();
+	//	}
+	//	else {
+	//		// Reached the next tile, remove it from the path
+	//		pathfinding->pathTiles.pop_front();
+	//	}
 
-		if (dx > 300) {
-			isAlerted = false;
-		}
-	}
-	// Stop the enemy if is not alerted
-	else if (!isAlert()) {
-		// if player is near the enemy, alert the enemy
-		if(dx < 150) {
-			isAlerted = true;
-		}
-		// Stop the enemy
-		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
-	}
+	//	if (dx > 300) {
+	//		isAlerted = false;
+	//		Idle();
+	//	}
+	//}
+	//else if (!isAlert()) {
+	//	// if player is near the enemy, alert the enemy
+	//	if (dx < 150) {
+	//		isAlerted = true;
+	//	}
+	//	// Stop the enemy
+	//	pbody->body->SetLinearVelocity(b2Vec2(0, 0));
+	//}
+
+
 
 	// Update the enemy position
 	// L08 TODO 4: Add a physics to an item - update the position of the object from the physics.
@@ -140,8 +159,9 @@ bool Enemy::Update(float dt)
 	currentAnim->Update();
 
 	// Draw the path
-	pathfinding->DrawPath();
-
+	if (Engine::GetInstance().scene.get()->enemDebug) {
+		pathfinding->DrawPath();
+	}
 	return true;
 }
 
@@ -180,10 +200,12 @@ void Enemy::Walk()
 {
 	if (look == View::LEFT)
 	{
+		LOG("Walk left");
 		currentAnim = &walk_left;
 	}
 	else if (look == View::RIGHT)
 	{
+		LOG("Walk right");
 		currentAnim = &walk_right;
 	}
 
@@ -194,10 +216,12 @@ void Enemy::Idle()
 {
 	if (look == View::LEFT)
 	{
+		LOG("Idle left");
 		currentAnim = &idle_left;
 	}
 	else if (look == View::RIGHT)
 	{
+		LOG("Idle right");
 		currentAnim = &idle_right;
 	}
 
@@ -208,10 +232,12 @@ void Enemy::Alert()
 {
 	if (look == View::LEFT)
 	{
+		LOG("Alert left");
 		currentAnim = &alert_left;
 	}
 	else if (look == View::RIGHT)
 	{
+		LOG("Alert right");
 		currentAnim = &alert_right;
 	}
 
@@ -227,10 +253,12 @@ void Enemy::Attack()
 {
 	if (look == View::LEFT)
 	{
+		LOG("Attack left");
 		currentAnim = &attack_left;
 	}
 	else if (look == View::RIGHT)
 	{
+		LOG("Attack right");
 		currentAnim = &attack_right;
 	}
 
@@ -241,10 +269,12 @@ void Enemy::Hit()
 {
 	if (look == View::LEFT)
 	{
+		LOG("Hit left");
 		currentAnim = &hit_left;
 	}
 	else if (look == View::RIGHT)
 	{
+		LOG("Hit right");
 		currentAnim = &hit_right;
 	}
 
@@ -255,10 +285,12 @@ void Enemy::Death()
 {
 	if (look == View::LEFT)
 	{
+		LOG("Death left");
 		currentAnim = &death_left;
 	}
 	else if (look == View::RIGHT)
 	{
+		LOG("Death right");
 		currentAnim = &death_right;
 	}
 
