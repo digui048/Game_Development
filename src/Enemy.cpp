@@ -96,8 +96,11 @@ bool Enemy::Update(float dt)
 		pathfinding->PropagateAStar(SQUARED);
 	}
 
-	// Move towards the next tile in the path
-	if (!pathfinding->pathTiles.empty()) {
+	// Get the distance between the player and the enemy
+	float dx = abs(Engine::GetInstance().scene.get()->GetPlayerPosition().getX() - GetPosition().getX());
+
+	// Move towards the next tile in the path if is alerted
+	if (!pathfinding->pathTiles.empty() && isAlert()) {
 		Vector2D nextTile = pathfinding->pathTiles.front();
 		Vector2D nextTileWorldPos = Engine::GetInstance().map.get()->MapToWorld(nextTile.getX(), nextTile.getY());
 		Vector2D direction = nextTileWorldPos - GetPosition();
@@ -111,9 +114,18 @@ bool Enemy::Update(float dt)
 			// Reached the next tile, remove it from the path
 			pathfinding->pathTiles.pop_front();
 		}
+
+		if (dx > 300) {
+			isAlerted = false;
+		}
 	}
-	else {
-		// Stop the enemy if there are no more tiles in the path
+	// Stop the enemy if is not alerted
+	else if (!isAlert()) {
+		// if player is near the enemy, alert the enemy
+		if(dx < 150) {
+			isAlerted = true;
+		}
+		// Stop the enemy
 		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 	}
 
