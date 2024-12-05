@@ -142,13 +142,13 @@
 					<frame x="216" y="32" w="24" h="32"/>
 					<frame x="240" y="32" w="24" h="32"/>
 				</idle_left>
-				<alert_right loop ="true" speed ="0.2">
+				<alert_right loop ="false" speed ="0.1">
 					<frame x="0" y="64" w="24" h="32"/>
 					<frame x="24" y="64" w="24" h="32"/>
 					<frame x="48" y="64" w="24" h="32"/>
 					<frame x="72" y="64" w="24" h="32"/>
 				</alert_right>
-				<alert_left loop ="true" speed ="0.2">
+				<alert_left loop ="false" speed ="0.1">
 					<frame x="0" y="96" w="24" h="32"/>
 					<frame x="24" y="96" w="24" h="32"/>
 					<frame x="48" y="96" w="24" h="32"/>
@@ -184,6 +184,66 @@
 					<frame x="264" y="160" w="24" h="32"/>
 					<frame x="288" y="160" w="24" h="32"/>
 				</walk_right>
+				<hit_left loop ="false" speed ="0.2">
+					<frame x="0" y="192" w="24" h="32"/>
+					<frame x="24" y="192" w="24" h="32"/>
+					<frame x="48" y="192" w="24" h="32"/>
+					<frame x="72" y="192" w="24" h="32"/>
+					<frame x="96" y="192" w="24" h="32"/>
+					<frame x="120" y="192" w="24" h="32"/>
+					<frame x="144" y="192" w="24" h="32"/>
+					<frame x="168" y="192" w="24" h="32"/>
+				</hit_left>
+				<hit_right loop ="false" speed ="0.2">
+					<frame x="0" y="224" w="24" h="32"/>
+					<frame x="24" y="224" w="24" h="32"/>
+					<frame x="48" y="224" w="24" h="32"/>
+					<frame x="72" y="224" w="24" h="32"/>
+					<frame x="96" y="224" w="24" h="32"/>
+					<frame x="120" y="224" w="24" h="32"/>
+					<frame x="144" y="224" w="24" h="32"/>
+					<frame x="168" y="224" w="24" h="32"/>
+				</hit_right>
+				<attack_left loop ="false" speed ="0.2">
+					<frame x="0" y="256" w="24" h="37"/>
+					<frame x="24" y="256" w="24" h="37"/>
+					<frame x="48" y="256" w="24" h="37"/>
+					<frame x="72" y="256" w="24" h="37"/>
+					<frame x="96" y="256" w="24" h="37"/>
+					<frame x="120" y="256" w="24" h="37"/>
+					<frame x="144" y="256" w="24" h="37"/>
+					<frame x="168" y="256" w="48" h="37"/>
+					<frame x="216" y="256" w="48" h="37"/>
+					<frame x="264" y="256" w="48" h="37"/>
+					<frame x="312" y="256" w="48" h="37"/>
+					<frame x="360" y="256" w="48" h="37"/>
+					<frame x="408" y="256" w="48" h="37"/>
+					<frame x="456" y="256" w="48" h="37"/>
+					<frame x="504" y="256" w="48" h="37"/>
+					<frame x="528" y="256" w="24" h="37"/>
+					<frame x="552" y="256" w="24" h="37"/>
+					<frame x="576" y="256" w="24" h="37"/>
+				</attack_left>
+				<attack_right loop ="false" speed ="0.2">
+					<frame x="0" y="293" w="24" h="37"/>
+					<frame x="24" y="293" w="24" h="37"/>
+					<frame x="48" y="293" w="24" h="37"/>
+					<frame x="72" y="293" w="24" h="37"/>
+					<frame x="96" y="293" w="24" h="37"/>
+					<frame x="120" y="293" w="24" h="37"/>
+					<frame x="144" y="293" w="24" h="37"/>
+					<frame x="168" y="293" w="48" h="37"/>
+					<frame x="216" y="293" w="48" h="37"/>
+					<frame x="264" y="293" w="48" h="37"/>
+					<frame x="312" y="293" w="48" h="37"/>
+					<frame x="360" y="293" w="48" h="37"/>
+					<frame x="408" y="293" w="48" h="37"/>
+					<frame x="456" y="293" w="48" h="37"/>
+					<frame x="504" y="293" w="48" h="37"/>
+					<frame x="528" y="293" w="24" h="37"/>
+					<frame x="552" y="293" w="24" h="37"/>
+					<frame x="576" y="293" w="24" h="37"/>
+				</attack_right>
 			</animations>
 		</enemy>
 	  </enemies>

@@ -6,7 +6,11 @@
 #include "Pathfinding.h"
 
 struct SDL_Texture;
-
+enum class EnemyType
+{
+	SKELETON,
+	UNKNOWN
+};
 class Enemy : public Entity
 {
 public:

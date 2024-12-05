@@ -220,6 +220,9 @@ void Pathfinding::ComputePath(int x, int y)
     {
         // update the current tile to the previous tile in the path
         currentTile = breadcrumbs[index];
+        if (currentTile == breadcrumbs[index]) {
+            break;
+        }
         // Add the current tile to the pathTiles list
         pathTiles.push_back(currentTile);
         // Find the position of the current tile in the visited list
