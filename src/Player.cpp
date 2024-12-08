@@ -410,6 +410,9 @@ void Player::TestPlatform(PhysBody* physA, PhysBody* physB)
 	{
 		isGrounded_up = true;
 		isJumping = false;
+
+		//play fall sound
+		Engine::GetInstance().audio.get()->PlayFx(fallFxId);
 	}
 	else {
 		isGrounded_down = true;
