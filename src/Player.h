@@ -73,8 +73,11 @@ public:
 	bool isWalled_left = false;
 	bool isWalled_right = false;
 	bool isAbove = false;
+	
 	//Audio fx
 	int pickCoinFxId = 0;
+	int jumpFxId;
+
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody = nullptr;

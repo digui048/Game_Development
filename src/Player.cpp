@@ -68,6 +68,7 @@ bool Player::Start() {
 
 	//initialize audio effect
 	pickCoinFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
+	jumpFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/jump.wav");
 
 	return true;
 }
@@ -89,6 +90,10 @@ void Player::StartRunning()
 void Player::StartJumping()
 {
 	state = State::JUMP;
+
+	// play jump sound
+	Engine::GetInstance().audio.get()->PlayFx(jumpFxId);
+
 
 	if (look == View::LEFT)
 	{
