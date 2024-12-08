@@ -51,7 +51,7 @@ bool Enemy::Start()
 	currentAnim = &idle_left;
 
 	// Add a physics body to the enemy - initialise the physics body
-	pbody = Engine::GetInstance().physics->CreateCircle((int)position.getX() + texW / 2, (int)position.getY() + texH / 2, texH / 2, bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics->CreateRectangle((int)position.getX() + texW / 2, (int)position.getY() + texH / 2, texW, texH, bodyType::DYNAMIC);
 
 	// Assign a collider to the physics body
 	pbody->ctype = ColliderType::ENEMY;
@@ -111,6 +111,7 @@ bool Enemy::Update(float dt)
 		pathfinding->PropagateAStar(SQUARED);
 	}
 
+	// Ground enemy
 	float dx = Engine::GetInstance().scene.get()->GetPlayerPosition().getX() - GetPosition().getX();
 	// Update the enemy state
 	if (!pathfinding->pathTiles.empty())
@@ -165,6 +166,61 @@ bool Enemy::Update(float dt)
 		}
 	}
 
+	//// Flying enemy
+	//float dx = Engine::GetInstance().scene.get()->GetPlayerPosition().magnitude() - GetPosition().magnitude();
+	//// Update the enemy state
+	//if (!pathfinding->pathTiles.empty())
+	//{
+	//	if (isAlert()) {
+	//		// Get the next tile in the path
+	//		Vector2D nextTile = pathfinding->pathTiles.back();
+	//		Vector2D nextTileWorldPos = Engine::GetInstance().map.get()->MapToWorld(nextTile.getX(), nextTile.getY());
+	//		Vector2D direction = nextTileWorldPos - GetPosition();
+
+	//		if (dx < 0) look = View::RIGHT;
+	//		else look = View::LEFT;
+
+	//		direction = direction.normalized();
+	//		b2Vec2 velocity = b2Vec2(direction.getX(), direction.getY());
+	//		Walk();
+
+	//		if (abs(dx) > 300) {
+	//			isAlerted = false;
+	//			Idle();
+	//			velocity = b2Vec2(0, 0);
+	//		}
+	//		else if (abs(dx) < 30)
+	//		{
+	//			Attack();
+	//			if (currentAnim->HasFinished())
+	//			{
+	//				currentAnim->Reset();
+	//			}
+	//			velocity = b2Vec2(0, 0);
+	//		}
+
+	//		pbody->body->SetLinearVelocity(velocity);
+	//	}
+	//	else {
+	//		// If player is in range, alert the enemy
+	//		if (abs(dx) < 150) {
+	//			if (dx < 0) look = View::LEFT;
+	//			else look = View::RIGHT;
+	//			Alert();
+	//			if (currentAnim->HasFinished()) {
+	//				isAlerted = true;
+	//				currentAnim->Reset();
+	//			}
+	//			pbody->body->SetLinearVelocity(b2Vec2(0, 0));
+	//		}
+	//		else {
+	//			if (dx < 0) look = View::LEFT;
+	//			else look = View::RIGHT;
+	//			Idle();
+	//		}
+	//	}
+	//}
+
 	// Update the enemy position
 	// L08 TODO 4: Add a physics to an item - update the position of the object from the physics.
 	b2Transform pbodyPos = pbody->body->GetTransform();
@@ -176,7 +232,7 @@ bool Enemy::Update(float dt)
 	currentAnim->Update();
 
 	// Draw the path
-	if (Engine::GetInstance().scene.get()->enemDebug) {
+	if (Engine::GetInstance().scene.get()->pathDebug) {
 		pathfinding->DrawPath();
 	}
 	return true;

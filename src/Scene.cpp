@@ -105,6 +105,9 @@ bool Scene::Update(float dt)
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F7) == KEY_DOWN) {
 		enemDebug = !enemDebug;
 	}
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+		pathDebug = !pathDebug;
+	}
 	if (fpsTo30) {
 		Engine::GetInstance().FPSCapto(32);
 	}

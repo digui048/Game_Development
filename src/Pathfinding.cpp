@@ -220,6 +220,7 @@ void Pathfinding::ComputePath(int x, int y)
     {
         // update the current tile to the previous tile in the path
         currentTile = breadcrumbs[index];
+		// if the current tile is the same as the previous tile in the path, break the loop
         if (currentTile == breadcrumbs[index]) {
             break;
         }

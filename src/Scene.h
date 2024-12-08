@@ -69,6 +69,7 @@ public:
 	bool fpsTo30 = false;
 	bool helpMenu = false;
 	bool enemDebug = false;
+	bool pathDebug = false;
 	int helpmenuWidth;
 	int helpmenuHeight;
 

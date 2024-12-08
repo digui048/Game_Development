@@ -38,6 +38,8 @@ public:
 
 	void TestPlatform(PhysBody* physA, PhysBody* physB);
 
+	void TestIsAbove(PhysBody* physA, PhysBody* physB);
+
 	bool Start();
 
 	void InitialState();
@@ -72,6 +74,7 @@ public:
 	bool isGrounded_down = false;
 	bool isWalled_left = false;
 	bool isWalled_right = false;
+	bool isAbove = false;
 	//Audio fx
 	int pickCoinFxId = 0;
 
