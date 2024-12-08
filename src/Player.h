@@ -79,6 +79,7 @@ public:
 	int jumpFxId;
 	int fallFxId;
 	int menuFxId;
+	int walkingFxId;
 
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
@@ -113,4 +114,6 @@ public:
 	Animation fall_right;
 	Animation die_left;
 	Animation die_right;
+
+	bool isRunningSoundPlaying;
 };

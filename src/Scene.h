@@ -75,6 +75,7 @@ public:
 	int helpmenuWidth;
 	int helpmenuHeight;
 
+	//sound fx
 	int	menuFxId;
 
 	// Get tilePosDebug value
