@@ -73,6 +73,11 @@ void Scene::DelayTimeCamera() {
 	deathTimeCam += 0.031f;
 }
 
+void Scene::PlayerDeath(bool death)
+{
+	player->isDead = death;
+}
+
 Vector2D Scene::GetPlayerPosition()
 {
 	return player->GetPosition();

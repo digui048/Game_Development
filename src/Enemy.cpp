@@ -56,6 +56,9 @@ bool Enemy::Start()
 	// Assign a collider to the physics body
 	pbody->ctype = ColliderType::ENEMY;
 
+	// Set the collision listener
+	pbody->listener = this;
+
 	// Set the gravity of the body
 	if (!parameters.attribute("gravity").as_bool()) pbody->body->SetGravityScale(0);
 
@@ -240,6 +243,7 @@ bool Enemy::Update(float dt)
 
 bool Enemy::CleanUp()
 {
+	Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
 	return true;
 }
 
@@ -260,6 +264,44 @@ Vector2D Enemy::GetPosition() const
 {
 	b2Vec2 bodyPos = pbody->body->GetTransform().p;
 	return Vector2D(METERS_TO_PIXELS(bodyPos.x), METERS_TO_PIXELS(bodyPos.y));
+}
+
+void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
+	switch (physB->ctype)
+	{
+	case ColliderType::PLAYER:
+		LOG("Collided with player - DESTROY");
+		TestIsAbove(physA, physB);
+		break;
+	}
+}
+
+void Enemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
+{
+	switch (physB->ctype)
+	{
+	case ColliderType::PLAYER:
+		LOG("Collision player");
+		Engine::GetInstance().scene.get()->PlayerDeath(false);
+		break;
+	}
+}
+
+void Enemy::TestIsAbove(PhysBody* physA, PhysBody* physB)
+{
+	b2Transform transform_A = physA->body->GetTransform();
+	b2Vec2 position_A = transform_A.p;
+
+	b2Transform transform_B = physB->body->GetTransform();
+	b2Vec2 position_B = transform_B.p;
+
+	if (position_A.y > position_B.y)
+	{
+		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+	}
+	else {
+		Engine::GetInstance().scene.get()->PlayerDeath(true);
+	}
 }
 
 void Enemy::ResetPath()

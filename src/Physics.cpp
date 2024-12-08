@@ -214,7 +214,7 @@ PhysBody* Physics::CreateChain(int x, int y, int* points, int size, bodyType typ
 	return pbody;
 }
 
-void Physics::DestroyPhysBody(PhysBody* pbody)
+void Physics::DeletePhysBody(PhysBody* pbody)
 {
 	bodiesToDelete.push_back(pbody);
 }
@@ -348,6 +348,19 @@ bool Physics::CleanUp()
 	return true;
 }
 
+bool Physics::IsPendingToDelete(PhysBody* physBody)
+{
+	bool pendingToDelete = false;
+	for (PhysBody* _physBody : bodiesToDelete) {
+		if (_physBody == physBody) {
+			pendingToDelete = true;
+			break;
+		}
+	}
+
+	return pendingToDelete;
+}
+
 // Callback function to collisions with Box2D
 void Physics::BeginContact(b2Contact* contact)
 {
@@ -378,13 +391,13 @@ void Physics::EndContact(b2Contact* contact)
 	// Call the OnCollision listener function to bodies A and B, passing as inputs our custom PhysBody classes
 	PhysBody* physA = (PhysBody*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
 	PhysBody* physB = (PhysBody*)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
-	if (physA && physA->listener != NULL) {
+	if (physA && physA->listener != NULL && !IsPendingToDelete(physB)) {
 		if (physB) // Ensure physB is also valid
 		{
 			physA->listener->OnCollisionEnd(physA, physB);
 		}
 	}
-	if (physB && physB->listener != NULL) {
+	if (physB && physB->listener != NULL && !IsPendingToDelete(physB)) {
 		if (physA) // Ensure physA is also valid
 		{
 			physB->listener->OnCollisionEnd(physB, physA);

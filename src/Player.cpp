@@ -331,11 +331,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");
 		Engine::GetInstance().audio.get()->PlayFx(pickCoinFxId);
-		Engine::GetInstance().physics.get()->DestroyPhysBody(physB); // Deletes the body of the item from the physics world
-		break;
-	case ColliderType::ENEMY:
-		LOG("Collision ENEMY");
-		TestIsAbove(physB, physA);
+		Engine::GetInstance().physics.get()->DeletePhysBody(physB); // Deletes the body of the item from the physics world
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
@@ -376,10 +372,6 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	case ColliderType::UNKNOWN:
 		LOG("End Collision UNKNOWN");
 		break;
-	case ColliderType::ENEMY:
-		LOG("End Collision ENEMY");
-		isDead = false;
-		break;
 	default:
 		break;
 	}
@@ -418,22 +410,5 @@ void Player::TestPlatform(PhysBody* physA, PhysBody* physB)
 	else {
 		isGrounded_down = true;
 		isJumping = true;
-	}
-}
-
-void Player::TestIsAbove(PhysBody* physA, PhysBody* physB)
-{
-	b2Transform transform_A = physA->body->GetTransform();
-	b2Vec2 position_A = transform_A.p;
-
-	b2Transform transform_B = physB->body->GetTransform();
-	b2Vec2 position_B = transform_B.p;
-
-	if (position_A.y > position_B.y)
-	{
-		Engine::GetInstance().physics.get()->DestroyPhysBody(physB);
-	}
-	else {
-		isDead = true;
 	}
 }

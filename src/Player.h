@@ -38,8 +38,6 @@ public:
 
 	void TestPlatform(PhysBody* physA, PhysBody* physB);
 
-	void TestIsAbove(PhysBody* physA, PhysBody* physB);
-
 	bool Start();
 
 	void InitialState();

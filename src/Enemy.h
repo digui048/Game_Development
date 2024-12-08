@@ -4,7 +4,7 @@
 #include "SDL2/SDL.h"
 #include "Animation.h"
 #include "Pathfinding.h"
-
+#include "EntityManager.h"
 struct SDL_Texture;
 enum class EnemyType
 {
@@ -32,6 +32,12 @@ public:
 	void ResetPath();
 
 	Vector2D GetPosition() const;
+
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+	void TestIsAbove(PhysBody* physA, PhysBody* physB);
 
 private:
 

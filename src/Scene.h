@@ -61,6 +61,8 @@ public:
 	//to manage delay for the camera to respawn with the character
 	void DelayTimeCamera();
 
+	void PlayerDeath(bool death);
+
 	Vector2D GetPlayerPosition();
 
 	float respawnDelayCam = 3.0f;
