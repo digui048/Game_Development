@@ -47,6 +47,8 @@ bool Scene::Awake()
 		enemyList.push_back(enemy);
 	}
 
+	menuFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/menu.wav");
+
 	return ret;
 }
 
@@ -104,6 +106,9 @@ bool Scene::Update(float dt)
 		debugCamera = !debugCamera;
 	}
 	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_H) == KEY_DOWN) {
+		//play helpmenu sound
+		Engine::GetInstance().audio.get()->PlayFx(menuFxId);
+
 		helpMenu = !helpMenu;
 		player->menu = !player->menu;
 	}

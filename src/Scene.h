@@ -75,6 +75,8 @@ public:
 	int helpmenuWidth;
 	int helpmenuHeight;
 
+	int	menuFxId;
+
 	// Get tilePosDebug value
 	std::string GetTilePosDebug() {
 		return tilePosDebug;
