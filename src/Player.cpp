@@ -90,11 +90,7 @@ void Player::StartRunning()
 void Player::StartJumping()
 {
 	state = State::JUMP;
-
-	// play jump sound
-	Engine::GetInstance().audio.get()->PlayFx(jumpFxId);
-
-
+	
 	if (look == View::LEFT)
 	{
 		currentAnimation = &jump_left;
@@ -103,7 +99,6 @@ void Player::StartJumping()
 	{
 		currentAnimation = &jump_right;
 	}
-
 }
 
 void Player::StartFalling()
@@ -229,6 +224,8 @@ bool Player::Update(float dt)
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !isJumping && !isFalling) {
 			pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
 			isJumping = true;
+			// play jump sound
+			Engine::GetInstance().audio.get()->PlayFx(jumpFxId);
 			StartJumping();
 		}
 
