@@ -77,6 +77,8 @@ public:
 	//Audio fx
 	int pickCoinFxId = 0;
 	int jumpFxId;
+	int fallFxId;
+	int menuFxId;
 
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body

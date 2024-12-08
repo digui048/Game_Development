@@ -69,6 +69,8 @@ bool Player::Start() {
 	//initialize audio effect
 	pickCoinFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
 	jumpFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/jump.wav");
+	fallFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/fall.wav");
+	menuFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/menu.wav");
 
 	return true;
 }
@@ -226,7 +228,7 @@ bool Player::Update(float dt)
 			isJumping = true;
 			// play jump sound
 			Engine::GetInstance().audio.get()->PlayFx(jumpFxId);
-			StartJumping();
+			StartJumping();			
 		}
 
 		// Check if the player is falling
