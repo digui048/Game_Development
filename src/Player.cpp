@@ -275,8 +275,8 @@ bool Player::Update(float dt)
 		DelayTime();
 		// Destroy the player's body in the physics world
 		if (deathTime >= respawnDelay) {
-			Player::position.setX(4);
-			Player::position.setY(7);
+			Player::position.setX(13);
+			Player::position.setY(16);
 
 			pbody->body->SetTransform(b2Vec2(position.getX(), position.getY()), 0);
 			Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());

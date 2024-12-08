@@ -36,8 +36,8 @@ bool Scene::Awake()
 	player->SetParameters(configParameters.child("entities").child("player"));
 
 	//L08 Create a new item using the entity manager and set the position to (200, 672) to test
-	Item* item = (Item*) Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
-	item->position = Vector2D(900, 0);
+	/*Item* item = (Item*) Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
+	item->position = Vector2D(900, 0);*/
 
 	// Create a enemy using the entity manager 
 	for (pugi::xml_node enemyNode = configParameters.child("entities").child("enemies").child("enemy"); enemyNode; enemyNode = enemyNode.next_sibling("enemy"))
