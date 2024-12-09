@@ -17,11 +17,7 @@
 	<scene>
 		<map path="Assets/Maps/" name="MapTemplate.tmx" />
 		<entities>
-<<<<<<< Updated upstream
-			<player x="1034" y="527" w="48" h="40" texture="Assets/Textures/player/Animations.png">
-=======
-			<player x="710" y="879" w="48" h="40" texture="Assets/Textures/player/Animations.png">
->>>>>>> Stashed changes
+			<player x="474" y="527" w="48" h="40" texture="Assets/Textures/player/Animations.png">
 				<animations>
 					<idle_left loop="true" speed="0.18">
 						<frame x="0" y="0" w="48" h="40" />
@@ -116,11 +112,7 @@
 				</animations>
 			</player>
 			<enemies>
-<<<<<<< Updated upstream
-				<enemy name="skeleton" x="1975" y="629" active="false" w="32" h="32" texture="Assets/Textures/enemy/Skeleton_Idle.png" gravity="true">
-=======
-				<enemy name="skeleton" x="621" y="323" active="false" w="32" h="32" texture="Assets/Textures/enemy/Skeleton_Idle.png" gravity="true">
->>>>>>> Stashed changes
+				<enemy name="skeleton" x="1980" y="380" active="false" w="32" h="32" texture="Assets/Textures/enemy/Skeleton_Idle.png" gravity="true">
 					<animations>
 						<idle_right loop="true" speed="0.2">
 							<frame x="0" y="0" w="24" h="37" />
