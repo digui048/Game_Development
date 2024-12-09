@@ -216,7 +216,7 @@ void Skeleton::TestIsAbove(PhysBody* physA, PhysBody* physB)
 	b2Transform transform_B = physB->body->GetTransform();
 	b2Vec2 position_B = transform_B.p;
 
-	if (position_A.y > position_B.y)
+	if (position_A.y > (position_B.y + 0.5f))
 	{
 		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 	}

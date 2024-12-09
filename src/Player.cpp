@@ -274,9 +274,8 @@ bool Player::Update(float dt)
 	}
 	if (isDead && pbody->body != nullptr && !godMode) {
 		StartDying();
-		DelayTime();
 		// Destroy the player's body in the physics world
-		if (deathTime >= respawnDelay) {
+		if(currentAnimation->HasFinished()) {
 			Player::position.setX(13);
 			Player::position.setY(10);
 
@@ -287,7 +286,6 @@ bool Player::Update(float dt)
 			die_right.Reset();
 			die_left.Reset();
 
-			deathTime = 0.0f;
 			isDead = false;
 			return true;
 		}
