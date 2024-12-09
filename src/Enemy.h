@@ -9,6 +9,7 @@ struct SDL_Texture;
 enum class EnemyType
 {
 	SKELETON,
+	FIRE_SPIRIT,
 	UNKNOWN
 };
 class Enemy : public Entity
@@ -34,6 +35,7 @@ public:
 	virtual void OnCollision(PhysBody* physA, PhysBody* physB);
 
 	virtual void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
 
 protected:
 

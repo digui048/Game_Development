@@ -2,11 +2,11 @@
 #include "Enemy.h"
 
 
-class Skeleton : public Enemy
+class FireSpirit : public Enemy
 {
 public:
-	Skeleton();
-	~Skeleton();
+	FireSpirit();
+	~FireSpirit();
 
 	bool Start() override;
 
@@ -43,7 +43,7 @@ private:
 	Animation hit_right;			// Hit right animation
 	Animation death_left;			// Death left animation
 	Animation death_right;			// Death right animation
-	
+
 	void Idle();
 	void Walk();
 	void Alert();

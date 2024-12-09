@@ -73,8 +73,11 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	case EntityType::PLAYER:
 		entity = new Player(State::IDLE);
 		break;
-	case EntityType::ENEMY:
+	case EntityType::SKELETON:
 		entity = new Skeleton();
+		break;
+	case EntityType::FIRE_SPIRIT:
+		entity = new FireSpirit();
 		break;
 	case EntityType::ITEM:
 		entity = new Item();

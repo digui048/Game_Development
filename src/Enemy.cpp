@@ -132,6 +132,11 @@ void Enemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	
 }
 
+EnemyType Enemy::GetType() const
+{
+	return type;
+}
+
 
 
 

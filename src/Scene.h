@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Skeleton.h"
+#include "FireSpirit.h"
 #include "Log.h"
 #include <vector>
 

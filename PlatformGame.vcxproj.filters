@@ -90,6 +90,9 @@
     <ClCompile Include="src\Skeleton.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
+    <ClCompile Include="src\FireSpirit.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Audio.h">
@@ -156,6 +159,9 @@
       <Filter>Source Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="src\Skeleton.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FireSpirit.h">
       <Filter>Source Files\Game</Filter>
     </ClInclude>
   </ItemGroup>

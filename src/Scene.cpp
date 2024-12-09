@@ -42,9 +42,13 @@ bool Scene::Awake()
 	// Create a enemy using the entity manager 
 	for (pugi::xml_node enemyNode = configParameters.child("entities").child("enemies").child("enemy"); enemyNode; enemyNode = enemyNode.next_sibling("enemy"))
 	{
-		Skeleton* enemy = (Skeleton*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
+		Skeleton* enemy = (Skeleton*)Engine::GetInstance().entityManager->CreateEntity(EntityType::SKELETON);
 		enemy->SetParameters(enemyNode);
 		enemyList.push_back(enemy);
+
+		FireSpirit* enemy2 = (FireSpirit*)Engine::GetInstance().entityManager->CreateEntity(EntityType::FIRE_SPIRIT);
+		enemy2->SetParameters(enemyNode);
+		enemyList.push_back(enemy2);
 	}
 
 	menuFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/menu.wav");
