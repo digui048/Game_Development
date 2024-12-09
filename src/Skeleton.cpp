@@ -27,6 +27,7 @@ bool Skeleton::Start()
 	position.setY(parameters.attribute("y").as_int());
 	texW = parameters.attribute("w").as_int();
 	texH = parameters.attribute("h").as_int();
+	death = parameters.attribute("active").as_bool();
 
 	// Load animations
 	idleAnim.LoadAnimations(parameters.child("animations").child("idle"));
@@ -218,6 +219,7 @@ void Skeleton::TestIsAbove(PhysBody* physA, PhysBody* physB)
 
 	if (position_A.y > (position_B.y + 0.5f))
 	{
+		death = true;
 		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 	}
 	else {

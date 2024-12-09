@@ -36,12 +36,15 @@ public:
 
 	virtual void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
+	bool Death();
+
 
 protected:
 
 	PhysBody* pbody;				// Physics body of the enemy
 	const char* texturePath;		// Path to the texture
 	int texW, texH;					// Texture width and height
+	bool death;						// If the enemy is dead
 	pugi::xml_node parameters;		// Parameters of the enemy
 	Animation* currentAnim;			// Current animation
 	Animation idleAnim;				// Idle animation

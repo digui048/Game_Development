@@ -71,7 +71,11 @@ public:
 
 	void SetParameters(pugi::xml_node parameters);
 
-	bool checkpoint = true;
+	void LoadState();
+
+	void SaveState();
+
+	bool checkpoint = false;
 	float respawnDelayCam = 3.0f;
 	float deathTimeCam = 0.0f;
 	bool debugCamera = false;
@@ -97,6 +101,7 @@ private:
 	SDL_Texture* checkpointTex;
 	Animation* checkpointAnim;
 	Animation checkpointAnimData;
+	Animation initialcheckpointAnimData;
 	pugi::xml_node parameters_checkpoint;		// Parameters of the checkpoint
 	//L03: TODO 3b: Declare a Player attribute
 	Player* player;

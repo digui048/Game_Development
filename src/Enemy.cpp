@@ -116,8 +116,8 @@ Vector2D Enemy::GetPosition() const
 
 void Enemy::SetPosition(Vector2D position)
 {
-	position.setX(position.getX() + texW / 2);
-	position.setY(position.getY() + texH / 2);
+	position.setX(position.getX());
+	position.setY(position.getY());
 	b2Vec2 pos = b2Vec2(PIXEL_TO_METERS(position.getX()), PIXEL_TO_METERS(position.getY()));
 	pbody->body->SetTransform(pos, 0);
 }
@@ -130,6 +130,11 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB)
 void Enemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 {
 	
+}
+
+bool Enemy::Death()
+{
+	return death;
 }
 
 

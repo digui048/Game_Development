@@ -308,6 +308,14 @@ bool Player::Update(float dt)
 	return true;
 }
 
+void Player::SetPosition(Vector2D position)
+{
+	position.setX(position.getX());
+	position.setY(position.getY());
+	b2Vec2 pos = b2Vec2(PIXEL_TO_METERS(position.getX()), PIXEL_TO_METERS(position.getY()));
+	pbody->body->SetTransform(pos, 0);
+}
+
 bool Player::CleanUp()
 {
 	LOG("Cleanup player");
@@ -335,6 +343,10 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		LOG("Collision ITEM");
 		Engine::GetInstance().audio.get()->PlayFx(pickCoinFxId);
 		Engine::GetInstance().physics.get()->DeletePhysBody(physB); // Deletes the body of the item from the physics world
+		break;
+	case ColliderType::CHECKPOINT:
+		LOG("Collision CHECKPOINT");
+		Engine::GetInstance().scene.get()->checkpoint = true;
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
@@ -371,6 +383,9 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		break;
 	case ColliderType::ITEM:
 		LOG("End Collision ITEM");
+		break;
+	case ColliderType::CHECKPOINT:
+		LOG("End Collision CHECKPOINT");
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("End Collision UNKNOWN");

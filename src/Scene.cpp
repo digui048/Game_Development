@@ -35,9 +35,6 @@ bool Scene::Awake()
 	//L04: TODO 3b: Instantiate the player using the entity manager
 	player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
 	player->SetParameters(configParameters.child("entities").child("player"));
-	
-	checkpointTex = Engine::GetInstance().textures.get()->Load(parameters_checkpoint.attribute("texture").as_string());
-	checkpointAnimData.LoadAnimations(parameters_checkpoint.child("animations").child("idle"));
 	//L08 Create a new item using the entity manager and set the position to (200, 672) to test
 	/*Item* item = (Item*) Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
 	item->position = Vector2D(900, 0);*/
@@ -47,9 +44,11 @@ bool Scene::Awake()
 	{
 		std::string name = enemyNode.attribute("name").as_string();
 		if (name == "skeleton") {
-			Skeleton* enemy = (Skeleton*)Engine::GetInstance().entityManager->CreateEntity(EntityType::SKELETON);
-			enemy->SetParameters(enemyNode);
-			enemyList.push_back(enemy);
+			if (enemyNode.attribute("active").as_bool() == false) {
+				Skeleton* enemy = (Skeleton*)Engine::GetInstance().entityManager->CreateEntity(EntityType::SKELETON);
+				enemy->SetParameters(enemyNode);
+				enemyList.push_back(enemy);
+			}
 		}
 		else if (name == "firespirit") {
 			FireSpirit* enemy = (FireSpirit*)Engine::GetInstance().entityManager->CreateEntity(EntityType::FIRE_SPIRIT);
@@ -74,6 +73,14 @@ bool Scene::Start()
 	Engine::GetInstance().map->Load(configParameters.child("map").attribute("path").as_string(), configParameters.child("map").attribute("name").as_string());
 	helpmenu = Engine::GetInstance().textures.get()->Load("Assets/Textures/helpMenu.png");
 	mouseTileTex = Engine::GetInstance().textures.get()->Load("Assets/Textures/mouse_tile.png");
+
+	for (pugi::xml_node checkpointNode = configParameters.child("sprites").child("checkpoint"); checkpointNode; checkpointNode = checkpointNode.next_sibling("checkpoint"))
+	{
+		const char* checkpoint_path = checkpointNode.attribute("texture").as_string();
+		checkpointTex = Engine::GetInstance().textures.get()->Load(checkpoint_path);
+		checkpointAnimData.LoadAnimations(checkpointNode.child("animations").child("idle"));
+		initialcheckpointAnimData.LoadAnimations(checkpointNode.child("animations").child("initial"));
+	}
 	SDL_QueryTexture(helpmenu, NULL, NULL, &helpmenuWidth, &helpmenuHeight);
 	return true;
 }
@@ -108,6 +115,65 @@ std::string Scene::LoadEnemyName(pugi::xml_node configParameters)
 	}
 }
 
+void Scene::LoadState()
+{
+	pugi::xml_document loadFile;
+	pugi::xml_parse_result result = loadFile.load_file("config.xml");
+	if (result == NULL)
+	{
+		LOG("Could not load file. Pugi error: %s", result.description());
+		return;
+	}
+	pugi::xml_node sceneNode = loadFile.child("config").child("scene");
+	//Read XML and restore information
+	//Player position
+	Vector2D playerPos = Vector2D(sceneNode.child("entities").child("player").attribute("x").as_int(),
+		sceneNode.child("entities").child("player").attribute("y").as_int());
+	player->SetPosition(playerPos);
+	//enemies
+	pugi::xml_node enemiesNode = sceneNode.child("entities").child("enemies");
+	for (pugi::xml_node enemyNode = enemiesNode.child("enemy"); enemyNode; enemyNode = enemyNode.next_sibling("enemy")) {
+		for (auto& enemy : enemyList) {
+			if (enemiesNode.attribute("active").as_bool() == true) {
+				enemy->SetPosition(Vector2D(enemyNode.child("position").attribute("x").as_float(),
+					enemyNode.child("position").attribute("y").as_float()));
+			}
+		}
+	}
+}
+
+void Scene::SaveState()
+{
+	pugi::xml_document loadFile;
+	pugi::xml_parse_result result = loadFile.load_file("config.xml");
+	if (result == NULL)
+	{
+		LOG("Could not load file. Pugi error: %s", result.description());
+		return;
+	}
+	pugi::xml_node sceneNode = loadFile.child("config").child("scene");
+	//Save info to XML 
+	//Player position
+	sceneNode.child("entities").child("player").attribute("x").set_value(player->GetPosition().getX());
+	sceneNode.child("entities").child("player").attribute("y").set_value(player->GetPosition().getY());
+	//enemies
+	pugi::xml_node enemiesNode = sceneNode.child("entities").child("enemies");
+	for (auto& enemy : enemyList) {
+		pugi::xml_node enemyNode = enemiesNode.append_child("enemy");
+		enemyNode.attribute("active").set_value(enemy->Death());
+		if (enemy->Death() == false) {
+			enemyNode.attribute("x").set_value(enemy->GetPosition().getX());
+			enemyNode.attribute("y").set_value(enemy->GetPosition().getY());
+		}
+	}
+
+	//Check if the file is saved correctly
+	if (!loadFile.save_file("config.xml")) LOG("Could not save file. Pugi error: %s", result.description());
+	
+	//Saves the modifications to the XML 
+	loadFile.save_file("config.xml");
+}
+
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
@@ -138,8 +204,14 @@ bool Scene::Update(float dt)
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F7) == KEY_DOWN) {
 		enemDebug = !enemDebug;
 	}
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
 		pathDebug = !pathDebug;
+	}
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+		LoadState();
+	}
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
+		SaveState();
 	}
 	if (fpsTo30) {
 		Engine::GetInstance().FPSCapto(32);
@@ -226,7 +298,13 @@ bool Scene::Update(float dt)
 	if (checkpoint)
 	{
 		checkpointAnim = &checkpointAnimData;
-		Engine::GetInstance().render.get()->DrawTexture(checkpointTex, 700, 492, &checkpointAnim->GetCurrentFrame());
+		Engine::GetInstance().render.get()->DrawTexture(checkpointTex, 21 * 32, 27 * 32, &checkpointAnim->GetCurrentFrame());
+		checkpointAnim->Update();
+	}
+	else {
+		checkpointAnim = &initialcheckpointAnimData;
+		Engine::GetInstance().render.get()->DrawTexture(checkpointTex, 21 * 32, 27 * 32, &checkpointAnim->GetCurrentFrame());
+		checkpointAnim->Update();
 	}
 	
 	//L03 TODO 3: Make the camera movement independent of framerate

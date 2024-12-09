@@ -54,6 +54,8 @@ public:
 
 	bool Update(float dt);
 
+	void SetPosition(Vector2D position);
+
 	bool CleanUp();
 
 	// L08 TODO 6: Define OnCollision function for the player. 
