@@ -52,4 +52,6 @@ private:
 	void Hit();
 	void Death();
 	// Death right animation
+
+	int enemydeathFxId;
 };

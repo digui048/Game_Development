@@ -62,6 +62,8 @@ bool Skeleton::Start()
 	pathfinding = new Pathfinding();
 	ResetPath();
 
+	enemydeathFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/enemydeath.wav");
+
 	return true;
 }
 
@@ -220,6 +222,7 @@ void Skeleton::TestIsAbove(PhysBody* physA, PhysBody* physB)
 	if (position_A.y > (position_B.y + 0.5f))
 	{
 		death = true;
+		Engine::GetInstance().audio.get()->PlayFx(enemydeathFxId);
 		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 	}
 	else {
