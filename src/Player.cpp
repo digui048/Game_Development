@@ -276,12 +276,18 @@ bool Player::Update(float dt)
 		StartDying();
 		// Destroy the player's body in the physics world
 		if(currentAnimation->HasFinished()) {
-			Player::position.setX(13);
-			Player::position.setY(10);
+			if (Engine::GetInstance().scene.get()->checkpoint)
+			{
+				Engine::GetInstance().scene.get()->LoadState();
+			}
+			else {
+				Player::position.setX(13);
+				Player::position.setY(10);
 
-			pbody->body->SetTransform(b2Vec2(position.getX(), position.getY()), 0);
-			Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
-			currentAnimation->Update();
+				pbody->body->SetTransform(b2Vec2(position.getX(), position.getY()), 0);
+				Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
+				currentAnimation->Update();
+			}
 			
 			die_right.Reset();
 			die_left.Reset();

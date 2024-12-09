@@ -109,5 +109,5 @@ private:
 	Camera* camera;
 	std::string tilePosDebug = "[0,0]";
 	bool once = false;
-	//
+	int checkpoint_loop = 0;
 };

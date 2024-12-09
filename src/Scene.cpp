@@ -158,17 +158,19 @@ void Scene::SaveState()
 	sceneNode.child("entities").child("player").attribute("y").set_value(player->GetPosition().getY());
 	//enemies
 	pugi::xml_node enemiesNode = sceneNode.child("entities").child("enemies");
+	if (!enemiesNode) {
+		enemiesNode = sceneNode.child("entities").child("enemies");
+	}
 	for (auto& enemy : enemyList) {
-		pugi::xml_node enemyNode = enemiesNode.append_child("enemy");
-		enemyNode.attribute("active").set_value(enemy->Death());
+		pugi::xml_node enemyNode = enemiesNode.child("enemy");
 		if (enemy->Death() == false) {
 			enemyNode.attribute("x").set_value(enemy->GetPosition().getX());
 			enemyNode.attribute("y").set_value(enemy->GetPosition().getY());
 		}
+		else if (enemy->Death() == true) {
+			enemyNode.attribute("active").set_value(true);
+		}
 	}
-
-	//Check if the file is saved correctly
-	if (!loadFile.save_file("config.xml")) LOG("Could not save file. Pugi error: %s", result.description());
 	
 	//Saves the modifications to the XML 
 	loadFile.save_file("config.xml");
@@ -295,16 +297,21 @@ bool Scene::Update(float dt)
 		once = true;
 	}
 
-	if (checkpoint)
+	if (checkpoint && checkpoint_loop != 0)
 	{
 		checkpointAnim = &checkpointAnimData;
 		Engine::GetInstance().render.get()->DrawTexture(checkpointTex, 21 * 32, 27 * 32, &checkpointAnim->GetCurrentFrame());
-		checkpointAnim->Update();
+	}
+	else if (checkpoint && checkpoint_loop == 0)
+	{
+		SaveState();
+		checkpointAnim = &checkpointAnimData;
+		Engine::GetInstance().render.get()->DrawTexture(checkpointTex, 21 * 32, 27 * 32, &checkpointAnim->GetCurrentFrame());
+		checkpoint_loop++;
 	}
 	else {
 		checkpointAnim = &initialcheckpointAnimData;
 		Engine::GetInstance().render.get()->DrawTexture(checkpointTex, 21 * 32, 27 * 32, &checkpointAnim->GetCurrentFrame());
-		checkpointAnim->Update();
 	}
 	
 	//L03 TODO 3: Make the camera movement independent of framerate

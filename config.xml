@@ -17,7 +17,7 @@
 	<scene>
 		<map path="Assets/Maps/" name="MapTemplate.tmx" />
 		<entities>
-			<player x="1244" y="527" w="48" h="40" texture="Assets/Textures/player/Animations.png">
+			<player x="1034" y="527" w="48" h="40" texture="Assets/Textures/player/Animations.png">
 				<animations>
 					<idle_left loop="true" speed="0.18">
 						<frame x="0" y="0" w="48" h="40" />
@@ -112,7 +112,7 @@
 				</animations>
 			</player>
 			<enemies>
-				<enemy name="skeleton" x="704" y="512" active="false" w="32" h="32" texture="Assets/Textures/enemy/Skeleton_Idle.png" gravity="true">
+				<enemy name="skeleton" x="619" y="321" active="false" w="32" h="32" texture="Assets/Textures/enemy/Skeleton_Idle.png" gravity="true">
 					<animations>
 						<idle_right loop="true" speed="0.2">
 							<frame x="0" y="0" w="24" h="37" />
