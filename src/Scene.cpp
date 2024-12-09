@@ -297,7 +297,6 @@ bool Scene::Update(float dt)
 
 	if (checkpoint)
 	{
-		SaveState();
 		checkpointAnim = &checkpointAnimData;
 		Engine::GetInstance().render.get()->DrawTexture(checkpointTex, 21 * 32, 27 * 32, &checkpointAnim->GetCurrentFrame());
 		checkpointAnim->Update();

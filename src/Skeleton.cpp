@@ -223,7 +223,6 @@ void Skeleton::TestIsAbove(PhysBody* physA, PhysBody* physB)
 		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 	}
 	else {
-		Engine::GetInstance().scene.get()->LoadState();
 		Engine::GetInstance().scene.get()->PlayerDeath(true);
 	}
 }
