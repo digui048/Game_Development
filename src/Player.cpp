@@ -71,6 +71,7 @@ bool Player::Start() {
 	jumpFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/jump.wav");
 	fallFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/fall.wav");
 	walkingFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/step.wav");
+	checkpointFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/checkpoint.wav");
 
 	return true;
 }
@@ -353,6 +354,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::CHECKPOINT:
 		LOG("Collision CHECKPOINT");
 		Engine::GetInstance().scene.get()->checkpoint = true;
+		Engine::GetInstance().audio.get()->PlayFx(checkpointFxId);
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
