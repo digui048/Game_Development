@@ -30,6 +30,8 @@ The main objective is to successfully traverse through each level, defeating ene
 | Visualize Colliders Logic | F9 |
 | God Mode | F10 |
 | Enable / Disable fps cap to 30 | F11 |
+| Save stats | F5 |
+| Load stats | F6 |
 
 
 
