@@ -69,6 +69,9 @@ public:
 
 	std::string LoadEnemyName(pugi::xml_node configParameters);
 
+	void SetParameters(pugi::xml_node parameters);
+
+	bool checkpoint = true;
 	float respawnDelayCam = 3.0f;
 	float deathTimeCam = 0.0f;
 	bool debugCamera = false;
@@ -91,6 +94,10 @@ private:
 	SDL_Texture* mouseTileTex = nullptr;
 	SDL_Texture* img;
 	SDL_Texture* helpmenu;
+	SDL_Texture* checkpointTex;
+	Animation* checkpointAnim;
+	Animation checkpointAnimData;
+	pugi::xml_node parameters_checkpoint;		// Parameters of the checkpoint
 	//L03: TODO 3b: Declare a Player attribute
 	Player* player;
 	std::vector<Enemy*> enemyList;

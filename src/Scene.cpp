@@ -19,6 +19,7 @@ Scene::Scene() : Module()
 	img = nullptr;
 	player = nullptr;
 	camera = new Camera();
+	checkpointAnim = nullptr;
 }
 
 // Destructor
@@ -34,7 +35,9 @@ bool Scene::Awake()
 	//L04: TODO 3b: Instantiate the player using the entity manager
 	player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
 	player->SetParameters(configParameters.child("entities").child("player"));
-
+	
+	checkpointTex = Engine::GetInstance().textures.get()->Load(parameters_checkpoint.attribute("texture").as_string());
+	checkpointAnimData.LoadAnimations(parameters_checkpoint.child("animations").child("idle"));
 	//L08 Create a new item using the entity manager and set the position to (200, 672) to test
 	/*Item* item = (Item*) Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
 	item->position = Vector2D(900, 0);*/
@@ -218,6 +221,12 @@ bool Scene::Update(float dt)
 	if (mouseTile.getX() >= 0 && mouseTile.getY() >= 0 || once) {
 		tilePosDebug = "[" + std::to_string((int)mouseTile.getX()) + "," + std::to_string((int)mouseTile.getY()) + "] ";
 		once = true;
+	}
+
+	if (checkpoint)
+	{
+		checkpointAnim = &checkpointAnimData;
+		Engine::GetInstance().render.get()->DrawTexture(checkpointTex, 700, 492, &checkpointAnim->GetCurrentFrame());
 	}
 	
 	//L03 TODO 3: Make the camera movement independent of framerate

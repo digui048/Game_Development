@@ -38,7 +38,7 @@ bool FireSpirit::Start()
 	currentAnim = &idle_right;
 
 	// Add a physics body to the enemy - initialise the physics body
-	pbody = Engine::GetInstance().physics->CreateCircle((int)position.getX() + texW / 2, (int)position.getY() + texH / 2, texW/2, bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics->CreateCircle((int)position.getX(), (int)position.getY(), 2*texW/3, bodyType::DYNAMIC);
 
 	// Assign a collider to the physics body
 	pbody->ctype = ColliderType::ENEMY;
