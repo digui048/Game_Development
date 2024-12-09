@@ -3,6 +3,7 @@
 #include "Module.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Skeleton.h"
 #include "Log.h"
 #include <vector>
 
