@@ -52,6 +52,16 @@ The main objective is to successfully traverse through each level, defeating ene
 
 - Basic animations: Run, Jump, Fall, Die (all of them left and right)
 
+- Ground (walking) and flying enemies
+
+- Pathfinding detection algorithm A*-Squared for enemies
+
+- Sound Fx for the player, enemies, and some environment interactions
+
+- Load and save current states
+
+- Checkpoints
+
 
 ## About us - _RetroRevolve_
 
