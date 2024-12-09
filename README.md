@@ -32,6 +32,8 @@ The main objective is to successfully traverse through each level, defeating ene
 | Enable / Disable fps cap to 30 | F11 |
 | Save stats | F5 |
 | Load stats | F6 |
+| Enemy placement with mouse selection | F7 |
+| Draw pathfinding | F4 |
 
 
 
