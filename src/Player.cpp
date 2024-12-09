@@ -72,6 +72,7 @@ bool Player::Start() {
 	fallFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/fall.wav");
 	walkingFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/step.wav");
 	checkpointFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/checkpoint.wav");
+	deathFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/death.wav");
 
 	return true;
 }
@@ -123,6 +124,8 @@ void Player::StartFalling()
 void Player::StartDying()
 {
 	state = State::DIE;
+
+	Engine::GetInstance().audio.get()->PlayFx(deathFxId);
 	
 	if (look == View::LEFT)
 	{

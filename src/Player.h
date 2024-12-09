@@ -83,6 +83,7 @@ public:
 	int menuFxId;
 	int walkingFxId;
 	int checkpointFxId;
+	int deathFxId;
 
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
