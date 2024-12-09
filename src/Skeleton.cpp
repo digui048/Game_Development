@@ -46,7 +46,7 @@ bool Skeleton::Start()
 	currentAnim = &idle_left;
 
 	// Add a physics body to the enemy - initialise the physics body
-	pbody = Engine::GetInstance().physics->CreateRectangle((int)position.getX() + texW / 2, (int)position.getY() + texH / 2, texW, texH, bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics->CreateCircle((int)position.getX() + texW / 2, (int)position.getY() + texH / 2, texW/2, bodyType::DYNAMIC);
 
 	// Assign a collider to the physics body
 	pbody->ctype = ColliderType::ENEMY;

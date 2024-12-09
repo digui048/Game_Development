@@ -42,13 +42,21 @@ bool Scene::Awake()
 	// Create a enemy using the entity manager 
 	for (pugi::xml_node enemyNode = configParameters.child("entities").child("enemies").child("enemy"); enemyNode; enemyNode = enemyNode.next_sibling("enemy"))
 	{
-		Skeleton* enemy = (Skeleton*)Engine::GetInstance().entityManager->CreateEntity(EntityType::SKELETON);
-		enemy->SetParameters(enemyNode);
-		enemyList.push_back(enemy);
+		std::string name = enemyNode.attribute("name").as_string();
+		if (name == "skeleton") {
+			Skeleton* enemy = (Skeleton*)Engine::GetInstance().entityManager->CreateEntity(EntityType::SKELETON);
+			enemy->SetParameters(enemyNode);
+			enemyList.push_back(enemy);
+		}
+		else if (name == "firespirit") {
+			FireSpirit* enemy = (FireSpirit*)Engine::GetInstance().entityManager->CreateEntity(EntityType::FIRE_SPIRIT);
+			enemy->SetParameters(enemyNode);
+			enemyList.push_back(enemy);
+		}
 
-		FireSpirit* enemy2 = (FireSpirit*)Engine::GetInstance().entityManager->CreateEntity(EntityType::FIRE_SPIRIT);
-		enemy2->SetParameters(enemyNode);
-		enemyList.push_back(enemy2);
+		//FireSpirit* enemy2 = (FireSpirit*)Engine::GetInstance().entityManager->CreateEntity(EntityType::FIRE_SPIRIT);
+		//enemy2->SetParameters(enemyNode);
+		//enemyList.push_back(enemy2);
 	}
 
 	menuFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/menu.wav");
@@ -87,6 +95,14 @@ void Scene::PlayerDeath(bool death)
 Vector2D Scene::GetPlayerPosition()
 {
 	return player->GetPosition();
+}
+
+std::string Scene::LoadEnemyName(pugi::xml_node configParameters)
+{
+	for (pugi::xml_node enemyNode = configParameters.child("entities").child("enemies").child("enemy"); enemyNode; enemyNode = enemyNode.next_sibling("enemy")) {
+		std::string enemyName = enemyNode.child("name").text().as_string();
+		return enemyName;
+	}
 }
 
 // Called each loop iteration

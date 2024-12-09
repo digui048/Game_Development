@@ -67,6 +67,8 @@ public:
 
 	Vector2D GetPlayerPosition();
 
+	std::string LoadEnemyName(pugi::xml_node configParameters);
+
 	float respawnDelayCam = 3.0f;
 	float deathTimeCam = 0.0f;
 	bool debugCamera = false;

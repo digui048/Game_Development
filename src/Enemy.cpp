@@ -9,7 +9,7 @@
 #include "Physics.h"
 #include "Map.h"
 
-Enemy::Enemy() : Entity(EntityType::ENEMY,View::RIGHT)
+Enemy::Enemy() : Entity(EntityType::SKELETON,View::RIGHT)
 {
 	name = "enemy";
 }
@@ -130,11 +130,6 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB)
 void Enemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 {
 	
-}
-
-EnemyType Enemy::GetType() const
-{
-	return type;
 }
 
 

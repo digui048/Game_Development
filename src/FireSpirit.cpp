@@ -35,10 +35,10 @@ bool FireSpirit::Start()
 	death_left.LoadAnimations(parameters.child("animations").child("death_left"));
 	death_right.LoadAnimations(parameters.child("animations").child("death_right"));
 
-	currentAnim = &idle_left;
+	currentAnim = &idle_right;
 
 	// Add a physics body to the enemy - initialise the physics body
-	pbody = Engine::GetInstance().physics->CreateRectangle((int)position.getX() + texW / 2, (int)position.getY() + texH / 2, texW, texH, bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics->CreateCircle((int)position.getX() + texW / 2, (int)position.getY() + texH / 2, texW/2, bodyType::DYNAMIC);
 
 	// Assign a collider to the physics body
 	pbody->ctype = ColliderType::ENEMY;
@@ -102,7 +102,7 @@ bool FireSpirit::Update(float dt)
 	}
 
 	// Flying enemy
-	float dx = Engine::GetInstance().scene.get()->GetPlayerPosition().magnitude() - GetPosition().magnitude();
+	float dx = Engine::GetInstance().scene.get()->GetPlayerPosition().getX() - GetPosition().getX();
 	// Update the enemy state
 	if (!pathfinding->pathTiles.empty())
 	{
@@ -112,7 +112,7 @@ bool FireSpirit::Update(float dt)
 			Vector2D nextTileWorldPos = Engine::GetInstance().map.get()->MapToWorld(nextTile.getX(), nextTile.getY());
 			Vector2D direction = nextTileWorldPos - GetPosition();
 
-			if (dx < 0) look = View::RIGHT;
+			if (dx > 0) look = View::RIGHT;
 			else look = View::LEFT;
 
 			direction = direction.normalized();
@@ -124,15 +124,6 @@ bool FireSpirit::Update(float dt)
 				Idle();
 				velocity = b2Vec2(0, 0);
 			}
-			else if (abs(dx) < 30)
-			{
-				Attack();
-				if (currentAnim->HasFinished())
-				{
-					currentAnim->Reset();
-				}
-				velocity = b2Vec2(0, 0);
-			}
 
 			pbody->body->SetLinearVelocity(velocity);
 		}
@@ -141,15 +132,13 @@ bool FireSpirit::Update(float dt)
 			if (abs(dx) < 150) {
 				if (dx < 0) look = View::LEFT;
 				else look = View::RIGHT;
-				Alert();
-				if (currentAnim->HasFinished()) {
-					isAlerted = true;
-					currentAnim->Reset();
-				}
+				
+				isAlerted = true;
+				currentAnim->Reset();
 				pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 			}
 			else {
-				if (dx < 0) look = View::LEFT;
+				if (dx > 0) look = View::LEFT;
 				else look = View::RIGHT;
 				Idle();
 			}
