@@ -25,11 +25,12 @@ The main objective is to successfully traverse through each level, defeating ene
 ### DEBUG SHORTCUTS
 | **Debug Action** | **Input** |
 | --- | --- |
+| Show/Hide help menu | H |
 | Debug Camera | F8 |
 | Visualize Colliders Logic | F9 |
 | God Mode | F10 |
 | Enable / Disable fps cap to 30 | F11 |
-| Show/Hide help menu | H |
+
 
 
 ## List of features implemented
