@@ -120,7 +120,7 @@ bool FireSpirit::Update(float dt)
 			b2Vec2 velocity = b2Vec2(direction.getX(), direction.getY());
 			Walk();
 
-			if (abs(dx) > 300) {
+			if (abs(dx) > 200) {
 				isAlerted = false;
 				Idle();
 				velocity = b2Vec2(0, 0);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="100" height="45" tilewidth="32" tileheight="32" infinite="0" nextlayerid="17" nextobjectid="469">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="100" height="45" tilewidth="32" tileheight="32" infinite="0" nextlayerid="17" nextobjectid="476">
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
   <image source="tmw_desert_spacing.png" width="265" height="199"/>
   <wangsets>
@@ -77,7 +77,8 @@
  <tileset firstgid="3298" name="checkpoint" tilewidth="32" tileheight="32" tilecount="2" columns="2">
   <image source="../Textures/enemy/checkpoint.png" width="64" height="32"/>
  </tileset>
- <layer id="13" name="Background" width="100" height="45" visible="0">
+ <tileset firstgid="3300" source="../../../../Downloads/MapMetadata.tsx"/>
+ <layer id="13" name="Background" width="100" height="45" visible="0" locked="1">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -4584,7 +4585,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="1" name="Map" width="100" height="45" visible="0">
+ <layer id="1" name="Map" width="100" height="45" locked="1">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -8226,15 +8227,15 @@
    <tile gid="83"/>
    <tile gid="85"/>
    <tile/>
-   <tile gid="339"/>
-   <tile gid="339"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile gid="83"/>
    <tile gid="85"/>
-   <tile gid="339"/>
    <tile/>
    <tile/>
-   <tile gid="339"/>
+   <tile/>
+   <tile/>
    <tile gid="371"/>
    <tile gid="120"/>
    <tile/>
@@ -8324,12 +8325,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="339"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="339"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -8421,12 +8422,12 @@
    <tile/>
    <tile gid="58"/>
    <tile/>
-   <tile gid="307"/>
+   <tile/>
    <tile gid="102"/>
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="307"/>
+   <tile/>
    <tile gid="100"/>
    <tile/>
    <tile/>
@@ -9091,7 +9092,7 @@
    <tile gid="68"/>
   </data>
  </layer>
- <layer id="15" name="Navigation" width="100" height="45" visible="0">
+ <layer id="15" name="Navigation" width="100" height="45">
   <properties>
    <property name="Draw" type="bool" value="false"/>
    <property name="Navigation" type="bool" value="true"/>
@@ -9128,16 +9129,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9150,6 +9142,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9236,6 +9229,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9248,6 +9242,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9334,6 +9329,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9346,6 +9342,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9432,6 +9429,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9444,6 +9442,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9530,6 +9529,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9542,6 +9542,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9608,7 +9609,6 @@
    <tile/>
    <tile/>
    <tile gid="49"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -9629,7 +9629,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9642,6 +9642,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9708,7 +9709,6 @@
    <tile/>
    <tile/>
    <tile gid="49"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -9729,7 +9729,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9742,6 +9742,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9808,7 +9809,6 @@
    <tile/>
    <tile/>
    <tile gid="49"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -9829,7 +9829,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9842,6 +9842,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9908,8 +9909,6 @@
    <tile/>
    <tile/>
    <tile gid="49"/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -9930,6 +9929,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -9942,6 +9942,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10008,8 +10009,6 @@
    <tile/>
    <tile/>
    <tile gid="49"/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -10030,6 +10029,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10042,6 +10042,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10108,8 +10109,6 @@
    <tile/>
    <tile/>
    <tile gid="49"/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -10130,6 +10129,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10142,6 +10142,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10208,8 +10209,6 @@
    <tile/>
    <tile/>
    <tile gid="49"/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -10230,6 +10229,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10242,6 +10242,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10328,8 +10329,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10342,6 +10342,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10408,7 +10409,6 @@
    <tile/>
    <tile/>
    <tile gid="49"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -10429,7 +10429,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10442,6 +10442,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10508,7 +10509,6 @@
    <tile/>
    <tile/>
    <tile gid="49"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -10529,7 +10529,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10542,6 +10542,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10608,7 +10609,6 @@
    <tile/>
    <tile/>
    <tile gid="49"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -10629,7 +10629,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10642,6 +10642,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10708,7 +10709,6 @@
    <tile/>
    <tile/>
    <tile gid="49"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -10729,7 +10729,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10742,6 +10742,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="49"/>
    <tile/>
    <tile/>
    <tile/>
@@ -13599,7 +13600,7 @@
    <tile/>
   </data>
  </layer>
- <objectgroup id="7" name="Floor_Collisions" visible="0">
+ <objectgroup id="7" name="Floor_Collisions" locked="1">
   <properties>
    <property name="Collisions" type="bool" value="true"/>
   </properties>
@@ -13727,8 +13728,15 @@
   <object id="447" x="1600" y="960" width="32"/>
   <object id="448" x="1632" y="992" width="32"/>
   <object id="451" x="416" y="800" width="32"/>
+  <object id="469" x="1344" y="1152" width="32"/>
+  <object id="470" x="1440" y="1152" width="32"/>
+  <object id="471" x="1280" y="1184" width="32"/>
+  <object id="472" x="1184" y="1152" width="64"/>
+  <object id="473" x="1184" y="1248" width="32"/>
+  <object id="474" x="1120" y="1184" width="32"/>
+  <object id="475" x="1024" y="1248" width="32"/>
  </objectgroup>
- <objectgroup id="10" name="Spikes" visible="0">
+ <objectgroup id="10" name="Spikes" locked="1">
   <properties>
    <property name="Spikes" type="bool" value="true"/>
   </properties>
@@ -13749,13 +13757,6 @@
   <object id="264" x="707.25" y="1216" width="28.75"/>
   <object id="265" x="832" y="1280" width="64"/>
   <object id="266" x="960" y="1152" width="32"/>
-  <object id="267" x="1024" y="1248" width="32"/>
-  <object id="268" x="1120" y="1184" width="32"/>
-  <object id="269" x="1184" y="1248" width="32"/>
-  <object id="270" x="1184" y="1152" width="64"/>
-  <object id="271" x="1280" y="1184" width="32"/>
-  <object id="272" x="1344" y="1152" width="32"/>
-  <object id="273" x="1440" y="1152" width="32"/>
   <object id="276" x="1536" y="1280" width="192"/>
   <object id="277" x="1760" y="1248" width="32"/>
   <object id="278" x="1824" y="1216" width="32"/>
@@ -13791,7 +13792,7 @@
   <object id="445" x="320" y="1280" width="64"/>
   <object id="446" x="416" y="1280" width="32"/>
  </objectgroup>
- <objectgroup id="8" name="Wall_Collision" visible="0">
+ <objectgroup id="8" name="Wall_Collision" locked="1">
   <properties>
    <property name="Wall_Collisions" type="bool" value="true"/>
   </properties>
@@ -13921,7 +13922,7 @@
   <object id="449" x="1600" y="928" height="32"/>
   <object id="450" x="1632" y="960" height="32"/>
  </objectgroup>
- <objectgroup id="16" name="Checkpoint">
+ <objectgroup id="16" name="Checkpoint" visible="0" locked="1">
   <properties>
    <property name="Checkpoint_Collision" type="bool" value="true"/>
   </properties>
