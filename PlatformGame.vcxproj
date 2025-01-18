@@ -146,6 +146,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\FireSpirit.cpp" />
+    <ClCompile Include="src\GuiControlButton.cpp" />
+    <ClCompile Include="src\GuiManager.cpp" />
     <ClCompile Include="src\Skeleton.cpp" />
     <ClCompile Include="src\Audio.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
@@ -169,6 +171,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\FireSpirit.h" />
+    <ClInclude Include="src\GuiControl.h" />
+    <ClInclude Include="src\GuiControlButton.h" />
+    <ClInclude Include="src\GuiManager.h" />
     <ClInclude Include="src\Skeleton.h" />
     <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\Pathfinding.h" />

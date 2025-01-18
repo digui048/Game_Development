@@ -7,6 +7,7 @@
 #include "FireSpirit.h"
 #include "Log.h"
 #include <vector>
+#include "GuiControlButton.h"
 
 struct SDL_Texture;
 
@@ -89,6 +90,11 @@ public:
 	//sound fx
 	int	menuFxId;
 
+
+	// Handles multiple Gui Event methods
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
+
 	// Get tilePosDebug value
 	std::string GetTilePosDebug() {
 		return tilePosDebug;
@@ -110,4 +116,7 @@ private:
 	std::string tilePosDebug = "[0,0]";
 	bool once = false;
 	int checkpoint_loop = 0;
+
+	// L16: TODO 2: Declare a GUI Control Button 
+	GuiControlButton* guiBt;
 };

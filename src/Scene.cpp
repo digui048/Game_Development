@@ -12,6 +12,9 @@
 #include "Player.h"
 #include "Map.h"
 #include "Item.h"
+#include "GuiControl.h"
+#include "GuiManager.h"
+
 
 Scene::Scene() : Module()
 {
@@ -60,6 +63,10 @@ bool Scene::Awake()
 		//enemy2->SetParameters(enemyNode);
 		//enemyList.push_back(enemy2);
 	}
+
+	// L16: TODO 2: Instantiate a new GuiControlButton in the Scene
+	SDL_Rect btPos = { 520, 350, 120,20 };
+	guiBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "BOTÓN PRUEBA", btPos, this);
 
 	menuFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/menu.wav");
 
@@ -414,6 +421,14 @@ bool Scene::CleanUp()
 	SDL_DestroyTexture(helpmenu);
 
 	delete camera;
+
+	return true;
+}
+
+bool Scene::OnGuiMouseClickEvent(GuiControl* control)
+{
+	// L15: DONE 5: Implement the OnGuiMouseClickEvent method
+	LOG("Press Gui Control: %d", control->id);
 
 	return true;
 }
