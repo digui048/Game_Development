@@ -76,6 +76,12 @@ public:
 
 	void SaveState();
 
+	StatsManager* GetStatsManager();
+
+	void StatsLooseLife();
+
+	void StatsResetLife();
+
 	bool checkpoint = false;
 	float respawnDelayCam = 3.0f;
 	float deathTimeCam = 0.0f;

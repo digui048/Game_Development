@@ -207,7 +207,12 @@ void FireSpirit::TestIsAbove(PhysBody* physA, PhysBody* physB)
 		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 	}
 	else {
-		Engine::GetInstance().scene.get()->PlayerDeath(true);
+		if (Engine::GetInstance().scene.get()->GetStatsManager()->GetLife() > 0)
+			Engine::GetInstance().scene.get()->StatsLooseLife();
+		else {
+			Engine::GetInstance().scene.get()->StatsResetLife();
+			Engine::GetInstance().scene.get()->PlayerDeath(true);
+		}
 	}
 }
 void FireSpirit::Walk()

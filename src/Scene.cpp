@@ -183,6 +183,21 @@ void Scene::SaveState()
 	loadFile.save_file("config.xml");
 }
 
+StatsManager* Scene::GetStatsManager()
+{
+	return player->stats;
+}
+
+void Scene::StatsLooseLife()
+{
+	player->stats->loseLife();
+}
+
+void Scene::StatsResetLife()
+{
+	player->stats->IncrementLife(100);
+}
+
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
@@ -320,6 +335,10 @@ bool Scene::Update(float dt)
 		checkpointAnim = &initialcheckpointAnimData;
 		Engine::GetInstance().render.get()->DrawTexture(checkpointTex, 21 * 32, 27 * 32, &checkpointAnim->GetCurrentFrame());
 	}
+
+	Engine::GetInstance().render.get()->DrawText("Life", 25, 5, 50, 50);
+	Engine::GetInstance().render.get()->DrawRectangle(player->stats->GetBar(), 255, 255, 255, 255, true, false);
+	Engine::GetInstance().render.get()->DrawRectangle(player->stats->UpdateLife(), 0, 255, 0, 255,true,false);
 	
 	//L03 TODO 3: Make the camera movement independent of framerate
 	//float camSpeed = 1;

@@ -35,6 +35,8 @@ bool Player::Start() {
 	texW = parameters.attribute("w").as_int();
 	texH = parameters.attribute("h").as_int();
 	
+	stats = new StatsManager();
+
 	//Load animations
 	
 	//Idle right
@@ -348,6 +350,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::SPIKE:
 		LOG("Collision Spike");
 		isDead = true;
+		stats->IncrementLife(100);
 		break;
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");

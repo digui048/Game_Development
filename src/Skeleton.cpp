@@ -222,11 +222,17 @@ void Skeleton::TestIsAbove(PhysBody* physA, PhysBody* physB)
 	if (position_A.y > (position_B.y + 0.5f))
 	{
 		death = true;
+
 		Engine::GetInstance().audio.get()->PlayFx(enemydeathFxId);
 		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 	}
 	else {
-		Engine::GetInstance().scene.get()->PlayerDeath(true);
+		if (Engine::GetInstance().scene.get()->GetStatsManager()->GetLife() > 0)
+			Engine::GetInstance().scene.get()->StatsLooseLife();
+		else {
+			Engine::GetInstance().scene.get()->StatsResetLife();
+			Engine::GetInstance().scene.get()->PlayerDeath(true);
+		}
 	}
 }
 void Skeleton::Walk()

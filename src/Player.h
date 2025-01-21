@@ -4,6 +4,7 @@
 #include "SDL2/SDL.h"
 #include "Box2D/Box2D.h"
 #include "Animation.h"
+#include "LifeManager.h"
 
 struct SDL_Texture;
 
@@ -120,4 +121,6 @@ public:
 	Animation die_right;
 
 	bool isRunningSoundPlaying;
+
+	StatsManager* stats;
 };
