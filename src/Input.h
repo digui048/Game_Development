@@ -42,6 +42,8 @@ public:
 	// Called each loop iteration
 	bool PreUpdate();
 
+	bool Update(float dt);
+
 	// Called before quitting
 	bool CleanUp();
 
@@ -60,7 +62,11 @@ public:
 	bool GetWindowEvent(EventWindow ev);
 
 	// Get mouse / axis position
-	Vector2D GetMousePosition();
+	Vector2D GetMousePosition() const {
+		int x, y;
+		SDL_GetMouseState(&x, &y);
+		return Vector2D(static_cast<float>(x), static_cast<float>(y));
+	}
 	Vector2D GetMouseMotion();
 
 private:

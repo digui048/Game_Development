@@ -20,14 +20,17 @@ GuiControlButton::~GuiControlButton()
 
 bool GuiControlButton::Update(float dt)
 {
+	
 	if (state != GuiControlState::DISABLED)
 	{
 		// L16: TODO 3: Update the state of the GUiButton according to the mouse position
 		Vector2D mousePos = Engine::GetInstance().input->GetMousePosition();
+		//La posicion se imprime como 0,0 pero funciona bien realmente
+		//LOG("Mouse X: %d, Mouse Y: %d", mousePos.getX(), mousePos.getY());		
 
-		//If the position of the mouse if inside the bounds of the button 
+		//If the position of the mouse if inside the bounds of the button
 		if (mousePos.getX() > bounds.x && mousePos.getX() < bounds.x + bounds.w && mousePos.getY() > bounds.y && mousePos.getY() < bounds.y + bounds.h) {
-		
+					
 			state = GuiControlState::FOCUSED;
 
 			if (Engine::GetInstance().input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {

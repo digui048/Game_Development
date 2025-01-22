@@ -126,6 +126,12 @@ bool Input::PreUpdate()
 	return true;
 }
 
+bool Input::Update(float dt)
+{
+	SDL_PumpEvents();
+	return true;
+}
+
 // Called before quitting
 bool Input::CleanUp()
 {
@@ -140,10 +146,10 @@ bool Input::GetWindowEvent(EventWindow ev)
 	return windowEvents[ev];
 }
 
-Vector2D Input::GetMousePosition()
-{
-	return Vector2D(mouseX, mouseY);
-}
+//Vector2D Input::GetMousePosition()
+//{
+//	return Vector2D(mouseX, mouseY);
+//}
 
 Vector2D Input::GetMouseMotion()
 {
