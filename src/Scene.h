@@ -142,4 +142,7 @@ private:
 
 
 	SDL_Texture* mainMenuTex;
+	int bossFxId;
+
+	bool bossMusicPlayed = false;
 };

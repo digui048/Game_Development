@@ -100,6 +100,7 @@ bool Scene::Awake()
 
 	//Load sounds
 	menuFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/menu.wav");
+	bossFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Music/boss.ogg");
 	
 
 	return ret;
@@ -122,7 +123,10 @@ bool Scene::Start()
 	}
 	SDL_QueryTexture(helpmenu, NULL, NULL, &helpmenuWidth, &helpmenuHeight);
 
-	mainMenuTex = Engine::GetInstance().textures.get()->Load("Assets/Menus & UI/Title screen.png");
+	mainMenuTex = Engine::GetInstance().textures.get()->Load("Assets/Menus & UI/Title screen.png");	
+
+	//Play background music
+	Engine::GetInstance().audio.get()->PlayMusic("Assets/Audio/Music/bg_song.ogg");
 
 	return true;
 }
@@ -396,83 +400,13 @@ bool Scene::Update(float dt)
 	Engine::GetInstance().render.get()->DrawRectangle(bar_life, 255, 255, 255, 255, true, false);
 	Engine::GetInstance().render.get()->DrawRectangle(lifeRect, 0, 255, 0, 255, true, false);
 
-	
-	//L03 TODO 3: Make the camera movement independent of framerate
-	//float camSpeed = 1;
-
-	////if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-	////	Engine::GetInstance().render.get()->camera.y += ceil(camSpeed * dt);
-
-	////if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-	////	Engine::GetInstance().render.get()->camera.y -= ceil(camSpeed * dt);
-
-	////if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-	////	Engine::GetInstance().render.get()->camera.x += ceil(camSpeed * dt);
-
-	////if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-	////	Engine::GetInstance().render.get()->camera.x -= ceil(camSpeed * dt);
-
-	////Engine::GetInstance().render.get()->camera.x = -(player->position.getX()/6 + (Engine::GetInstance().render.get()->camera.w / 32));
-	////Engine::GetInstance().render.get()->camera.y = -(player->position.getY()/6 + (Engine::GetInstance().render.get()->camera.y / 32));
-
-	// //para hacer que la camara se mueva SMOOOOOOOTH ;)
-	//float smoothValueX = 0.03f;
-	//float smoothValueY = 0.04f;
-	//
-	//int screenWidth = Engine::GetInstance().render.get()->camera.w;		//tamaño screen
-	//int screenHeight = Engine::GetInstance().render.get()->camera.h;
-	//
-	//float playerPosX = player->position.getX();		//posicion player
-	//float playerPosY = player->position.getY();
-
-	//float cameraPosX = Engine::GetInstance().render.get()->camera.x;	//posicion camara
-	//float cameraPosY = Engine::GetInstance().render.get()->camera.y;
-
-	//// a partir de donde sigue la camara
-	//float cameraBoundary = screenWidth * 0.5f;
-	//
-	//// donde poner la camara para ir ajustandola
-	//float targetCameraPosX = cameraPosX;
-	//float targetCameraPosY = cameraPosY;
-
-	//if (playerPosX > cameraPosX + cameraBoundary)
-	//{
-	//	targetCameraPosX = -(playerPosX - cameraBoundary);
-	//	//LOG("right limit");
-	//}
-	//else if (playerPosX < cameraPosX - cameraBoundary)
-	//{
-	//	targetCameraPosX = -(playerPosX - cameraBoundary);
-	//	//LOG("left limit");
-	//}
-	//if (playerPosY > cameraPosY + cameraBoundary)
-	//{
-	//	targetCameraPosY = -(playerPosY - cameraBoundary);
-	//	//LOG("right limit");
-	//}
-	//else if (playerPosY < cameraPosY - cameraBoundary)
-	//{
-	//	targetCameraPosY = -(playerPosY - cameraBoundary);
-	//	//LOG("left limit");
-	//}
-
-	//// retraso para movimiento SMOOOOOOOTH ;)
-	//cameraPosX = cameraPosX + smoothValueX * (targetCameraPosX - cameraPosX);
-	//cameraPosY = cameraPosY + smoothValueY * (targetCameraPosY - cameraPosY);
-	////
-	////
-	//////delay para resetear la camara al morir
-	////
-	////float posX = player->Pos.x;
-	////float posY = player->Pos.y;
-	////Vector2D pos = Vector2D(posX, posY);
-	////camera->Update(pos, dt);
-	////Engine::GetInstance().render.get()->camera.x = (int)camera->position.getX();
-	////LOG("Camera positionX: %d", Engine::GetInstance().render.get()->camera.x);
-	////LOG("Camera positionY: %d", Engine::GetInstance().render.get()->camera.y);
-	//
-	//Engine::GetInstance().render.get()->camera.x = (int)cameraPosX;
-	//Engine::GetInstance().render.get()->camera.y = (int)cameraPosY;
+	//Check player position to play music
+	if (player->position.getX() > 3136 && !bossMusicPlayed)
+	{
+		Engine::GetInstance().audio.get()->StopMusic(); // Stop any currently playing music
+		Engine::GetInstance().audio.get()->PlayMusic("Assets/Audio/Music/boss.ogg");
+		bossMusicPlayed = true;
+	}
 
 	return true;
 }

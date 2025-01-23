@@ -169,3 +169,16 @@ bool Audio::PlayFx(int id, int repeat)
 
 	return ret;
 }
+
+void Audio::StopMusic()
+{
+	if (!active)
+		return;
+
+	if (music != NULL)
+	{
+		Mix_HaltMusic();
+		Mix_FreeMusic(music);
+		music = NULL;
+	}
+}
