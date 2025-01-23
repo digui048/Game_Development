@@ -1,7 +1,7 @@
-# Knight's Quest: The Videogame
+# A Knight's Tale: The Videogame
 
 ## Short description
-Knight's Quest is an engaging platform game where players take on the role of a courageous medieval knight. The knight embarks on a thrilling adventure through diverse environments, including lush forests, treacherous caves, and other fantastical landscapes, each filled with challenges and enemies.
+A Knight's Tale is an engaging platform game where players take on the role of a courageous medieval knight. The knight embarks on a thrilling adventure through diverse environments, including lush forests, treacherous caves, and other fantastical landscapes, each filled with challenges and enemies.
 
 * Genre: Platformer
 
@@ -61,6 +61,10 @@ The main objective is to successfully traverse through each level, defeating ene
 - Load and save current states
 
 - Checkpoints
+
+- Background Music for the level and Boss.
+
+- Final Boss: New challenging Boss fight implemented as a second level
 
 
 ## About us - _RetroRevolve_
