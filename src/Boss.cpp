@@ -176,7 +176,7 @@ bool Boss::Update(float dt)
 	if (Engine::GetInstance().scene.get()->pathDebug) {
 		pathfinding->DrawPath();
 	}
-	LOG("Life: %d", life);
+	//LOG("Life: %d", life);
 	return true;
 }
 

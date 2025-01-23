@@ -59,5 +59,19 @@ bool GuiManager::CleanUp()
 	return true;
 }
 
+bool GuiManager::DeleteButtons()
+{
+	for (const auto& control : guiControlsList)
+	{
+		if (control != nullptr)
+		{
+			delete control;
+		}
+	}
+	guiControlsList.clear();
+
+	return true;
+}
+
 
 

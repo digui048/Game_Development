@@ -14,6 +14,7 @@
 #include "Item.h"
 #include "GuiControl.h"
 #include "GuiManager.h"
+#include "GuiControlButton.h"
 
 
 Scene::Scene() : Module()
@@ -52,7 +53,7 @@ bool Scene::Awake()
 	menuLayout->isMenu = true;
 	menuLayout->SetTexture(mainMenuTex);*/
 
-	startbt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "START", startbutton, this);
+	/*startbt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "START", startbutton, this);
 	startbt->Isvisible = true;
 	guiButtons.push_back(startbt);
 
@@ -62,7 +63,7 @@ bool Scene::Awake()
 
 	exitbt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "EXIT", exitbutton, this);
 	exitbt->Isvisible = true;
-	guiButtons.push_back(exitbt);
+	guiButtons.push_back(exitbt);*/
 	//PRUEBAS BOTONES ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -504,6 +505,8 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 {
 	// L15: DONE 5: Implement the OnGuiMouseClickEvent method
 	LOG("Press Gui Control: %d", control->id);
+
+	//Engine::GetInstance().guiManager->DeleteButtons();
 
 	return true;
 }
