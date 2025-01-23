@@ -17,7 +17,7 @@
 	<scene>
 		<map path="Assets/Maps/" name="MapTemplate.tmx" />
 		<entities>
-			<player x="2873" y="239" w="48" h="40" texture="Assets/Textures/player/Animations.png">
+			<player x="594" y="527" w="48" h="40" texture="Assets/Textures/player/Animations.png">
 				<animations>
 					<idle_left loop="true" speed="0.18">
 						<frame x="0" y="0" w="48" h="40" />
@@ -112,7 +112,7 @@
 				</animations>
 			</player>
 			<enemies>
-				<enemy name="skeleton" x="1253" y="1231" active="true" w="32" h="32" texture="Assets/Textures/enemy/Skeleton_Idle.png" gravity="true">
+				<enemy name="skeleton" x="1253" y="1231" active="false" w="32" h="32" texture="Assets/Textures/enemy/Skeleton_Idle.png" gravity="true">
 					<animations>
 						<idle_right loop="true" speed="0.2">
 							<frame x="0" y="0" w="24" h="37" />
@@ -376,7 +376,7 @@
 						</attack_right>
 					</animations>
 				</enemy>
-				<enemy name="firespirit" x="2304" y="320" active="true" w="32" h="32" texture="Assets/Textures/enemy/fire_spirit.png" gravity="false">
+				<enemy name="firespirit" x="2304" y="320" active="false" w="32" h="32" texture="Assets/Textures/enemy/fire_spirit.png" gravity="false">
 					<animations>
 						<idle_right loop="true" speed="0.2">
 							<frame x="0" y="0" w="54" h="54" />
@@ -428,7 +428,7 @@
 						</death_right>
 					</animations>
 				</enemy>
-				<enemy name="firespirit" x="1984" y="384" active="true" w="32" h="32" texture="Assets/Textures/enemy/fire_spirit.png" gravity="false">
+				<enemy name="firespirit" x="1984" y="384" active="false" w="32" h="32" texture="Assets/Textures/enemy/fire_spirit.png" gravity="false">
 					<animations>
 						<idle_right loop="true" speed="0.2">
 							<frame x="0" y="0" w="54" h="54" />
@@ -480,7 +480,7 @@
 						</death_right>
 					</animations>
 				</enemy>
-				<enemy name="boss" x="3936" y="870" active="true" w="80" h="100" texture="Assets/Textures/enemy/boss.png" gravity="false">
+				<enemy name="boss" x="4050" y="870" active="true" w="80" h="100" texture="Assets/Textures/enemy/boss.png" gravity="false">
 					<animations>
 						<idle_left loop="true" speed="0.2">
 							<frame x="0" y="0" w="96" h="112" />
