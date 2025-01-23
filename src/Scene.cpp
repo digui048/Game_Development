@@ -38,9 +38,33 @@ bool Scene::Awake()
 	//L04: TODO 3b: Instantiate the player using the entity manager
 	player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
 	player->SetParameters(configParameters.child("entities").child("player"));
-	//L08 Create a new item using the entity manager and set the position to (200, 672) to test
-	/*Item* item = (Item*) Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
-	item->position = Vector2D(900, 0);*/
+		
+	
+
+	//PRUEBAS BOTONES ----------------------------------------------------------------------------------------------------------------------------------------------------
+	SDL_Rect startbutton = { (Engine::GetInstance().window.get()->width / 2) - 60, 300, 120,20 };
+	SDL_Rect settingbutton = { (Engine::GetInstance().window.get()->width / 2) - 60, 350, 120,20 };
+	SDL_Rect exitbutton = { (Engine::GetInstance().window.get()->width / 2) - 60, 400, 120,20 };
+
+	/*SDL_Rect layoutBoundsMM = { 0, 0, Engine::GetInstance().window.get()->width, Engine::GetInstance().window.get()->height };
+	menuLayout = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 0, "Layout", layoutBoundsMM, this);
+	menuLayout->isLayout = true;
+	menuLayout->isMenu = true;
+	menuLayout->SetTexture(mainMenuTex);*/
+
+	startbt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "START", startbutton, this);
+	startbt->Isvisible = true;
+	guiButtons.push_back(startbt);
+
+	settingsbt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "SETTINGS", settingbutton, this);
+	settingsbt->Isvisible = true;
+	guiButtons.push_back(settingsbt);
+
+	exitbt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "EXIT", exitbutton, this);
+	exitbt->Isvisible = true;
+	guiButtons.push_back(exitbt);
+	//PRUEBAS BOTONES ----------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 	// Create a enemy using the entity manager 
 	for (pugi::xml_node enemyNode = configParameters.child("entities").child("enemies").child("enemy"); enemyNode; enemyNode = enemyNode.next_sibling("enemy"))
@@ -65,10 +89,12 @@ bool Scene::Awake()
 	}
 
 	// L16: TODO 2: Instantiate a new GuiControlButton in the Scene
-	SDL_Rect btPos = { 520, 520, 120, 25 };
-	guiBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "BOTÓN PRUEBA", btPos, this);
+	//SDL_Rect btPos = { 520, 520, 120, 25 };
+	//guiBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "BOTÓN PRUEBA", btPos, this);
 
+	//Load sounds
 	menuFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/menu.wav");
+	
 
 	return ret;
 }
@@ -89,6 +115,9 @@ bool Scene::Start()
 		initialcheckpointAnimData.LoadAnimations(checkpointNode.child("animations").child("initial"));
 	}
 	SDL_QueryTexture(helpmenu, NULL, NULL, &helpmenuWidth, &helpmenuHeight);
+
+	mainMenuTex = Engine::GetInstance().textures.get()->Load("Assets/Menus & UI/Title screen.png");
+
 	return true;
 }
 

@@ -106,6 +106,17 @@ public:
 		return tilePosDebug;
 	}
 
+	GuiControlButton* startbt;
+	GuiControlButton* exitbt;
+	GuiControlButton* settingsbt;
+
+	GuiControlButton* layout;
+
+	std::vector<GuiControlButton*> guiButtons;
+	GuiControlButton* menuLayout;
+	
+
+
 private:
 	SDL_Texture* mouseTileTex = nullptr;
 	SDL_Texture* img;
@@ -125,4 +136,7 @@ private:
 
 	// L16: TODO 2: Declare a GUI Control Button 
 	GuiControlButton* guiBt;
+
+
+	SDL_Texture* mainMenuTex;
 };

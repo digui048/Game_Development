@@ -11,6 +11,14 @@ public:
 	GuiControlButton(int id, SDL_Rect bounds, const char* text);
 	virtual ~GuiControlButton();
 
+
+	bool isLayout = false;
+	bool isLayoutMenu = false;
+	bool isClicked = false;
+	bool Isvisible = true;
+	bool isMenu = false;
+
+
 	// Called each loop iteration
 	bool Update(float dt);
 
