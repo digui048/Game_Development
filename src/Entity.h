@@ -8,7 +8,9 @@ enum class EntityType
 	PLAYER,
 	ITEM,
 	SKELETON,
+	BOSS,
 	FIRE_SPIRIT,
+	FIREBALL,
 	UNKNOWN
 };
 

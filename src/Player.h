@@ -67,6 +67,7 @@ private:
 
 public:
 
+	int lifeBoss = 100;
 	//Declare player parameters
 	float speed = 5.0f;
 	SDL_Texture* texture = NULL;

@@ -306,6 +306,7 @@ bool Player::Update(float dt)
 		pbody->body->SetLinearVelocity(b2Vec2(0,0));
 		return true;
 	}
+
 	// Set new velocity
 	pbody->body->SetLinearVelocity(velocity);
 	b2Transform pbodyPos = pbody->body->GetTransform();

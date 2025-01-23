@@ -145,6 +145,8 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Boss.cpp" />
+    <ClCompile Include="src\FireBall.cpp" />
     <ClCompile Include="src\FireSpirit.cpp" />
     <ClCompile Include="src\GuiControlButton.cpp" />
     <ClCompile Include="src\GuiManager.cpp" />
@@ -171,6 +173,8 @@
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Boss.h" />
+    <ClInclude Include="src\FireBall.h" />
     <ClInclude Include="src\LifeManager.h" />
     <ClInclude Include="src\FireSpirit.h" />
     <ClInclude Include="src\GuiControl.h" />

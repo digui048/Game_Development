@@ -79,6 +79,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	case EntityType::FIRE_SPIRIT:
 		entity = new FireSpirit();
 		break;
+	case EntityType::BOSS:
+		entity = new Boss();
+		break;
 	case EntityType::ITEM:
 		entity = new Item();
 		break;

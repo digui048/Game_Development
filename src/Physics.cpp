@@ -160,7 +160,7 @@ PhysBody* Physics::CreateRectangleSensor(int x, int y, int width, int height, bo
 
 	// Add fixture to the BODY
 	b->CreateFixture(&fixture);
-
+	b->SetFixedRotation(true);
 	// Create our custom PhysBody class
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
@@ -465,4 +465,18 @@ int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& no
 	}
 
 	return ret;
+}
+
+void PhysBody::CreateJoint(PhysBody* body, Vector2D pos)
+{
+	b2WeldJointDef jointDef;
+	jointDef.bodyA = this->body;
+	jointDef.bodyB = body->body;
+	jointDef.localAnchorA.Set(0.0f, 0.0f);
+	jointDef.localAnchorB.Set(pos.getX(), pos.getY());
+	jointDef.referenceAngle = 0.0f;
+	jointDef.stiffness = 0.0f;
+	jointDef.damping = 0.0f;
+
+	b2Joint* weldJoint = Engine::GetInstance().physics.get()->world->CreateJoint(&jointDef);
 }

@@ -1,4 +1,4 @@
-#include "Skeleton.h"
+#include "Boss.h"
 #include "Engine.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -9,17 +9,16 @@
 #include "Physics.h"
 #include "Map.h"
 
-Skeleton::Skeleton()
+Boss::Boss()
 {
-
 }
 
-Skeleton::~Skeleton()
+Boss::~Boss()
 {
 	delete pathfinding;
 }
 
-bool Skeleton::Start()
+bool Boss::Start()
 {
 	// Initialize the enemy texture
 	texture = Engine::GetInstance().textures.get()->Load(parameters.attribute("texture").as_string());
@@ -29,14 +28,13 @@ bool Skeleton::Start()
 	texH = parameters.attribute("h").as_int();
 	death = parameters.attribute("active").as_bool();
 
+	
 	// Load animations
 	idleAnim.LoadAnimations(parameters.child("animations").child("idle"));
 	idle_left.LoadAnimations(parameters.child("animations").child("idle_left"));
 	idle_right.LoadAnimations(parameters.child("animations").child("idle_right"));
 	walk_left.LoadAnimations(parameters.child("animations").child("walk_left"));
 	walk_right.LoadAnimations(parameters.child("animations").child("walk_right"));
-	alert_left.LoadAnimations(parameters.child("animations").child("alert_left"));
-	alert_right.LoadAnimations(parameters.child("animations").child("alert_right"));
 	attack_left.LoadAnimations(parameters.child("animations").child("attack_left"));
 	attack_right.LoadAnimations(parameters.child("animations").child("attack_right"));
 	hit_left.LoadAnimations(parameters.child("animations").child("hit_left"));
@@ -47,9 +45,9 @@ bool Skeleton::Start()
 	currentAnim = &idle_left;
 
 	// Add a physics body to the enemy - initialise the physics body
-	pbody = Engine::GetInstance().physics->CreateCircle((int)position.getX() + texW / 2, (int)position.getY() + texH / 2, texW/2, bodyType::DYNAMIC);
-	attackLeft = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX(), (int)position.getY(), (int)(texW * 2 / 3), (int)(texH * 7 / 6), bodyType::DYNAMIC);
-	attackRight = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX(), (int)position.getY(), (int)(texW * 2 / 3), (int)(texH * 7 / 6), bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics->CreateRectangle((int)position.getX() + texW / 2, (int)position.getY() + texH / 2, texW,texH, bodyType::DYNAMIC);
+	attackLeft = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX(), (int)position.getY(), (int)(texW * 1 / 5), (int)(texH * 7 / 6), bodyType::DYNAMIC);
+	attackRight = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX(), (int)position.getY(), (int)(texW * 3 / 5), (int)(texH * 7 / 6), bodyType::DYNAMIC);
 
 	// Assign a collider to the physics body
 	pbody->ctype = ColliderType::ENEMY;
@@ -57,8 +55,8 @@ bool Skeleton::Start()
 	attackRight->ctype = ColliderType::ENEMY_ATTACK_RIGHT;
 
 	// Create joints
-	pbody->CreateJoint(attackLeft, { (float)PIXEL_TO_METERS((texW / 2)) ,(float)PIXEL_TO_METERS((-texH / 3)) });
-	pbody->CreateJoint(attackRight, { (float)PIXEL_TO_METERS((-texW / 2)) ,(float)PIXEL_TO_METERS((-texH / 3)) });
+	pbody->CreateJoint(attackLeft, { (float)PIXEL_TO_METERS((texW)) ,(float)PIXEL_TO_METERS((-texH / 3)) });
+	pbody->CreateJoint(attackRight, { (float)PIXEL_TO_METERS((-texW)) ,(float)PIXEL_TO_METERS((-texH / 3)) });
 
 	// Set the collision listener
 	pbody->listener = this;
@@ -77,7 +75,7 @@ bool Skeleton::Start()
 	return true;
 }
 
-bool Skeleton::Update(float dt)
+bool Boss::Update(float dt)
 {
 	// Pathfinding A* algorithm with different heuistics (Manhattan, Euclidean, Squared)
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
@@ -127,68 +125,45 @@ bool Skeleton::Update(float dt)
 	// Update the enemy state
 	if (!pathfinding->pathTiles.empty())
 	{
-		if (isAlert()) {
-			// Get the next tile in the path
-			Vector2D nextTile = pathfinding->pathTiles.back();
-			Vector2D nextTileWorldPos = Engine::GetInstance().map.get()->MapToWorld(nextTile.getX(), nextTile.getY());
-			Vector2D direction = nextTileWorldPos - GetPosition();
+		// Get the next tile in the path
+		Vector2D nextTile = pathfinding->pathTiles.back();
+		Vector2D nextTileWorldPos = Engine::GetInstance().map.get()->MapToWorld(nextTile.getX(), nextTile.getY());
+		Vector2D direction = nextTileWorldPos - GetPosition();
 
-			if (dx < 0) look = View::RIGHT;
-			else look = View::LEFT;
+		if (dx < 0) look = View::RIGHT;
+		else look = View::LEFT;
 
-			direction = direction.normalized();
-			b2Vec2 velocity = b2Vec2(direction.getX(), pbody->body->GetLinearVelocity().y);
-			Walk();
+		direction = direction.normalized();
+		b2Vec2 velocity = b2Vec2(direction.getX(), pbody->body->GetLinearVelocity().y);
+		Walk();
 
-			if (abs(dx) > 300) {
-				isAlerted = false;
-				Idle();
-				velocity = b2Vec2(0, 0);
+		if (abs(dx) < 80)
+		{
+			Attack();
+
+			CoolDown();
+
+			if (canAttack && Engine::GetInstance().scene.get()->GetStatsManager()->GetLife() > 0 && (ctr >= maxctr)) {
+				Engine::GetInstance().scene.get()->StatsLooseLife();
+				ctr = 0;
 			}
-			else if (abs(dx) < 30)
+			else if (Engine::GetInstance().scene.get()->GetStatsManager()->GetLife() <= 0) {
+				Engine::GetInstance().scene.get()->StatsResetLife();
+				Engine::GetInstance().scene.get()->PlayerDeath(true);
+			}
+
+			if (currentAnim->HasFinished())
 			{
-				Attack();
-				
-				CoolDown();
-
-				if (canAttack && Engine::GetInstance().scene.get()->GetStatsManager()->GetLife() > 0 && (ctr >= maxctr)) { 
-					Engine::GetInstance().scene.get()->StatsLooseLife();
-					ctr = 0;
-				}
-				else if (Engine::GetInstance().scene.get()->GetStatsManager()->GetLife() <= 0) { 
-					Engine::GetInstance().scene.get()->StatsResetLife();
-					Engine::GetInstance().scene.get()->PlayerDeath(true);
-				}
-
-				if (currentAnim->HasFinished())
-				{
-					currentAnim->Reset();
-				}
-				velocity = b2Vec2(0, 0);
+				currentAnim->Reset();
 			}
-
-			pbody->body->SetLinearVelocity(velocity);
+			velocity = b2Vec2(0, 0);
 		}
-		else {
-			// If player is in range, alert the enemy
-			if (abs(dx) < 150) {
-				if (dx < 0) look = View::LEFT;
-				else look = View::RIGHT;
-				Alert();
-				if (currentAnim->HasFinished()) {
-					isAlerted = true;
-					currentAnim->Reset();
-				}
-				pbody->body->SetLinearVelocity(b2Vec2(0, 0));
-			}
-			else {
-				if (dx < 0) look = View::LEFT;
-				else look = View::RIGHT;
-				Idle();
-			}
-		}
+
+		pbody->body->SetLinearVelocity(velocity);
+
 	}
 
+	Engine::GetInstance().scene.get()->GetPlayer()->lifeBoss = life;
 	b2Transform pbodyPos = pbody->body->GetTransform();
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
@@ -201,11 +176,11 @@ bool Skeleton::Update(float dt)
 	if (Engine::GetInstance().scene.get()->pathDebug) {
 		pathfinding->DrawPath();
 	}
-
+	LOG("Life: %d", life);
 	return true;
 }
 
-bool Skeleton::CleanUp()
+bool Boss::CleanUp()
 {
 	Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
 	Engine::GetInstance().physics.get()->DeletePhysBody(attackLeft);
@@ -213,7 +188,7 @@ bool Skeleton::CleanUp()
 	return true;
 }
 
-void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
+void Boss::OnCollision(PhysBody* physA, PhysBody* physB)
 {
 	switch (physB->ctype)
 	{
@@ -227,7 +202,7 @@ void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 	}
 }
 
-void Skeleton::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
+void Boss::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 {
 	switch (physB->ctype)
 	{
@@ -239,7 +214,7 @@ void Skeleton::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	}
 }
 
-void Skeleton::TestIsAbove(PhysBody* physA, PhysBody* physB)
+void Boss::TestIsAbove(PhysBody* physA, PhysBody* physB)
 {
 	b2Transform transform_A = physA->body->GetTransform();
 	b2Vec2 position_A = transform_A.p;
@@ -247,12 +222,17 @@ void Skeleton::TestIsAbove(PhysBody* physA, PhysBody* physB)
 	b2Transform transform_B = physB->body->GetTransform();
 	b2Vec2 position_B = transform_B.p;
 
-	if (position_A.y > (position_B.y + 0.5f))
+	if (position_A.y > (position_B.y + 1.2f))
 	{
-		death = true;
-
-		Engine::GetInstance().audio.get()->PlayFx(enemydeathFxId);
-		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+		if (life <= 0) {
+			Engine::GetInstance().audio.get()->PlayFx(enemydeathFxId);
+			death = true;
+			Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+		}
+		else { 
+			life -= 10;
+		}
+		
 	}
 	else {
 		if (Engine::GetInstance().scene.get()->GetStatsManager()->GetLife() > 0)
@@ -263,23 +243,23 @@ void Skeleton::TestIsAbove(PhysBody* physA, PhysBody* physB)
 		}
 	}
 }
-void Skeleton::Walk()
+void Boss::Walk()
 {
 	if (look == View::LEFT)
 	{
 		//LOG("Walk left");
-		currentAnim = &walk_left;
+		currentAnim = &walk_right;
 	}
 	else if (look == View::RIGHT)
 	{
 		//LOG("Walk right");
-		currentAnim = &walk_right;
+		currentAnim = &walk_left;
 	}
 
 	state = State::RUN;
 }
 
-void Skeleton::Idle()
+void Boss::Idle()
 {
 	if (look == View::LEFT)
 	{
@@ -295,7 +275,7 @@ void Skeleton::Idle()
 	state = State::IDLE;
 }
 
-void Skeleton::Alert()
+void Boss::Alert()
 {
 	if (look == View::LEFT)
 	{
@@ -311,28 +291,28 @@ void Skeleton::Alert()
 	state = State::IDLE;
 }
 
-bool Skeleton::isAlert()
+bool Boss::isAlert()
 {
 	return isAlerted;
 }
 
-void Skeleton::Attack()
+void Boss::Attack()
 {
 	if (look == View::LEFT)
 	{
 		/*LOG("Attack left");*/
-		currentAnim = &attack_left;
+		currentAnim = &attack_right;
 	}
 	else if (look == View::RIGHT)
 	{
 		/*LOG("Attack right");*/
-		currentAnim = &attack_right;
+		currentAnim = &attack_left;
 	}
 
 	state = State::IDLE;
 }
 
-void Skeleton::Hit()
+void Boss::Hit()
 {
 	if (look == View::LEFT)
 	{
@@ -348,7 +328,7 @@ void Skeleton::Hit()
 	state = State::IDLE;
 }
 
-void Skeleton::Death()
+void Boss::Death()
 {
 	if (look == View::LEFT)
 	{
@@ -364,19 +344,20 @@ void Skeleton::Death()
 	state = State::IDLE;
 }
 
-void Skeleton::SetParameters(pugi::xml_node parameters)
+void Boss::SetParameters(pugi::xml_node parameters)
 {
 	this->parameters = parameters;
 }
 
-void Skeleton::CoolDown()
+void Boss::CoolDown()
 {
-	ctr += 0.062f;
+	ctr += 0.150f;
 }
 
-void Skeleton::ResetPath()
+void Boss::ResetPath()
 {
 	Vector2D pos = GetPosition();
 	Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
 	pathfinding->ResetPath(tilePos);
 }
+

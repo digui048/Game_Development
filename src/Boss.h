@@ -1,12 +1,11 @@
 #pragma once
 #include "Enemy.h"
 
-
-class Skeleton : public Enemy
+class Boss : public Enemy
 {
 public:
-	Skeleton();
-	~Skeleton();
+	Boss();
+	~Boss();
 
 	bool Start() override;
 
@@ -22,9 +21,11 @@ public:
 
 	void SetParameters(pugi::xml_node parameters);
 
+	void ResetPath();
+
 	void CoolDown();
 
-	void ResetPath();
+	int life = 100;
 
 private:
 
@@ -45,14 +46,6 @@ private:
 	Animation hit_right;			// Hit right animation
 	Animation death_left;			// Death left animation
 	Animation death_right;			// Death right animation
-	
-	PhysBody* attackLeft = nullptr;
-	PhysBody* attackRight = nullptr;
-
-	bool canAttack = false;
-
-	float ctr = 0;
-	float maxctr = 3.0f;
 
 	void Idle();
 	void Walk();
@@ -63,5 +56,12 @@ private:
 	void Death();
 	// Death right animation
 
+	PhysBody* attackLeft = nullptr;
+	PhysBody* attackRight = nullptr;
+
+	float ctr = 0;
+	float maxctr = 3.0f;
+	bool canAttack = false;
+	
 	int enemydeathFxId;
 };

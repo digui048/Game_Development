@@ -33,6 +33,9 @@ enum class ColliderType {
 	SPIKE,
 	CHECKPOINT,
 	ENEMY,
+	ENEMY_ATTACK_LEFT,
+	ENEMY_ATTACK_RIGHT,
+	FIREBALL,
 	UNKNOWN
 	// ..
 };
@@ -50,6 +53,7 @@ public:
 	float GetRotation() const;
 	bool Contains(int x, int y) const;
 	int RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& normal_y) const;
+	void CreateJoint(PhysBody* body, Vector2D pos);
 
 public:
 	int width = 0;

@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include "Skeleton.h"
 #include "FireSpirit.h"
+#include "Boss.h"
 #include "Log.h"
 #include <vector>
 #include "GuiControlButton.h"
@@ -69,6 +70,8 @@ public:
 	Vector2D GetPlayerPosition();
 
 	std::string LoadEnemyName(pugi::xml_node configParameters);
+
+	Player* GetPlayer();
 
 	void SetParameters(pugi::xml_node parameters);
 

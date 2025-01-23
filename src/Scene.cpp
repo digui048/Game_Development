@@ -82,6 +82,11 @@ bool Scene::Awake()
 			enemy->SetParameters(enemyNode);
 			enemyList.push_back(enemy);
 		}
+		else if (name == "boss") {
+			Boss* enemy = (Boss*)Engine::GetInstance().entityManager->CreateEntity(EntityType::BOSS);
+			enemy->SetParameters(enemyNode);
+			enemyList.push_back(enemy);
+		}
 
 		//FireSpirit* enemy2 = (FireSpirit*)Engine::GetInstance().entityManager->CreateEntity(EntityType::FIRE_SPIRIT);
 		//enemy2->SetParameters(enemyNode);
@@ -149,6 +154,11 @@ std::string Scene::LoadEnemyName(pugi::xml_node configParameters)
 		std::string enemyName = enemyNode.child("name").text().as_string();
 		return enemyName;
 	}
+}
+
+Player* Scene::GetPlayer()
+{
+	return player;
 }
 
 void Scene::LoadState()
@@ -328,6 +338,8 @@ bool Scene::Update(float dt)
 			deathTimeCam = 0.0f;
 		}
 
+		StatsResetLife();
+
 	}
 
 	//Render a texture where the mouse is over to highlight the tile, use the texture 'mouseTileTex'
@@ -368,6 +380,21 @@ bool Scene::Update(float dt)
 	Engine::GetInstance().render.get()->DrawText("Life", 25, 5, 50, 50);
 	Engine::GetInstance().render.get()->DrawRectangle(player->stats->GetBar(), 255, 255, 255, 255, true, false);
 	Engine::GetInstance().render.get()->DrawRectangle(player->stats->UpdateLife(), 0, 255, 0, 255,true,false);
+	
+	// Rectangle Life
+	int maxLife = 100;
+	int life = GetPlayer()->lifeBoss;
+	float health = (float)life / maxLife;  // Ensure floating-point division
+	SDL_Rect lifeRect = player->stats->UpdateLife();
+	lifeRect.w = 350 * health;    // Bar.width is assumed to be float already
+	lifeRect.y = 60;
+
+	SDL_Rect bar_life = player->stats->GetBar();
+	bar_life.y = 56;
+	Engine::GetInstance().render.get()->DrawText("Boss Life", 25, 50, 70, 50);
+	Engine::GetInstance().render.get()->DrawRectangle(bar_life, 255, 255, 255, 255, true, false);
+	Engine::GetInstance().render.get()->DrawRectangle(lifeRect, 0, 255, 0, 255, true, false);
+
 	
 	//L03 TODO 3: Make the camera movement independent of framerate
 	//float camSpeed = 1;
